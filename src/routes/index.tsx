@@ -438,7 +438,7 @@ function BeginStep() {
 function CompanyStep() {
   return (
     <StepShell
-      eyebrow="Step 02"
+      eyebrow="Step 04"
       title="Company information"
       intro={
         <>
@@ -517,7 +517,7 @@ function CompanyStep() {
 function DirectorsStep() {
   return (
     <StepShell
-      eyebrow="Step 03"
+      eyebrow="Step 04"
       title="Directors & UBOs"
       intro="Provide details for your Directors, Officers, and authorized signatories for Bumble Bee and Co. The first entry must be the Principal."
     >
