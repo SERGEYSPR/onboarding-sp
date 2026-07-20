@@ -438,7 +438,7 @@ function BeginStep() {
 function CompanyStep() {
   return (
     <StepShell
-      eyebrow="Step 04"
+      eyebrow="Step 03"
       title="Company information"
       intro={
         <>
@@ -556,7 +556,7 @@ function DirectorsStep() {
 function ProcessingStep() {
   return (
     <StepShell
-      eyebrow="Step 04"
+      eyebrow="Step 05"
       title="Processing details"
       intro="Estimated volumes help us tailor your Segpay processing setup. You can revise these later."
     >
@@ -609,7 +609,7 @@ function ProcessingStep() {
 function ContactsStep() {
   return (
     <StepShell
-      eyebrow="Step 05"
+      eyebrow="Step 06"
       title="Contacts"
       intro="Add the people we should reach for day-to-day operations, contracts, and technical questions."
     >
@@ -664,7 +664,7 @@ function DocumentsStep() {
   ];
   return (
     <StepShell
-      eyebrow="Step 06"
+      eyebrow="Step 07"
       title="Upload documentation"
       intro="Upload the following required documents for Bumble Bee and Co. Drag and drop or click any tile to browse."
     >
@@ -695,7 +695,7 @@ function DocumentsStep() {
 function WebsitesStep() {
   return (
     <StepShell
-      eyebrow="Step 07"
+      eyebrow="Step 08"
       title="Websites"
       intro="Register every domain used with Segpay. Credentials must not expire, and your site must display Billing Support, T&Cs, Privacy Policy, and your Registered Name."
     >
@@ -740,7 +740,7 @@ function WebsitesStep() {
 function BanksStep() {
   return (
     <StepShell
-      eyebrow="Step 08"
+      eyebrow="Step 09"
       title="Payment banks"
       intro="Configure at least one bank type. A checkmark next to the type means its configuration is complete. Empty configurations are not accepted."
     >
@@ -799,7 +799,7 @@ function ReviewStep() {
   ];
   return (
     <StepShell
-      eyebrow="Step 09"
+      eyebrow="Step 10"
       title="Review & submit"
       intro="Please review each section. Uncheck any section that is incomplete and add a comment — we'll send it back for another pass."
     >
