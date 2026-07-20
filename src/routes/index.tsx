@@ -251,6 +251,8 @@ function StepContent({ active }: { active: StepId }) {
   switch (active) {
     case "begin":
       return <BeginStep />;
+    case "edd":
+      return <EddStep />;
     case "company":
       return <CompanyStep />;
     case "directors":
