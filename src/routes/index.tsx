@@ -29,6 +29,7 @@ export const Route = createFileRoute("/")({
 
 type StepId =
   | "begin"
+  | "edd"
   | "company"
   | "directors"
   | "processing"
@@ -47,6 +48,7 @@ type Step = {
 
 const STEPS: Step[] = [
   { id: "begin", label: "Begin", icon: Sparkles, complete: true },
+  { id: "edd", label: "Due Diligence", icon: ClipboardCheck },
   { id: "company", label: "Company", icon: Building2 },
   { id: "directors", label: "Directors & UBOs", icon: Users },
   { id: "processing", label: "Processing", icon: CreditCard },
