@@ -23,7 +23,7 @@ import {
   X,
 } from "lucide-react";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/apply")({
   component: OnboardingPage,
 });
 
