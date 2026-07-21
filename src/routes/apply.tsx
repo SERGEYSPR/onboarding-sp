@@ -1211,7 +1211,7 @@ function EddStep() {
               <div className="text-xs font-medium mb-1.5">Your response</div>
               <textarea
                 rows={4}
-                className="w-full rounded-lg border border-input bg-surface px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
+                className="w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition"
                 placeholder="Describe your process…"
               />
             </div>
