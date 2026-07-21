@@ -668,11 +668,11 @@ function DocumentsStep() {
         {docs.map((d) => (
           <div
             key={d}
-            className="group rounded-2xl border border-dashed border-border bg-surface p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
+            className="group rounded-2xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
           >
             <div className="flex items-start gap-3">
-              <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center group-hover:bg-primary/10 transition">
-                <Upload className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center transition">
+                <Upload className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
                 <div className="text-sm font-semibold">{d}</div>
