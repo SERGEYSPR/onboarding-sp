@@ -435,10 +435,11 @@ function CompanyStep() {
   return (
     <StepShell
       eyebrow="Step 03"
-      title="Company information"
+      title="Company Information"
       intro={
         <>
-          Tell us about your registered entity. Reach out to{" "}
+          Tell us about your registered entity and the people who own or control it.
+          Reach out to{" "}
           <a href="mailto:tech@segpay.com" className="text-primary hover:underline">
             tech@segpay.com
           </a>{" "}
@@ -447,6 +448,7 @@ function CompanyStep() {
       }
     >
       <Card>
+        <h3 className="font-semibold text-sm mb-4">Registered Entity</h3>
         <div className="grid md:grid-cols-2 gap-5">
           <Field label="Company Type" required>
             <Select icon={Building2} defaultValue="corp">
@@ -506,53 +508,49 @@ function CompanyStep() {
           </div>
         </div>
       </Card>
+
+      <Card className="mt-5">
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <h3 className="font-semibold text-sm">Directors & UBOs</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Add every Director, Officer, and Ultimate Beneficial Owner. The first
+              entry must be the Principal.
+            </p>
+          </div>
+          <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
+            + Add Owner
+          </button>
+        </div>
+
+        <div className="mt-5 rounded-xl border border-dashed border-border bg-surface-muted p-8 text-center">
+          <Users className="h-10 w-10 mx-auto text-muted-foreground" />
+          <div className="mt-3 font-semibold">No owners added yet</div>
+          <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+            Add your Principal first — they'll act as the primary representative in our system.
+          </p>
+        </div>
+
+        <div className="mt-5 grid md:grid-cols-2 gap-3 text-sm">
+          <div className="rounded-lg border border-border bg-surface-muted p-3">
+            <div className="font-medium text-xs">Ownership must total 100%</div>
+            <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
+              Corporate owners require details of their own owners in a tree structure.
+            </p>
+          </div>
+          <div className="rounded-lg border border-border bg-surface-muted p-3">
+            <div className="font-medium text-xs">Editing is easy</div>
+            <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
+              Click any row to edit an owner's details or ownership breakdown before submission.
+            </p>
+          </div>
+        </div>
+      </Card>
     </StepShell>
   );
 }
 
-function DirectorsStep() {
-  return (
-    <StepShell
-      eyebrow="Step 04"
-      title="Directors & UBOs"
-      intro="Provide details for your Directors, Officers, and authorized signatories for Bumble Bee and Co. The first entry must be the Principal."
-    >
-      <div className="rounded-2xl border border-dashed border-border bg-surface-muted p-8 text-center">
-        <Users className="h-10 w-10 mx-auto text-muted-foreground" />
-        <div className="mt-3 font-semibold">No owners added yet</div>
-        <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-          Add your Principal first — they'll act as the primary representative in
-          our system.
-        </p>
-        <button className="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
-          + Add Owner (Director / UBO)
-        </button>
-      </div>
 
-      <div className="mt-6 grid md:grid-cols-2 gap-4 text-sm">
-        <div className="rounded-xl border border-border bg-surface p-4">
-          <div className="font-medium">Ownership must total 100%</div>
-          <p className="text-muted-foreground text-xs mt-1">
-            Add each owner with their percentage. Corporate owners require details of
-            their own owners in a tree structure.
-          </p>
-        </div>
-        <div className="rounded-xl border border-border bg-surface p-4">
-          <div className="font-medium">Editing is easy</div>
-          <p className="text-muted-foreground text-xs mt-1">
-            Click any row to edit an owner's details or ownership breakdown at any
-            time before submission.
-          </p>
-        </div>
-      </div>
-    </StepShell>
-  );
-}
-
-function ProcessingStep() {
-  return (
-    <StepShell
-      eyebrow="Step 05"
       title="Processing details"
       intro="Estimated volumes help us tailor your Segpay processing setup. You can revise these later."
     >
