@@ -153,7 +153,7 @@ export function AuthField({
     <label className="block">
       <div className="text-xs font-medium text-foreground mb-1.5">{label}</div>
       <div className="relative">
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
         {children}
       </div>
     </label>
