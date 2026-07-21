@@ -327,13 +327,13 @@ function Input({
   return (
     <div className="relative">
       {Icon && (
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
       )}
       <input
         {...props}
-        className={`w-full rounded-lg border border-input bg-surface ${
+        className={`w-full rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
-        } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition`}
+        } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
       />
     </div>
   );
