@@ -349,17 +349,17 @@ function Select({
   return (
     <div className="relative">
       {Icon && (
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
       )}
       <select
         {...props}
-        className={`w-full appearance-none rounded-lg border border-input bg-surface ${
+        className={`w-full appearance-none rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
-        } pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition`}
+        } pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
       >
         {children}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
     </div>
   );
 }
