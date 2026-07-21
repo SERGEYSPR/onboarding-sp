@@ -42,7 +42,7 @@ function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@company.com"
-            className="auth-input"
+            className="w-full rounded-md border border-input bg-surface-muted pl-9 pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
           />
         </AuthField>
         <AuthField label="Password" icon={Lock}>
@@ -52,7 +52,7 @@ function SignupPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="At least 8 characters"
-            className="auth-input"
+            className="w-full rounded-md border border-input bg-surface-muted pl-9 pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
           />
         </AuthField>
         <AuthField label="Repeat password" icon={Lock}>
@@ -62,7 +62,7 @@ function SignupPage() {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             placeholder="Repeat your password"
-            className="auth-input"
+            className="w-full rounded-md border border-input bg-surface-muted pl-9 pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
           />
         </AuthField>
 
