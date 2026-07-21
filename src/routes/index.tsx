@@ -66,23 +66,26 @@ function WelcomePage() {
 
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                to="/apply"
+                to="/signup"
                 className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-colors"
               >
                 Start new application
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <button className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface px-6 py-3 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+              >
                 <LogIn className="h-4 w-4" />
                 Returning user — sign in
-              </button>
+              </Link>
             </div>
 
             <p className="text-sm text-muted-foreground">
               Already started an application?{" "}
-              <button className="text-primary font-medium hover:underline">
+              <Link to="/login" className="text-primary font-medium hover:underline">
                 Log in to continue where you left off
-              </button>
+              </Link>
               .
             </p>
 
