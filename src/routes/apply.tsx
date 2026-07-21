@@ -549,8 +549,10 @@ function CompanyStep() {
     </StepShell>
   );
 }
-
-
+function ProcessingStep() {
+  return (
+    <StepShell
+      eyebrow="Step 04"
       title="Processing details"
       intro="Estimated volumes help us tailor your Segpay processing setup. You can revise these later."
     >
