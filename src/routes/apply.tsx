@@ -327,13 +327,13 @@ function Input({
   return (
     <div className="relative">
       {Icon && (
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
       )}
       <input
         {...props}
-        className={`w-full rounded-lg border border-input bg-surface ${
+        className={`w-full rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
-        } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition`}
+        } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
       />
     </div>
   );
@@ -349,17 +349,17 @@ function Select({
   return (
     <div className="relative">
       {Icon && (
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
       )}
       <select
         {...props}
-        className={`w-full appearance-none rounded-lg border border-input bg-surface ${
+        className={`w-full appearance-none rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
-        } pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition`}
+        } pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
       >
         {children}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
     </div>
   );
 }
@@ -523,8 +523,8 @@ function CompanyStep() {
           </button>
         </div>
 
-        <div className="mt-5 rounded-xl border border-dashed border-border bg-surface-muted p-8 text-center">
-          <Users className="h-10 w-10 mx-auto text-muted-foreground" />
+        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-8 text-center">
+          <Users className="h-10 w-10 mx-auto text-primary" />
           <div className="mt-3 font-semibold">No owners added yet</div>
           <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
             Add your Principal first — they'll act as the primary representative in our system.
@@ -668,11 +668,11 @@ function DocumentsStep() {
         {docs.map((d) => (
           <div
             key={d}
-            className="group rounded-2xl border border-dashed border-border bg-surface p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
+            className="group rounded-2xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
           >
             <div className="flex items-start gap-3">
-              <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center group-hover:bg-primary/10 transition">
-                <Upload className="h-5 w-5 text-muted-foreground group-hover:text-primary" />
+              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center transition">
+                <Upload className="h-5 w-5 text-primary" />
               </div>
               <div className="flex-1">
                 <div className="text-sm font-semibold">{d}</div>
@@ -714,15 +714,15 @@ function WebsitesStep() {
             <Field label="Comment">
               <textarea
                 rows={3}
-                className="w-full rounded-lg border border-input bg-surface px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
+                className="w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition"
                 placeholder="Notes for our review team"
               />
             </Field>
           </div>
         </div>
 
-        <div className="mt-5 rounded-xl border border-dashed border-border bg-surface-muted p-5 text-center">
-          <Upload className="h-5 w-5 mx-auto text-muted-foreground" />
+        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center">
+          <Upload className="h-5 w-5 mx-auto text-primary" />
           <div className="text-sm font-medium mt-2">Website Ownership Proof</div>
           <div className="text-xs text-muted-foreground mt-1">
             Drop the document here or click to select
@@ -920,8 +920,8 @@ function UploadTile({
           <li key={b}>{b}</li>
         ))}
       </ul>
-      <div className="mt-4 rounded-xl border border-dashed border-border bg-surface-muted p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer">
-        <Upload className="h-5 w-5 mx-auto text-muted-foreground" />
+      <div className="mt-4 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer">
+        <Upload className="h-5 w-5 mx-auto text-primary" />
         <div className="mt-2 text-sm font-medium">Add «{title}»</div>
         <div className="text-xs text-muted-foreground mt-0.5">
           Drag files here or click to select
@@ -1211,7 +1211,7 @@ function EddStep() {
               <div className="text-xs font-medium mb-1.5">Your response</div>
               <textarea
                 rows={4}
-                className="w-full rounded-lg border border-input bg-surface px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
+                className="w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition"
                 placeholder="Describe your process…"
               />
             </div>
