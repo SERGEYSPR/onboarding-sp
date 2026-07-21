@@ -920,8 +920,8 @@ function UploadTile({
           <li key={b}>{b}</li>
         ))}
       </ul>
-      <div className="mt-4 rounded-xl border border-dashed border-border bg-surface-muted p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer">
-        <Upload className="h-5 w-5 mx-auto text-muted-foreground" />
+      <div className="mt-4 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer">
+        <Upload className="h-5 w-5 mx-auto text-primary" />
         <div className="mt-2 text-sm font-medium">Add «{title}»</div>
         <div className="text-xs text-muted-foreground mt-0.5">
           Drag files here or click to select
