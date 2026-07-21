@@ -31,7 +31,6 @@ type StepId =
   | "begin"
   | "edd"
   | "company"
-  | "directors"
   | "processing"
   | "contacts"
   | "documents"
@@ -49,8 +48,7 @@ type Step = {
 const STEPS: Step[] = [
   { id: "begin", label: "Begin", icon: Sparkles, complete: true },
   { id: "edd", label: "Due Diligence", icon: ClipboardCheck },
-  { id: "company", label: "Company", icon: Building2 },
-  { id: "directors", label: "Directors & UBOs", icon: Users },
+  { id: "company", label: "Company Information", icon: Building2 },
   { id: "processing", label: "Processing", icon: CreditCard },
   { id: "contacts", label: "Contacts", icon: User },
   { id: "documents", label: "Documents", icon: FileText, complete: true },
