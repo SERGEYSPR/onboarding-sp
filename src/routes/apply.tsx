@@ -714,15 +714,15 @@ function WebsitesStep() {
             <Field label="Comment">
               <textarea
                 rows={3}
-                className="w-full rounded-lg border border-input bg-surface px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/40 focus:border-ring transition"
+                className="w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition"
                 placeholder="Notes for our review team"
               />
             </Field>
           </div>
         </div>
 
-        <div className="mt-5 rounded-xl border border-dashed border-border bg-surface-muted p-5 text-center">
-          <Upload className="h-5 w-5 mx-auto text-muted-foreground" />
+        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center">
+          <Upload className="h-5 w-5 mx-auto text-primary" />
           <div className="text-sm font-medium mt-2">Website Ownership Proof</div>
           <div className="text-xs text-muted-foreground mt-1">
             Drop the document here or click to select
