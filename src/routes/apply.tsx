@@ -253,8 +253,6 @@ function StepContent({ active }: { active: StepId }) {
       return <EddStep />;
     case "company":
       return <CompanyStep />;
-    case "directors":
-      return <DirectorsStep />;
     case "processing":
       return <ProcessingStep />;
     case "contacts":
