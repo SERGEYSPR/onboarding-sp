@@ -35,10 +35,13 @@ function WelcomePage() {
               <div className="text-xs text-muted-foreground">Merchant Onboarding</div>
             </div>
           </div>
-          <button className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors">
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+          >
             <LogIn className="h-4 w-4" />
             Sign in
-          </button>
+          </Link>
         </div>
       </header>
 
