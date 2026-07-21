@@ -523,8 +523,8 @@ function CompanyStep() {
           </button>
         </div>
 
-        <div className="mt-5 rounded-xl border border-dashed border-border bg-surface-muted p-8 text-center">
-          <Users className="h-10 w-10 mx-auto text-muted-foreground" />
+        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-8 text-center">
+          <Users className="h-10 w-10 mx-auto text-primary" />
           <div className="mt-3 font-semibold">No owners added yet</div>
           <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
             Add your Principal first — they'll act as the primary representative in our system.
