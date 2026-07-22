@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Lock, ArrowRight, ArrowLeft } from "lucide-react";
+import segpayLogo from "@/assets/segpay-logo.png.asset.json";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
