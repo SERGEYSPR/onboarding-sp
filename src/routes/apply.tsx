@@ -74,12 +74,9 @@ function OnboardingPage() {
       <header className="border-b border-border bg-surface/80 backdrop-blur sticky top-0 z-30">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-semibold">
-              S
-            </div>
-            <div>
-              <div className="text-sm text-muted-foreground leading-none">Segpay</div>
-              <h1 className="font-display text-xl leading-tight">
+            <img src={segpayLogo.url} alt="Segpay" className="h-7 w-auto" />
+            <div className="border-l border-border pl-3">
+              <h1 className="font-display text-base leading-tight font-semibold">
                 Merchant Onboarding
               </h1>
             </div>
@@ -883,21 +880,41 @@ function Tag({
 }
 
 function YesNo({ name }: { name: string }) {
+  const [value, setValue] = useState<"yes" | "no" | null>(null);
   return (
-    <div className="grid grid-cols-2 gap-3 mt-3 max-w-md">
-      {["Yes", "No"].map((v) => (
-        <label
-          key={v}
-          className="flex items-center gap-2.5 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm cursor-pointer hover:bg-muted transition"
+    <div className="mt-3">
+      <div
+        role="radiogroup"
+        aria-label={name}
+        className="relative inline-flex h-9 w-[74px] min-w-[74px] rounded-full bg-muted p-0.5 overflow-hidden"
+      >
+        <button
+          type="button"
+          role="radio"
+          aria-checked={value === "yes"}
+          onClick={() => setValue("yes")}
+          className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
+            value === "yes"
+              ? "bg-primary text-primary-foreground shadow"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
         >
-          <input
-            type="radio"
-            name={name}
-            className="h-4 w-4 text-primary focus:ring-ring/40 border-input"
-          />
-          <span>{v}</span>
-        </label>
-      ))}
+          Yes
+        </button>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={value === "no"}
+          onClick={() => setValue("no")}
+          className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
+            value === "no"
+              ? "bg-gray-400 text-white shadow"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          No
+        </button>
+      </div>
     </div>
   );
 }
