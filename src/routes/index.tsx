@@ -27,15 +27,12 @@ function WelcomePage() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-surface/80 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-semibold">
-              S
-            </div>
-            <div>
-              <div className="font-semibold text-foreground">Segpay</div>
-              <div className="text-xs text-muted-foreground">Merchant Onboarding</div>
-            </div>
-          </div>
+          <Link to="/" className="flex items-center gap-3">
+            <img src={segpayLogo.url} alt="Segpay" className="h-7 w-auto" />
+            <span className="text-xs text-muted-foreground border-l border-border pl-3">
+              Merchant Onboarding
+            </span>
+          </Link>
           <Link
             to="/login"
             className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
