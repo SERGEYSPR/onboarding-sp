@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Lock, ArrowRight, ArrowLeft } from "lucide-react";
-import segpayLogo from "@/assets/segpay-logo.png.asset.json";
+import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -107,7 +107,7 @@ export function AuthShell({
       <header className="border-b border-border bg-surface/80 backdrop-blur">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <img src={segpayLogo.url} alt="Segpay" className="h-7 w-auto" />
+            <img src={segpayLogo.url} alt="Segpay" className="w-[150px] h-auto" />
             <span className="text-xs text-muted-foreground border-l border-border pl-3">
               Merchant Onboarding
             </span>
