@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, LogIn, ShieldCheck, Clock, FileCheck } from "lucide-react";
 import heroImage from "@/assets/welcome-hero.jpg";
-import segpayLogo from "@/assets/segpay-logo.png.asset.json";
+import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,20 +26,28 @@ function WelcomePage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-surface/80 backdrop-blur">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+        <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-3">
-            <img src={segpayLogo.url} alt="Segpay" className="h-7 w-auto" />
+            <img src={segpayLogo.url} alt="Segpay" className="w-[150px] h-auto" />
             <span className="text-xs text-muted-foreground border-l border-border pl-3">
               Merchant Onboarding
             </span>
           </Link>
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-          >
-            <LogIn className="h-4 w-4" />
-            Sign in
-          </Link>
+          <div className="flex items-center gap-3">
+            <span className="hidden sm:inline text-xs text-muted-foreground">
+              Segpay employee?{" "}
+              <Link to="/login" className="text-primary font-medium hover:underline">
+                Login here
+              </Link>
+            </span>
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              <LogIn className="h-4 w-4" />
+              Sign in
+            </Link>
+          </div>
         </div>
       </header>
 

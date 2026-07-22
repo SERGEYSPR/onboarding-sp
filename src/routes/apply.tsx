@@ -22,7 +22,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import segpayLogo from "@/assets/segpay-logo.png.asset.json";
+import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
 export const Route = createFileRoute("/apply")({
   component: OnboardingPage,
@@ -74,7 +74,7 @@ function OnboardingPage() {
       <header className="border-b border-border bg-surface/80 backdrop-blur sticky top-0 z-30">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <img src={segpayLogo.url} alt="Segpay" className="h-7 w-auto" />
+            <img src={segpayLogo.url} alt="Segpay" className="w-[150px] h-auto" />
             <div className="border-l border-border pl-3">
               <h1 className="font-display text-base leading-tight font-semibold">
                 Merchant Onboarding
@@ -445,106 +445,157 @@ function CompanyStep() {
         </>
       }
     >
-      <Card>
-        <h3 className="font-semibold text-sm mb-4">Registered Entity</h3>
-        <div className="grid md:grid-cols-2 gap-5">
-          <Field label="Company Type" required>
-            <Select icon={Building2} defaultValue="corp">
-              <option value="corp">Corporation</option>
-              <option value="llc">LLC</option>
-              <option value="sole">Sole Proprietor</option>
-            </Select>
-          </Field>
-          <Field label="Registered Company Name" required>
-            <Input icon={Building2} defaultValue="Bumble Bee and Co" />
-          </Field>
-          <Field label="Registered DBA">
-            <Input icon={FileText} placeholder="Doing business as" />
-          </Field>
-          <Field label="Registration Number" required>
-            <Input icon={FileText} placeholder="e.g. 12345678" />
-          </Field>
-          <Field label="Date of Incorporation" required>
-            <Input type="date" />
-          </Field>
-          <Field label="Country of Incorporation" required>
-            <Select>
-              <option>United States</option>
-              <option>United Kingdom</option>
-              <option>Canada</option>
-            </Select>
-          </Field>
-          <Field label="Phone Number" required>
-            <Input icon={Phone} placeholder="+1 555 000 0000" />
-          </Field>
-          <Field label="Tax ID">
-            <Input placeholder="EIN / VAT" />
-          </Field>
+      <div className="grid lg:grid-cols-[1fr_300px] gap-6 items-start">
+        <div className="space-y-5 min-w-0">
+          <Card>
+            <h3 className="font-semibold text-sm mb-4">Registered Entity</h3>
+            <div className="grid md:grid-cols-2 gap-5">
+              <Field label="Company Type" required>
+                <Select icon={Building2} defaultValue="corp">
+                  <option value="corp">Corporation</option>
+                  <option value="llc">LLC</option>
+                  <option value="sole">Sole Proprietor</option>
+                </Select>
+              </Field>
+              <Field label="Registered Company Name" required>
+                <Input icon={Building2} defaultValue="Bumble Bee and Co" />
+              </Field>
+              <Field label="Registered DBA">
+                <Input icon={FileText} placeholder="Doing business as" />
+              </Field>
+              <Field label="Registration Number" required>
+                <Input icon={FileText} placeholder="e.g. 12345678" />
+              </Field>
+              <Field label="Date of Incorporation" required>
+                <Input type="date" />
+              </Field>
+              <Field label="Country of Incorporation" required>
+                <Select>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Canada</option>
+                </Select>
+              </Field>
+              <Field label="Phone Number" required>
+                <Input icon={Phone} placeholder="+1 555 000 0000" />
+              </Field>
+              <Field label="Tax ID">
+                <Input placeholder="EIN / VAT" />
+              </Field>
+            </div>
+
+            <div className="mt-8 border-t border-border pt-6">
+              <h3 className="font-semibold text-sm mb-4">Registered Address</h3>
+              <div className="grid md:grid-cols-2 gap-5">
+                <Field label="Street Address" required>
+                  <Input placeholder="123 Market Street" />
+                </Field>
+                <Field label="City" required>
+                  <Input placeholder="City" />
+                </Field>
+                <Field label="State / Province" required>
+                  <Input placeholder="State" />
+                </Field>
+                <Field label="ZIP / Postal Code" required>
+                  <Input placeholder="00000" />
+                </Field>
+              </div>
+              <div className="mt-6">
+                <Toggle
+                  defaultOn
+                  label="Operating address is the same as registered address"
+                />
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <h3 className="font-semibold text-sm">Directors & UBOs</h3>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Add every Director, Officer, and Ultimate Beneficial Owner. The first
+                  entry must be the Principal.
+                </p>
+              </div>
+              <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
+                + Add Owner
+              </button>
+            </div>
+
+            <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-8 text-center">
+              <Users className="h-10 w-10 mx-auto text-primary" />
+              <div className="mt-3 font-semibold">No owners added yet</div>
+              <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
+                Add your Principal first — they'll act as the primary representative in our system.
+              </p>
+            </div>
+
+            <div className="mt-5 grid md:grid-cols-2 gap-3 text-sm">
+              <div className="rounded-lg border border-border bg-surface-muted p-3">
+                <div className="font-medium text-xs">Ownership must total 100%</div>
+                <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
+                  Corporate owners require details of their own owners in a tree structure.
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-surface-muted p-3">
+                <div className="font-medium text-xs">Editing is easy</div>
+                <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
+                  Click any row to edit an owner's details or ownership breakdown before submission.
+                </p>
+              </div>
+            </div>
+          </Card>
         </div>
 
-        <div className="mt-8 border-t border-border pt-6">
-          <h3 className="font-semibold text-sm mb-4">Registered Address</h3>
-          <div className="grid md:grid-cols-2 gap-5">
-            <Field label="Street Address" required>
-              <Input placeholder="123 Market Street" />
-            </Field>
-            <Field label="City" required>
-              <Input placeholder="City" />
-            </Field>
-            <Field label="State / Province" required>
-              <Input placeholder="State" />
-            </Field>
-            <Field label="ZIP / Postal Code" required>
-              <Input placeholder="00000" />
-            </Field>
-          </div>
-          <div className="mt-6">
-            <Toggle
-              defaultOn
-              label="Operating address is the same as registered address"
-            />
-          </div>
-        </div>
-      </Card>
-
-      <Card className="mt-5">
-        <div className="flex items-center justify-between gap-3 flex-wrap">
-          <div>
-            <h3 className="font-semibold text-sm">Directors & UBOs</h3>
-            <p className="text-xs text-muted-foreground mt-1">
-              Add every Director, Officer, and Ultimate Beneficial Owner. The first
-              entry must be the Principal.
-            </p>
-          </div>
-          <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
-            + Add Owner
-          </button>
-        </div>
-
-        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-8 text-center">
-          <Users className="h-10 w-10 mx-auto text-primary" />
-          <div className="mt-3 font-semibold">No owners added yet</div>
-          <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-            Add your Principal first — they'll act as the primary representative in our system.
-          </p>
-        </div>
-
-        <div className="mt-5 grid md:grid-cols-2 gap-3 text-sm">
-          <div className="rounded-lg border border-border bg-surface-muted p-3">
-            <div className="font-medium text-xs">Ownership must total 100%</div>
-            <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
-              Corporate owners require details of their own owners in a tree structure.
-            </p>
-          </div>
-          <div className="rounded-lg border border-border bg-surface-muted p-3">
-            <div className="font-medium text-xs">Editing is easy</div>
-            <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
-              Click any row to edit an owner's details or ownership breakdown before submission.
-            </p>
-          </div>
-        </div>
-      </Card>
+        <RiskAssessmentPanel />
+      </div>
     </StepShell>
+  );
+}
+
+function RiskAssessmentPanel() {
+  // Internal-only block, visible for Risk/Compliance roles
+  const score = 72;
+  const band =
+    score >= 80 ? { label: "Low", color: "text-emerald-600", bar: "bg-emerald-500" }
+    : score >= 60 ? { label: "Medium", color: "text-amber-600", bar: "bg-amber-500" }
+    : { label: "High", color: "text-red-600", bar: "bg-red-500" };
+
+  return (
+    <aside className="rounded-xl border border-border bg-surface p-5 lg:sticky lg:top-[190px]">
+      <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-wider text-primary">
+        <ShieldCheck className="h-3.5 w-3.5" />
+        Internal · Risk
+      </div>
+      <div className="mt-4">
+        <div className="text-xs text-muted-foreground">Risk score</div>
+        <div className="flex items-baseline gap-2 mt-1">
+          <div className="font-display text-4xl leading-none">{score}</div>
+          <div className={`text-sm font-semibold ${band.color}`}>{band.label}</div>
+        </div>
+        <div className="mt-3 h-1.5 w-full rounded-full bg-muted overflow-hidden">
+          <div className={`h-full ${band.bar}`} style={{ width: `${score}%` }} />
+        </div>
+      </div>
+
+      <div className="mt-5 pt-5 border-t border-border">
+        <div className="text-xs text-muted-foreground mb-2">Risk assessment</div>
+        <a
+          href="#"
+          className="flex items-center justify-between gap-3 rounded-lg border border-border bg-[#f5f5f5] px-3 py-2.5 text-sm font-medium hover:bg-muted transition"
+        >
+          <span className="flex items-center gap-2 min-w-0">
+            <FileText className="h-4 w-4 text-primary shrink-0" />
+            <span className="truncate">risk-assessment.pdf</span>
+          </span>
+          <ArrowRight className="h-4 w-4 text-primary shrink-0" />
+        </a>
+        <p className="mt-2 text-[11px] text-muted-foreground leading-relaxed">
+          Generated by underwriting. Visible to Risk & Compliance roles only.
+        </p>
+      </div>
+    </aside>
   );
 }
 function ProcessingStep() {
