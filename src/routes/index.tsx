@@ -52,7 +52,7 @@ function WelcomePage() {
             </div>
 
             <div className="space-y-6">
-              <h1 className="font-serif text-5xl lg:text-6xl leading-[1.05] tracking-tight text-foreground">
+              <h1 className="font-sans font-semibold text-5xl lg:text-6xl leading-[1.05] tracking-tight text-foreground">
                 Welcome to Segpay
               </h1>
               <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
