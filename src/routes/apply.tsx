@@ -1271,8 +1271,158 @@ function EddStep() {
             question="Do you have written agreements in place with each content provider who uploads or generates content on your website(s)?"
             hint="If content creators are only required to tick T&Cs on the website during the registration process, you must provide evidence including an electronic signature, date / time stamp and IP address."
           />
+          <QuestionCard
+            n={18}
+            tag="User Generated"
+            tone="info"
+            question="Does the agreement include all of the following?"
+            hint={
+              <>
+                • Prohibition on any illegal or card-brand-violating activity.
+                <br />
+                • Requirement to verify identity and age of all persons depicted, with documents on request.
+                <br />
+                • Requirement to obtain and retain written consent from all persons depicted (to be depicted, to public distribution / upload, and to downloading by other users if applicable).
+              </>
+            }
+          />
+          <QuestionCard
+            n={19}
+            tag="User Generated"
+            tone="info"
+            question="Do you verify the identity and age of each content provider by reviewing a government-issued ID, and confirm it belongs to that person?"
+            hint="Supporting documentation may be requested."
+          />
+          <QuestionCard
+            n={20}
+            tag="User Generated"
+            tone="info"
+            question="How often is age verification conducted on content creators?"
+          >
+            <div className="mt-3 grid gap-3">
+              <ContentTypeCheck label="Once only (at onboarding)" />
+              <ContentTypeCheck label="Before every session" />
+              <ContentTypeCheck label="Before each session AND periodically during a live stream" />
+              <ContentTypeCheck label="Other — please specify" />
+            </div>
+          </QuestionCard>
+          <QuestionCard
+            n={21}
+            tag="User Generated"
+            tone="info"
+            question="Does your monitoring process include review of all uploaded content by content providers before publication?"
+          />
+          <QuestionCard
+            n={22}
+            tag="Live / Fan Sites"
+            tone="info"
+            question="Do you have full control over your live streaming platform, including real-time monitoring and the ability to remove content?"
+          />
+          <QuestionCard
+            n={23}
+            tag="Live / Fan Sites"
+            tone="info"
+            question="Provide a breakdown of the top 10 countries where your adult content creators / performers are located, with percentages."
+          >
+            <CountryBreakdown />
+          </QuestionCard>
+        </div>
+
+        {/* Declaration */}
+        <div className="mt-10">
+          <h3 className="font-display text-2xl mb-4">Declaration</h3>
+          <Card>
+            <div className="grid gap-5">
+              <Field label="Merchant Signature (type full name)" required>
+                <Input icon={User} placeholder="Full legal name" />
+              </Field>
+              <Field label="Name and Title" required>
+                <Input icon={User} placeholder="e.g. Jane Doe, CEO" />
+              </Field>
+              <Field
+                label="Date of Signing"
+                hint="This is the date of the merchant's latest signature. It is set automatically at the moment of submitting."
+              >
+                <Input
+                  disabled
+                  placeholder="Auto-populated when you sign — no need to fill this in."
+                />
+              </Field>
+            </div>
+          </Card>
         </div>
       </div>
     </StepShell>
+  );
+}
+
+function CountryBreakdown() {
+  const [rows, setRows] = useState<{ country: string; pct: string }[]>(
+    Array.from({ length: 10 }, () => ({ country: "", pct: "" }))
+  );
+  const total = rows.reduce((sum, r) => sum + (parseFloat(r.pct) || 0), 0);
+  const ok = Math.round(total) === 100;
+
+  return (
+    <div className="mt-3 space-y-3">
+      {rows.map((row, i) => (
+        <div key={i} className="grid grid-cols-1 md:grid-cols-[1fr_140px_auto] gap-2 items-end">
+          <Field label={`${i + 1}. Select country / jurisdiction`}>
+            <Select
+              value={row.country}
+              onChange={(e) => {
+                const next = [...rows];
+                next[i] = { ...next[i], country: e.target.value };
+                setRows(next);
+              }}
+            >
+              <option value="">🏳 Country</option>
+              <option value="US">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+              <option value="BR">Brazil</option>
+              <option value="CO">Colombia</option>
+              <option value="RO">Romania</option>
+              <option value="UA">Ukraine</option>
+              <option value="PH">Philippines</option>
+            </Select>
+          </Field>
+          <div className="relative">
+            <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-primary text-sm font-semibold">
+              %
+            </span>
+            <input
+              value={row.pct}
+              onChange={(e) => {
+                const next = [...rows];
+                next[i] = { ...next[i], pct: e.target.value };
+                setRows(next);
+              }}
+              inputMode="decimal"
+              className="w-full rounded-lg border border-transparent bg-[#f5f5f5] pl-8 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition"
+              placeholder="0"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const next = [...rows];
+              next[i] = { country: "", pct: "" };
+              setRows(next);
+            }}
+            className="inline-flex items-center justify-center rounded-full border border-destructive/60 text-destructive px-3 py-2 text-xs font-semibold hover:bg-destructive/10 transition"
+          >
+            Clear
+          </button>
+        </div>
+      ))}
+      <div className={`text-xs font-medium ${ok ? "text-success" : "text-destructive"}`}>
+        Total: {total}% — {ok ? "looks good" : "sum should be 100%, please adjust"}
+      </div>
+    </div>
+  );
+}
   );
 }
