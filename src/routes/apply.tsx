@@ -22,6 +22,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import segpayLogo from "@/assets/segpay-logo.png.asset.json";
 
 export const Route = createFileRoute("/apply")({
   component: OnboardingPage,
