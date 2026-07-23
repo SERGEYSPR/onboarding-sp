@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Mail, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
+import heroImage from "@/assets/welcome-hero.jpg";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -121,19 +122,44 @@ export function AuthShell({
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="w-full max-w-md">
-          <div className="text-xs uppercase tracking-[0.14em] text-primary font-medium">
-            {eyebrow}
+      <main className="flex-1 mx-auto w-full max-w-7xl px-6 py-16 lg:py-24">
+        <div className="w-full grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div className="space-y-8">
+            <div className="text-xs uppercase tracking-[0.14em] text-primary font-medium">
+              {eyebrow}
+            </div>
+            <h1 className="font-sans font-semibold text-4xl lg:text-5xl leading-[1.05] tracking-tight text-foreground">
+              {title}
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-lg leading-relaxed">
+              {subtitle}
+            </p>
+            <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+              {children}
+            </div>
           </div>
-          <h1 className="font-display text-4xl mt-2 leading-[1.05] text-foreground">{title}</h1>
-          <p className="mt-3 text-sm text-muted-foreground">{subtitle}</p>
 
-          <div className="mt-8 rounded-2xl border border-border bg-surface p-6 shadow-sm">
-            {children}
+          <div className="relative">
+            <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-transparent rounded-3xl blur-2xl" />
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-surface shadow-xl">
+              <img
+                src={heroImage}
+                alt="Segpay merchant onboarding"
+                width={1024}
+                height={1024}
+                className="w-full h-auto"
+              />
+            </div>
           </div>
         </div>
       </main>
+
+      <footer className="border-t border-border">
+        <div className="mx-auto max-w-7xl px-6 py-6 text-xs text-muted-foreground flex justify-between">
+          <span>© {new Date().getFullYear()} Segpay</span>
+          <span>Need help? support@segpay.com</span>
+        </div>
+      </footer>
     </div>
   );
 }
