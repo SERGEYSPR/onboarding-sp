@@ -549,8 +549,6 @@ function CompanyStep() {
             </div>
           </Card>
         </div>
-
-        <RiskAssessmentPanel />
       </div>
     </StepShell>
   );
