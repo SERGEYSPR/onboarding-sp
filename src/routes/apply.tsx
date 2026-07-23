@@ -217,6 +217,8 @@ function OnboardingPage() {
                 </div>
               </div>
 
+              {active === "company" && <RiskAssessmentPanel />}
+
               <div className="rounded-2xl border border-border bg-accent/40 p-5">
                 <div className="flex items-center gap-2 text-accent-foreground">
                   <ShieldCheck className="h-4 w-4" />
