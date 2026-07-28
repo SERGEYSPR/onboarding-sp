@@ -592,35 +592,6 @@ function CompanyStep() {
               </div>
             </div>
           </Card>
-        </div>
-
-        <aside className="space-y-4 lg:sticky lg:top-24">
-          <div className="rounded-2xl border border-border bg-accent/40 p-5">
-            <div className="flex items-center gap-2 text-accent-foreground">
-              <ShieldCheck className="h-4 w-4" />
-              <span className="text-sm font-semibold">Prepare Your Company Documents</span>
-            </div>
-            <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-              In this step, you will be asked to upload company documents. Please prepare the following, if applicable:
-            </p>
-            <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
-              <li>
-                Company formation documents, such as a Certificate of Incorporation, Articles of Association, and a recent Certificate of Good Standing.
-              </li>
-              <li>Proof of registered business address and tax registration documents.</li>
-              <li>Shareholder, director, and beneficial ownership records.</li>
-              <li>
-                Government-issued photo identification for directors, authorized signatories, and ultimate beneficial owners.
-              </li>
-              <li>
-                Recent bank statements, financial records, or authorization documents if additional due diligence is required.
-              </li>
-            </ul>
-            <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-              Additional documents may be requested based on your company type, ownership structure, jurisdiction, and business activity.
-            </p>
-          </div>
-        </aside>
       </div>
     </StepShell>
   );
