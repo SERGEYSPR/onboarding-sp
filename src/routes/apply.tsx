@@ -492,8 +492,7 @@ function CompanyStep() {
         </>
       }
     >
-      <div className="space-y-5">
-        <div className="space-y-5 min-w-0">
+      <div className="space-y-5 min-w-0">
           <Card>
             <h3 className="font-semibold text-sm mb-4">Registered Entity</h3>
             <div className="grid md:grid-cols-2 gap-5">
