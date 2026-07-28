@@ -492,7 +492,7 @@ function CompanyStep() {
         </>
       }
     >
-      <div className="grid lg:grid-cols-[1fr_300px] gap-6 items-start">
+      <div className="space-y-5">
         <div className="space-y-5 min-w-0">
           <Card>
             <h3 className="font-semibold text-sm mb-4">Registered Entity</h3>
