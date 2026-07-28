@@ -862,7 +862,7 @@ function BanksStep() {
 }
 
 function ReviewStep() {
-  const items: { name: string; status: "complete" | "pending"; placeholder: string }[] = [
+  const initialItems: { name: string; status: "complete" | "pending"; placeholder: string }[] = [
     { name: "Company Information", status: "complete", placeholder: "Add any notes about the company details…" },
     { name: "Processing", status: "pending", placeholder: "Please complete this section" },
     { name: "Primary Contact", status: "complete", placeholder: "Add any notes about the contact…" },
@@ -871,6 +871,9 @@ function ReviewStep() {
     { name: "Directors & UBOs", status: "complete", placeholder: "Add any notes about directors and UBOs…" },
     { name: "Payment Banks", status: "complete", placeholder: "Add any notes about payment banks…" },
   ];
+  const [checked, setChecked] = useState<Record<string, boolean>>(
+    () => Object.fromEntries(initialItems.map((i) => [i.name, i.status === "complete"]))
+  );
   return (
     <StepShell
       eyebrow="Step 09"
@@ -879,27 +882,30 @@ function ReviewStep() {
     >
       <Card>
         <ul className="divide-y divide-border">
-          {items.map((it) => {
-            const complete = it.status === "complete";
+          {initialItems.map((it) => {
+            const isChecked = checked[it.name];
             return (
               <li key={it.name} className="py-4">
                 <div className="flex items-center justify-between gap-3">
                   <label className="flex items-center gap-3">
                     <input
                       type="checkbox"
-                      defaultChecked={complete}
+                      checked={isChecked}
+                      onChange={(e) =>
+                        setChecked((prev) => ({ ...prev, [it.name]: e.target.checked }))
+                      }
                       className="h-4 w-4 rounded border-input text-primary focus:ring-ring/40"
                     />
-                    <span className={`text-sm font-medium ${complete ? "" : "text-destructive"}`}>
+                    <span className={`text-sm font-medium ${isChecked ? "" : "text-destructive"}`}>
                       {it.name}
                     </span>
                   </label>
                   <span
                     className={`text-xs font-medium inline-flex items-center gap-1 ${
-                      complete ? "text-success" : "text-destructive"
+                      isChecked ? "text-success" : "text-destructive"
                     }`}
                   >
-                    {complete ? (
+                    {isChecked ? (
                       <>
                         <Check className="h-3.5 w-3.5" /> Complete
                       </>
@@ -908,16 +914,18 @@ function ReviewStep() {
                     )}
                   </span>
                 </div>
-                <div className="mt-3 pl-7">
-                  <label className="text-xs font-medium text-muted-foreground">
-                    Notes {!complete && <span className="text-destructive">*</span>}
-                  </label>
-                  <textarea
-                    rows={2}
-                    placeholder={it.placeholder}
-                    className="mt-1 w-full rounded-md bg-[#f5f5f5] border-0 px-3 py-2 text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring/30"
-                  />
-                </div>
+                {!isChecked && (
+                  <div className="mt-3 pl-7">
+                    <label className="text-xs font-medium text-muted-foreground">
+                      Notes <span className="text-destructive">*</span>
+                    </label>
+                    <textarea
+                      rows={2}
+                      placeholder={it.placeholder}
+                      className="mt-1 w-full rounded-md bg-[#f5f5f5] border-0 px-3 py-2 text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring/30"
+                    />
+                  </div>
+                )}
               </li>
             );
           })}
