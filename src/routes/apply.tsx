@@ -250,8 +250,8 @@ function OnboardingPage() {
                     <div className="font-medium mt-0.5">United States</div>
                   </div>
                   <div>
-                    <div className="text-muted-foreground">Sales Rep</div>
-                    <div className="font-medium mt-0.5">TestMerchant</div>
+                    <div className="text-muted-foreground">Sales Representative</div>
+                    <div className="font-medium mt-0.5">Elena Romanova</div>
                   </div>
                   <div>
                     <div className="text-muted-foreground">Email</div>
