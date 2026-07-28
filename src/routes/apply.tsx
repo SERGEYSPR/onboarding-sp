@@ -250,8 +250,8 @@ function OnboardingPage() {
                     <div className="font-medium mt-0.5">United States</div>
                   </div>
                   <div>
-                    <div className="text-muted-foreground">Sales Rep</div>
-                    <div className="font-medium mt-0.5">TestMerchant</div>
+                    <div className="text-muted-foreground">Sales Representative</div>
+                    <div className="font-medium mt-0.5">Elena Romanova</div>
                   </div>
                   <div>
                     <div className="text-muted-foreground">Email</div>
@@ -594,6 +594,34 @@ function CompanyStep() {
             </div>
           </Card>
         </div>
+
+        <aside className="space-y-4 lg:sticky lg:top-24">
+          <div className="rounded-2xl border border-border bg-accent/40 p-5">
+            <div className="flex items-center gap-2 text-accent-foreground">
+              <ShieldCheck className="h-4 w-4" />
+              <span className="text-sm font-semibold">Prepare Your Company Documents</span>
+            </div>
+            <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+              In this step, you will be asked to upload company documents. Please prepare the following, if applicable:
+            </p>
+            <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+              <li>
+                Company formation documents, such as a Certificate of Incorporation, Articles of Association, and a recent Certificate of Good Standing.
+              </li>
+              <li>Proof of registered business address and tax registration documents.</li>
+              <li>Shareholder, director, and beneficial ownership records.</li>
+              <li>
+                Government-issued photo identification for directors, authorized signatories, and ultimate beneficial owners.
+              </li>
+              <li>
+                Recent bank statements, financial records, or authorization documents if additional due diligence is required.
+              </li>
+            </ul>
+            <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+              Additional documents may be requested based on your company type, ownership structure, jurisdiction, and business activity.
+            </p>
+          </div>
+        </aside>
       </div>
     </StepShell>
   );
@@ -834,42 +862,74 @@ function BanksStep() {
 }
 
 function ReviewStep() {
-  const items = [
-    "Company Information",
-    "Processing",
-    "Primary Contact",
-    "Upload Documentation",
-    "Websites",
-    "Directors & UBOs",
-    "Payment Banks",
+  const items: { name: string; status: "complete" | "pending"; placeholder: string }[] = [
+    { name: "Company Information", status: "complete", placeholder: "Add any notes about the company details…" },
+    { name: "Processing", status: "pending", placeholder: "Please complete this section" },
+    { name: "Primary Contact", status: "complete", placeholder: "Add any notes about the contact…" },
+    { name: "Upload Documentation", status: "pending", placeholder: "Please complete the adult content checklist and upload the required written policies" },
+    { name: "Websites", status: "pending", placeholder: "Please add the website details" },
+    { name: "Directors & UBOs", status: "complete", placeholder: "Add any notes about directors and UBOs…" },
+    { name: "Payment Banks", status: "complete", placeholder: "Add any notes about payment banks…" },
   ];
   return (
     <StepShell
       eyebrow="Step 09"
       title="Review & submit"
-      intro="Please review each section. Uncheck any section that is incomplete and add a comment — we'll send it back for another pass."
+      intro="Please review each section listed below. If you find any section incomplete or with invalid information, uncheck that section, provide a detailed note, and click Return to send the request back to the user."
     >
       <Card>
         <ul className="divide-y divide-border">
-          {items.map((it) => (
-            <li key={it} className="flex items-center justify-between py-3">
-              <label className="flex items-center gap-3">
-                <input
-                  type="checkbox"
-                  defaultChecked
-                  className="h-4 w-4 rounded border-input text-primary focus:ring-ring/40"
-                />
-                <span className="text-sm font-medium">{it}</span>
-              </label>
-              <span className="text-xs text-success font-medium inline-flex items-center gap-1">
-                <Check className="h-3.5 w-3.5" /> Complete
-              </span>
-            </li>
-          ))}
+          {items.map((it) => {
+            const complete = it.status === "complete";
+            return (
+              <li key={it.name} className="py-4">
+                <div className="flex items-center justify-between gap-3">
+                  <label className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      defaultChecked={complete}
+                      className="h-4 w-4 rounded border-input text-primary focus:ring-ring/40"
+                    />
+                    <span className={`text-sm font-medium ${complete ? "" : "text-destructive"}`}>
+                      {it.name}
+                    </span>
+                  </label>
+                  <span
+                    className={`text-xs font-medium inline-flex items-center gap-1 ${
+                      complete ? "text-success" : "text-destructive"
+                    }`}
+                  >
+                    {complete ? (
+                      <>
+                        <Check className="h-3.5 w-3.5" /> Complete
+                      </>
+                    ) : (
+                      <>Needs review</>
+                    )}
+                  </span>
+                </div>
+                <div className="mt-3 pl-7">
+                  <label className="text-xs font-medium text-muted-foreground">
+                    Notes {!complete && <span className="text-destructive">*</span>}
+                  </label>
+                  <textarea
+                    rows={2}
+                    placeholder={it.placeholder}
+                    className="mt-1 w-full rounded-md bg-[#f5f5f5] border-0 px-3 py-2 text-sm resize-y focus:outline-none focus:ring-2 focus:ring-ring/30"
+                  />
+                </div>
+              </li>
+            );
+          })}
         </ul>
-        <button className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
-          <ShieldCheck className="h-4 w-4" /> Accept and create MID
-        </button>
+        <div className="mt-6 grid sm:grid-cols-2 gap-3">
+          <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-destructive px-4 py-3 text-sm font-semibold text-destructive hover:bg-destructive/5 transition">
+            Force Review
+          </button>
+          <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
+            <ShieldCheck className="h-4 w-4" /> Accept and create MID
+          </button>
+        </div>
       </Card>
     </StepShell>
   );
