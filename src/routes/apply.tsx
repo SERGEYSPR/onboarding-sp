@@ -837,6 +837,7 @@ function DocumentsStep() {
           </div>
         </div>
       </Card>
+      </div>
     </StepShell>
   );
 }
