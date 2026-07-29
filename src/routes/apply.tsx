@@ -803,6 +803,7 @@ function DocumentsStep() {
         ))}
       </div>
 
+      <div className="mt-6">
       <Card>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
