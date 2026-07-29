@@ -15,6 +15,7 @@ import {
   Mail,
   Phone,
   Save,
+  Plus,
   ShieldCheck,
   Sparkles,
   Upload,
@@ -125,14 +126,6 @@ function OnboardingPage() {
                 Merchant Onboarding
               </h1>
             </div>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <button className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3.5 py-2 text-sm font-medium hover:bg-muted transition">
-              <Save className="h-4 w-4" /> Save
-            </button>
-            <button className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3.5 py-2 text-sm font-medium text-muted-foreground hover:bg-muted transition">
-              <X className="h-4 w-4" /> Cancel
-            </button>
           </div>
         </div>
 
@@ -292,22 +285,71 @@ function OnboardingPage() {
                 </div>
               )}
 
-              <div className="rounded-2xl border border-border bg-accent/40 p-5">
-                <div className="flex items-center gap-2 text-accent-foreground">
-                  <ShieldCheck className="h-4 w-4" />
-                  <span className="text-sm font-semibold">Need help?</span>
+              {active === "websites" && (
+                <div className="rounded-2xl border border-border bg-accent/40 p-5">
+                  <div className="flex items-center gap-2 text-accent-foreground">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span className="text-sm font-semibold">Website Requirements</span>
+                  </div>
+                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                    For successful integration with Segpay payment processing, ensure all your
+                    websites comply with the following:
+                  </p>
+                  <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+                    <li>
+                      All domains used for processing with Segpay, including those hosting content
+                      accessible via your website, must be registered.
+                    </li>
+                    <li>
+                      The provided Username/Password should grant full access to content and must
+                      not expire.
+                    </li>
+                  </ul>
+                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                    Your website must prominently display:
+                  </p>
+                  <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+                    <li>
+                      Billing Support, including a visible cancellation link leading to{" "}
+                      <a
+                        href="https://cs.segpay.com"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-primary font-medium hover:underline"
+                      >
+                        https://cs.segpay.com
+                      </a>
+                    </li>
+                    <li>Terms and Conditions (with Refund Policy)</li>
+                    <li>Privacy Policy</li>
+                    <li>Merchant’s Registered Name and Address</li>
+                  </ul>
+                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                    Please note: SEGPAY.COM is our authorized Payment Processor. Charges will be
+                    listed as Vinalo on your credit card statement. For more information, refer to
+                    our Compliance Guidelines.
+                  </p>
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                  Contact your sales representative or email{" "}
-                  <a
-                    href="mailto:tech@segpay.com"
-                    className="text-primary font-medium hover:underline"
-                  >
-                    tech@segpay.com
-                  </a>{" "}
-                  for assistance at any step.
-                </p>
-              </div>
+              )}
+
+              {active !== "company" && active !== "websites" && (
+                <div className="rounded-2xl border border-border bg-accent/40 p-5">
+                  <div className="flex items-center gap-2 text-accent-foreground">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span className="text-sm font-semibold">Need help?</span>
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                    Contact your sales representative or email{" "}
+                    <a
+                      href="mailto:sales.rep@segpay.com"
+                      className="text-primary font-medium hover:underline"
+                    >
+                      sales.rep@segpay.com
+                    </a>{" "}
+                    for assistance at any step.
+                  </p>
+                </div>
+              )}
             </div>
           </aside>
         </div>
@@ -759,6 +801,42 @@ function DocumentsStep() {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6">
+      <Card>
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div>
+            <h3 className="font-semibold text-sm">Additional documents</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Add optional supporting files with a clear name and note.
+            </p>
+          </div>
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+          >
+            <Plus className="h-4 w-4" /> Add document
+          </button>
+        </div>
+
+        <div className="mt-5 grid md:grid-cols-2 gap-5">
+          <Field label="Document name">
+            <Input placeholder="e.g. Processing history statement" />
+          </Field>
+          <Field label="Note">
+            <Input placeholder="Short description for our review team" />
+          </Field>
+        </div>
+
+        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center hover:border-primary transition cursor-pointer">
+          <Upload className="h-5 w-5 mx-auto text-primary" />
+          <div className="text-sm font-medium mt-2">Attach file</div>
+          <div className="text-xs text-muted-foreground mt-1">
+            Drop the document here or click to browse
+          </div>
+        </div>
+      </Card>
       </div>
     </StepShell>
   );
