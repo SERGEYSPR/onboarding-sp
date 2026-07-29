@@ -15,6 +15,7 @@ import {
   Mail,
   Phone,
   Save,
+  Plus,
   ShieldCheck,
   Sparkles,
   Upload,
