@@ -1148,7 +1148,7 @@ function UploadTile({
 function QuestionCard({
   n,
   question,
-  tag = "All Merchants",
+  tag,
   tone = "success",
   hint,
   children,
