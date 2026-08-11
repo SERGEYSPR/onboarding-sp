@@ -668,55 +668,241 @@ function CompanyStep() {
 }
 
 function ProcessingStep() {
+  const [processedBefore, setProcessedBefore] = useState<"yes" | "no" | null>(null);
+  const [terminated, setTerminated] = useState<"yes" | "no" | null>(null);
+  const [paypal, setPaypal] = useState<"yes" | "no" | null>(null);
+
   return (
     <StepShell
       eyebrow="Processing"
       title="Processing details"
-      intro="Estimated volumes help us tailor your Segpay processing setup. You can revise these later."
+      intro="Provide details on the volumes you expect to process via Segpay"
     >
       <Card>
         <Field label="Billing Descriptor" required hint="Appears on the cardholder statement.">
           <Input icon={CreditCard} placeholder="SEGPAY*YOURBRAND" />
         </Field>
-        <div className="mt-6 grid md:grid-cols-2 gap-5">
-          <Toggle label="Have you processed payments previously?" />
-          <Toggle label="Been terminated from accepting bank cards?" />
+      </Card>
+
+      <Card className="mt-5">
+        <h3 className="font-semibold text-sm">Previous processing</h3>
+
+        <div className="mt-4">
+          <ChoiceRow
+            label="Have you processed payments previously?"
+            value={processedBefore}
+            onChange={setProcessedBefore}
+          />
+          {processedBefore === "yes" && (
+            <div className="mt-4 space-y-4 rounded-xl border-l-4 border-primary/60 bg-primary/5 p-4">
+              <Field label="Which acquirers have you processed with?" required>
+                <Input placeholder="List all previous acquirers / processors" />
+              </Field>
+              <div>
+                <div className="text-xs font-medium text-foreground mb-1.5">
+                  Official processing history <span className="text-destructive">*</span>
+                </div>
+                <div className="rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center cursor-pointer hover:bg-muted/60 transition">
+                  <Upload className="h-7 w-7 mx-auto text-primary" />
+                  <div className="mt-2 text-sm font-medium">Upload processing history</div>
+                  <p className="mt-1 text-xs text-muted-foreground max-w-lg mx-auto leading-relaxed">
+                    Last 6 months, official processing history broken out by month, showing total
+                    transactions, chargebacks, fraud and refunds, ideally by card scheme.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-6 border-t border-border pt-6">
+          <ChoiceRow
+            label="Have you ever had an account terminated with a payment processor / acquirer?"
+            value={terminated}
+            onChange={setTerminated}
+          />
+          {terminated === "yes" && (
+            <div className="mt-4 rounded-xl border-l-4 border-primary/60 bg-primary/5 p-4">
+              <Field label="Termination reason" required>
+                <textarea
+                  rows={3}
+                  placeholder="Describe the reason for the termination"
+                  className="w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
+                />
+              </Field>
+            </div>
+          )}
+        </div>
+      </Card>
+
+      <Card className="mt-5">
+        <h3 className="font-semibold text-sm">Payment options</h3>
+        <div className="mt-4">
+          <ChoiceRow
+            label="Do you require PayPal processing?"
+            value={paypal}
+            onChange={setPaypal}
+          />
+        </div>
+        <div className="mt-6">
+          <Field
+            label="Do you require other alternative payment options?"
+            hint="For example: SEPA, iDEAL, Apple Pay, Google Pay, crypto."
+          >
+            <Input placeholder="List any alternative payment methods you need" />
+          </Field>
         </div>
       </Card>
 
       {[
-        { title: "Credit Card Estimated Volumes", key: "cc" },
-        { title: "PayPal Estimated Volumes", key: "pp" },
-      ].map((section) => (
-        <Card key={section.key} className="mt-5">
-          <h3 className="font-semibold text-sm">{section.title}</h3>
-          <div className="mt-4 grid md:grid-cols-3 gap-5">
-            <Field label="Processing Currency" required>
-              <Select defaultValue="USD">
-                <option>USD</option>
-                <option>EUR</option>
-                <option>GBP</option>
-              </Select>
-            </Field>
-            <Field label="Estimated Transaction Count" required>
-              <Input type="number" placeholder="0" />
-            </Field>
-            <Field label="Average Transaction Value" required>
-              <Input type="number" placeholder="0.00" />
-            </Field>
-            <Field label="Min Transaction Value" required>
-              <Input type="number" placeholder="0.00" />
-            </Field>
-            <Field label="Max Transaction Value" required>
-              <Input type="number" placeholder="0.00" />
-            </Field>
-            <Field label="Estimated Monthly Sales">
-              <Input placeholder="Auto-calculated" disabled />
-            </Field>
-          </div>
-        </Card>
-      ))}
+        { title: "Expected Monthly Credit Card Volume", key: "cc", show: true },
+        { title: "Expected Monthly PayPal Volume", key: "pp", show: paypal === "yes" },
+      ]
+        .filter((s) => s.show)
+        .map((section) => (
+          <Card key={section.key} className="mt-5">
+            <h3 className="font-semibold text-sm">{section.title}</h3>
+            <div className="mt-4 grid md:grid-cols-3 gap-5">
+              <Field label="Processing Currency" required>
+                <Select defaultValue="USD">
+                  <option>USD</option>
+                  <option>EUR</option>
+                  <option>GBP</option>
+                </Select>
+              </Field>
+              <Field
+                label="Number of transactions"
+                required
+                info="Estimated number of transactions you expect to process per month."
+              >
+                <Input type="number" placeholder="0" />
+              </Field>
+              <Field
+                label="Average Transaction Value"
+                required
+                info="The typical amount of a single transaction, across all of your products."
+              >
+                <Input type="number" placeholder="0.00" />
+              </Field>
+              <Field
+                label="Min Transaction Value"
+                required
+                info="The lowest single transaction amount you expect to process."
+              >
+                <Input type="number" placeholder="0.00" />
+              </Field>
+              <Field
+                label="Max Transaction Value"
+                required
+                info="The highest single transaction amount you expect to process."
+              >
+                <Input type="number" placeholder="0.00" />
+              </Field>
+              <Field
+                label="Estimated Monthly Sales"
+                info="Calculated automatically as number of transactions × average transaction value."
+              >
+                <Input placeholder="Auto-calculated" disabled />
+              </Field>
+            </div>
+          </Card>
+        ))}
+
+      <Card className="mt-5">
+        <div className="flex items-center gap-1.5">
+          <h3 className="font-semibold text-sm">Regional volume percentages</h3>
+          <InfoTip text="Share of your expected processing volume by region. The total must equal exactly 100%." />
+        </div>
+        <RegionalVolume />
+      </Card>
     </StepShell>
+  );
+}
+
+function ChoiceRow({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: "yes" | "no" | null;
+  onChange: (v: "yes" | "no") => void;
+}) {
+  return (
+    <div className="flex items-start justify-between gap-4 flex-wrap">
+      <p className="text-sm font-medium text-foreground max-w-lg">
+        {label} <span className="text-destructive">*</span>
+      </p>
+      <div className="relative inline-flex h-9 w-[74px] min-w-[74px] rounded-full bg-muted p-0.5 overflow-hidden">
+        {(["yes", "no"] as const).map((v) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => onChange(v)}
+            className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
+              value === v
+                ? v === "yes"
+                  ? "bg-primary text-primary-foreground shadow"
+                  : "bg-muted-foreground/30 text-foreground shadow"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {v}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function InfoTip({ text }: { text: string }) {
+  return (
+    <span className="group relative inline-flex items-center align-middle">
+      <HelpCircle className="h-3.5 w-3.5 text-primary cursor-help" />
+      <span className="pointer-events-none absolute left-1/2 bottom-full z-40 mb-2 hidden w-56 -translate-x-1/2 rounded-lg bg-foreground px-3 py-2 text-[11px] font-normal leading-relaxed text-background shadow-lg group-hover:block">
+        {text}
+      </span>
+    </span>
+  );
+}
+
+function RegionalVolume() {
+  const regions = ["Europe", "United States", "Canada", "Latin America", "Asia Pacific", "Rest of world"];
+  const [values, setValues] = useState<Record<string, string>>({});
+  const total = regions.reduce((sum, r) => sum + (parseFloat(values[r]) || 0), 0);
+  const ok = Math.round(total * 100) / 100 === 100;
+
+  return (
+    <div className="mt-4">
+      <div className="grid md:grid-cols-2 gap-4">
+        {regions.map((r) => (
+          <Field key={r} label={r}>
+            <div className="relative">
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-primary text-sm font-semibold">
+                %
+              </span>
+              <input
+                value={values[r] ?? ""}
+                onChange={(e) => setValues((p) => ({ ...p, [r]: e.target.value }))}
+                inputMode="decimal"
+                placeholder="0"
+                className="w-full rounded-lg border border-transparent bg-[#f5f5f5] pl-8 pr-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
+              />
+            </div>
+          </Field>
+        ))}
+      </div>
+      <div
+        className={`mt-4 text-xs font-medium ${ok ? "text-success" : "text-destructive"}`}
+      >
+        Total: {Math.round(total * 100) / 100}% —{" "}
+        {ok
+          ? "looks good"
+          : total > 100
+            ? "the total cannot be greater than 100%, please adjust"
+            : "the total must equal 100%, please adjust"}
+      </div>
+    </div>
   );
 }
 
