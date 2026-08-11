@@ -31,8 +31,9 @@ export const Route = createFileRoute("/apply")({
 
 type StepId =
   | "begin"
-  | "edd"
   | "company"
+  | "directors"
+  | "edd"
   | "processing"
   | "contacts"
   | "documents"
@@ -49,8 +50,9 @@ type Step = {
 
 const STEPS: Step[] = [
   { id: "begin", label: "Begin", icon: Sparkles, complete: true },
-  { id: "edd", label: "Due Diligence", icon: ClipboardCheck },
   { id: "company", label: "Company Information", icon: Building2 },
+  { id: "directors", label: "Directors & UBOs", icon: Users },
+  { id: "edd", label: "Due Diligence", icon: ClipboardCheck },
   { id: "processing", label: "Processing", icon: CreditCard },
   { id: "contacts", label: "Contacts", icon: User },
   { id: "documents", label: "Documents", icon: FileText, complete: true },
@@ -132,10 +134,7 @@ function OnboardingPage() {
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span>
-              Step <span className="text-foreground font-medium">{index + 1}</span> of{" "}
-              {STEPS.length}
-            </span>
+            <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
             <span>{Math.round(progress)}% complete</span>
           </div>
           <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
@@ -150,7 +149,7 @@ function OnboardingPage() {
         <nav className="border-t border-border">
           <div className="mx-auto max-w-7xl px-3 overflow-x-auto">
             <ul className="flex items-stretch gap-1 min-w-max">
-              {STEPS.map((s, i) => {
+              {STEPS.map((s) => {
                 const isActive = s.id === active;
                 const Icon = s.icon;
                 return (
@@ -175,7 +174,7 @@ function OnboardingPage() {
                         {s.complete && !isActive ? (
                           <Check className="h-3.5 w-3.5" />
                         ) : (
-                          i + 1
+                          <span className="h-1.5 w-1.5 rounded-full bg-current" />
                         )}
                       </span>
                       <Icon className="h-4 w-4" />
@@ -324,15 +323,64 @@ function OnboardingPage() {
                     <li>Privacy Policy</li>
                     <li>Merchant’s Registered Name and Address</li>
                   </ul>
+                </div>
+              )}
+
+              {active === "processing" && (
+                <div className="rounded-2xl border border-border bg-accent/40 p-5">
+                  <div className="flex items-center gap-2 text-accent-foreground">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span className="text-sm font-semibold">Processing Information</span>
+                  </div>
                   <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    Please note: SEGPAY.COM is our authorized Payment Processor. Charges will be
-                    listed as Vinalo on your credit card statement. For more information, refer to
-                    our Compliance Guidelines.
+                    On this step, you will be asked to provide information about your expected
+                    payment processing activity. Please enter your best estimates based on your
+                    current or projected business volumes.
+                  </p>
+                  <p className="mt-3 text-xs font-medium text-foreground">
+                    Please be prepared to provide:
+                  </p>
+                  <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+                    <li>
+                      <span className="font-medium text-foreground">Billing Descriptor</span> — the
+                      name or description customers will see on their card or bank statements.
+                    </li>
+                    <li>
+                      <span className="font-medium text-foreground">
+                        Previous Processing Information
+                      </span>{" "}
+                      — indicate whether your business has processed payments before and whether
+                      the business, its owners, or principals have ever had processing services
+                      terminated.
+                    </li>
+                    <li>
+                      <span className="font-medium text-foreground">
+                        Credit Card Processing Estimates
+                      </span>{" "}
+                      — processing currency, estimated number of transactions, average transaction
+                      value, and minimum and maximum transaction values.
+                    </li>
+                    <li>
+                      <span className="font-medium text-foreground">
+                        PayPal Processing Estimates
+                      </span>{" "}
+                      — if applicable, provide the same estimated transaction information for
+                      PayPal payments.
+                    </li>
+                  </ul>
+                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                    Some values, such as Estimated Monthly Sales, may be calculated automatically
+                    based on the information you provide.
+                  </p>
+                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+                    Please use realistic estimates that represent your expected processing
+                    activity. This information helps us understand your transaction profile and
+                    determine the appropriate processing setup for your business.
                   </p>
                 </div>
               )}
 
-              {active !== "company" && active !== "websites" && (
+              {active !== "company" && active !== "websites" && active !== "processing" && (
                 <div className="rounded-2xl border border-border bg-accent/40 p-5">
                   <div className="flex items-center gap-2 text-accent-foreground">
                     <ShieldCheck className="h-4 w-4" />
@@ -364,10 +412,12 @@ function StepContent({ active }: { active: StepId }) {
   switch (active) {
     case "begin":
       return <BeginStep />;
-    case "edd":
-      return <EddStep />;
     case "company":
       return <CompanyStep />;
+    case "directors":
+      return <DirectorsStep />;
+    case "edd":
+      return <EddStep />;
     case "processing":
       return <ProcessingStep />;
     case "contacts":
