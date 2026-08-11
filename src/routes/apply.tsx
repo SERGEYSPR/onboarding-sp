@@ -628,47 +628,204 @@ function CompanyStep() {
             </div>
           </Card>
 
-          <Card>
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <div>
-                <h3 className="font-semibold text-sm">Directors & UBOs</h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Add every Director, Officer, and Ultimate Beneficial Owner. The first
-                  entry must be the Principal.
-                </p>
-              </div>
-              <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
-                + Add Owner
-              </button>
-            </div>
-
-            <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-8 text-center">
-              <Users className="h-10 w-10 mx-auto text-primary" />
-              <div className="mt-3 font-semibold">No owners added yet</div>
-              <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-                Add your Principal first — they'll act as the primary representative in our system.
-              </p>
-            </div>
-
-            <div className="mt-5 grid md:grid-cols-2 gap-3 text-sm">
-              <div className="rounded-lg border border-border bg-surface-muted p-3">
-                <div className="font-medium text-xs">Ownership must total 100%</div>
-                <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
-                  Corporate owners require details of their own owners in a tree structure.
-                </p>
-              </div>
-              <div className="rounded-lg border border-border bg-surface-muted p-3">
-                <div className="font-medium text-xs">Editing is easy</div>
-                <p className="text-muted-foreground text-xs mt-1 leading-relaxed">
-                  Click any row to edit an owner's details or ownership breakdown before submission.
-                </p>
-              </div>
-            </div>
-          </Card>
       </div>
     </StepShell>
   );
 }
+
+function DirectorsStep() {
+  const [showModal, setShowModal] = useState(false);
+  const owners = [
+    { name: "Eddie Willis-Blunt", pct: "100.00", roles: ["Principal", "UBO"] },
+  ];
+  const total = owners.reduce((s, o) => s + parseFloat(o.pct), 0).toFixed(2);
+
+  return (
+    <StepShell
+      eyebrow="Directors & UBOs"
+      title="Company Ownership"
+      intro={
+        <>
+          Provide details for your Directors, Officers, and authorized signatories (if
+          applicable). Contact the Sales team at{" "}
+          <a href="mailto:tech@segpay.com" className="text-primary hover:underline">
+            tech@segpay.com
+          </a>{" "}
+          for questions or assistance.
+        </>
+      }
+    >
+      <Card>
+        <button
+          type="button"
+          onClick={() => setShowModal(true)}
+          className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary hover:bg-primary/10 transition"
+        >
+          <Plus className="h-4 w-4" /> Add Owner (Director / UBO)
+        </button>
+
+        <div className="mt-6 divide-y divide-border">
+          {owners.map((o) => (
+            <div key={o.name} className="flex items-start justify-between gap-4 py-4">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(true)}
+                  className="text-sm font-semibold underline underline-offset-4 hover:text-primary transition"
+                >
+                  {o.name}
+                </button>
+                <div className="mt-2 flex items-center gap-2">
+                  {o.roles.map((r) => (
+                    <Tag key={r} tone={r === "Principal" ? "info" : "neutral"}>
+                      {r}
+                    </Tag>
+                  ))}
+                </div>
+              </div>
+              <div className="text-sm font-semibold whitespace-nowrap">{o.pct} %</div>
+            </div>
+          ))}
+          <div className="flex items-center justify-between py-4">
+            <span className="text-sm font-semibold">Total</span>
+            <span className="text-sm font-semibold">{total} %</span>
+          </div>
+        </div>
+
+        <div className="mt-4 space-y-3">
+          <InfoNote>
+            To edit an owner's details, click on their name. A window will appear for you to
+            update the necessary information. This data is required for the Segpay team to
+            conduct the KYC process.
+          </InfoNote>
+          <InfoNote>
+            Please note that the table follows a tree structure. For companies owned by another
+            company, including all subsidiaries, you must provide details about their owners.
+            This information is crucial for expediting your merchant approval process. You can
+            add or edit "child" owners in the edit window if the owner type is "company".
+          </InfoNote>
+        </div>
+      </Card>
+
+      {showModal && <OwnerModal onClose={() => setShowModal(false)} />}
+    </StepShell>
+  );
+}
+
+function InfoNote({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-3 rounded-xl bg-primary/5 p-4">
+      <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary text-[11px] font-bold">
+        i
+      </span>
+      <p className="text-xs text-muted-foreground leading-relaxed">{children}</p>
+    </div>
+  );
+}
+
+function OwnerModal({ onClose }: { onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-foreground/40 p-6 backdrop-blur-sm">
+      <div className="w-full max-w-lg rounded-2xl border border-border bg-surface shadow-xl">
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+          <h3 className="font-semibold text-sm">Add Owner</h3>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground transition"
+            aria-label="Close"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="max-h-[65vh] space-y-5 overflow-y-auto px-6 py-5">
+          <Field label="Owner Type" required>
+            <Select icon={User} defaultValue="principal">
+              <option value="principal">Principal</option>
+              <option value="director">Director</option>
+              <option value="ubo">UBO</option>
+              <option value="company">Company</option>
+            </Select>
+          </Field>
+
+          <InfoNote>
+            Your first entry for a company owner must be the Principal, who will act as the
+            primary representative in our system. All fields for this entry are required to
+            complete the application. For any questions, contact your sales representative or
+            email{" "}
+            <a href="mailto:tech@segpay.com" className="text-primary hover:underline">
+              tech@segpay.com
+            </a>
+            .
+          </InfoNote>
+
+          <Field label="Full Name" required>
+            <Input icon={User} placeholder="Full name" />
+          </Field>
+          <Field label="Roles" required>
+            <Select icon={Users} defaultValue="">
+              <option value="">Select role</option>
+              <option>Principal</option>
+              <option>Director</option>
+              <option>Officer</option>
+              <option>Authorized signatory</option>
+              <option>UBO</option>
+            </Select>
+          </Field>
+          <Field label="Ownership Percentage" required>
+            <Input type="number" placeholder="0.00" />
+          </Field>
+
+          <div className="border-t border-border pt-5">
+            <h4 className="font-semibold text-sm mb-4">Details</h4>
+            <div className="grid gap-5">
+              <Field label="Nationality" required>
+                <Select defaultValue="">
+                  <option value="">Country</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>Canada</option>
+                  <option>Germany</option>
+                </Select>
+              </Field>
+              <Field label="Date of Birth" required>
+                <Input type="date" />
+              </Field>
+              <Field label="Email" required>
+                <Input icon={Mail} placeholder="name@company.com" />
+              </Field>
+              <Field label="Phone Number" required>
+                <Input icon={Phone} placeholder="+1 555 000 0000" />
+              </Field>
+              <Field label="Residential Address" required>
+                <Input placeholder="Street, city, postal code, country" />
+              </Field>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 border-t border-border px-6 py-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+          >
+            <Save className="h-4 w-4" /> Save
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex items-center gap-2 rounded-lg border border-destructive/60 px-5 py-2.5 text-sm font-semibold text-destructive hover:bg-destructive/10 transition"
+          >
+            <X className="h-4 w-4" /> Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 
 function ProcessingStep() {
   const [processedBefore, setProcessedBefore] = useState<"yes" | "no" | null>(null);
