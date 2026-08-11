@@ -1169,7 +1169,7 @@ function QuestionCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start gap-2 flex-wrap">
             <p className="text-sm font-semibold text-foreground">{question}</p>
-            <Tag tone={tone}>{tag}</Tag>
+            {tag && <Tag tone={tone}>{tag}</Tag>}
             <span className="text-destructive">*</span>
           </div>
           {hint && (
