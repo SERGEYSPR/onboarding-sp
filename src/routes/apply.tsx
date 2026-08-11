@@ -1247,9 +1247,9 @@ function EddStep() {
 
   return (
     <StepShell
-      eyebrow="Step 02"
+      eyebrow="Due Diligence"
       title="Adult Content Due Diligence"
-      intro="Complete all questions and uploads based on your content types. This form adapts to your selections — required items must be completed before you can submit."
+      intro="All fields marked with an asterisk (*) are required. Complete all questions and uploads based on your content types — this form adapts to your selections."
     >
       {/* Merchant identifiers */}
       <Card>
