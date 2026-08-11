@@ -540,7 +540,7 @@ function BeginStep() {
         <Field
           label="Merchant Name"
           required
-          hint="Prefilled by our team based on the info you provided. Editable, but should represent your company name."
+          hint="Please, type your company legal name"
         >
           <Input icon={User} defaultValue="Bumble Bee and Co" />
         </Field>
