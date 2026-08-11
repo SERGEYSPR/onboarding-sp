@@ -414,11 +414,13 @@ function Field({
   label,
   required,
   hint,
+  info,
   children,
 }: {
   label: string;
   required?: boolean;
   hint?: string;
+  info?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -426,6 +428,7 @@ function Field({
       <div className="text-xs font-medium text-foreground mb-1.5 flex items-center gap-1">
         {label}
         {required && <span className="text-destructive">*</span>}
+        {info && <InfoTip text={info} />}
       </div>
       {children}
       {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
