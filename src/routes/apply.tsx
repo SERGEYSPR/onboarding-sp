@@ -1446,26 +1446,6 @@ function ReviewStep() {
           </button>
         </div>
       </Card>
-
-      {rejectedQuestions.length > 0 && (
-        <Card className="mt-5 border-destructive/50">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h3 className="font-semibold text-sm text-destructive">
-                Due Diligence questions rejected
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Question{rejectedQuestions.length > 1 ? "s" : ""} {rejectedQuestions.join(", ")}{" "}
-                {rejectedQuestions.length > 1 ? "were" : "was"} rejected. The merchant must update
-                these answers before the application can be approved.
-              </p>
-            </div>
-            <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-destructive px-4 py-3 text-sm font-semibold text-white hover:bg-destructive/90 transition">
-              <ArrowLeft className="h-4 w-4" /> Send back to merchant
-            </button>
-          </div>
-        </Card>
-      )}
     </StepShell>
   );
 }
