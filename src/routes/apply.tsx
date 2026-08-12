@@ -1573,11 +1573,24 @@ function UploadTile({
   title: string;
   bullets: string[];
 }) {
+  const itemKey = title;
+  const { decision } = useEddDecision(itemKey);
   return (
-    <div className="rounded-2xl border border-border bg-surface p-5">
-      <div className="flex items-center gap-2">
-        <h4 className="font-semibold text-sm">{title}</h4>
-        <span className="text-destructive text-sm">*</span>
+    <div
+      className={`rounded-2xl border bg-surface p-5 ${
+        decision === "rejected"
+          ? "border-destructive/50"
+          : decision === "approved"
+            ? "border-success/50"
+            : "border-border"
+      }`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold text-sm">{title}</h4>
+          <span className="text-destructive text-sm">*</span>
+        </div>
+        <DecisionIcons itemKey={itemKey} label={title} />
       </div>
       <div className="mt-2 text-xs text-muted-foreground">Your uploaded document must address:</div>
       <ul className="mt-2 list-disc pl-5 space-y-1 text-xs text-muted-foreground leading-relaxed">
@@ -1592,6 +1605,9 @@ function UploadTile({
           Drag files here or click to select
         </div>
       </div>
+      {decision === "rejected" && (
+        <RejectionNotes placeholder="Explain what the merchant needs to correct in this document" />
+      )}
     </div>
   );
 }
