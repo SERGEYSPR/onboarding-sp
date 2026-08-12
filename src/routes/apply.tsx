@@ -2129,6 +2129,8 @@ function EddStep() {
           </Card>
         </div>
       </div>
+
+      <EddSendBack />
     </StepShell>
   );
 }
