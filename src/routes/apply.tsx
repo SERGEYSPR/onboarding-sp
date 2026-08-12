@@ -29,28 +29,30 @@ export const Route = createFileRoute("/apply")({
   component: OnboardingRoot,
 });
 
+type EddDecision = "approved" | "rejected" | null;
+
 type EddReviewState = {
-  rejected: Record<number, boolean>;
-  setDecision: (n: number, decision: "approved" | "rejected" | null) => void;
-  decisions: Record<number, "approved" | "rejected" | null>;
+  rejectedItems: string[];
+  setDecision: (key: string, decision: EddDecision) => void;
+  decisions: Record<string, EddDecision>;
 };
 
 const EddReviewContext = createContext<EddReviewState>({
-  rejected: {},
+  rejectedItems: [],
   decisions: {},
   setDecision: () => {},
 });
 
 function OnboardingRoot() {
-  const [decisions, setDecisions] = useState<Record<number, "approved" | "rejected" | null>>({});
+  const [decisions, setDecisions] = useState<Record<string, EddDecision>>({});
   const value = useMemo<EddReviewState>(
     () => ({
       decisions,
-      rejected: Object.fromEntries(
-        Object.entries(decisions).filter(([, v]) => v === "rejected").map(([k]) => [Number(k), true])
-      ),
-      setDecision: (n, decision) =>
-        setDecisions((prev) => ({ ...prev, [n]: prev[n] === decision ? null : decision })),
+      rejectedItems: Object.entries(decisions)
+        .filter(([, v]) => v === "rejected")
+        .map(([k]) => k),
+      setDecision: (key, decision) =>
+        setDecisions((prev) => ({ ...prev, [key]: prev[key] === decision ? null : decision })),
     }),
     [decisions]
   );
@@ -1365,8 +1367,6 @@ function BanksStep() {
 }
 
 function ReviewStep() {
-  const { rejected } = useContext(EddReviewContext);
-  const rejectedQuestions = Object.keys(rejected).map(Number).sort((a, b) => a - b);
   const initialItems: { name: string; status: "complete" | "pending"; placeholder: string }[] = [
     { name: "Company Information", status: "complete", placeholder: "Add any notes about the company details…" },
     { name: "Processing", status: "pending", placeholder: "Please complete this section" },
@@ -1444,26 +1444,6 @@ function ReviewStep() {
           </button>
         </div>
       </Card>
-
-      {rejectedQuestions.length > 0 && (
-        <Card className="mt-5 border-destructive/50">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <h3 className="font-semibold text-sm text-destructive">
-                Due Diligence questions rejected
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Question{rejectedQuestions.length > 1 ? "s" : ""} {rejectedQuestions.join(", ")}{" "}
-                {rejectedQuestions.length > 1 ? "were" : "was"} rejected. The merchant must update
-                these answers before the application can be approved.
-              </p>
-            </div>
-            <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-destructive px-4 py-3 text-sm font-semibold text-white hover:bg-destructive/90 transition">
-              <ArrowLeft className="h-4 w-4" /> Send back to merchant
-            </button>
-          </div>
-        </Card>
-      )}
     </StepShell>
   );
 }
@@ -1571,11 +1551,24 @@ function UploadTile({
   title: string;
   bullets: string[];
 }) {
+  const itemKey = title;
+  const { decision } = useEddDecision(itemKey);
   return (
-    <div className="rounded-2xl border border-border bg-surface p-5">
-      <div className="flex items-center gap-2">
-        <h4 className="font-semibold text-sm">{title}</h4>
-        <span className="text-destructive text-sm">*</span>
+    <div
+      className={`rounded-2xl border bg-surface p-5 ${
+        decision === "rejected"
+          ? "border-destructive/50"
+          : decision === "approved"
+            ? "border-success/50"
+            : "border-border"
+      }`}
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <h4 className="font-semibold text-sm">{title}</h4>
+          <span className="text-destructive text-sm">*</span>
+        </div>
+        <DecisionIcons itemKey={itemKey} label={title} />
       </div>
       <div className="mt-2 text-xs text-muted-foreground">Your uploaded document must address:</div>
       <ul className="mt-2 list-disc pl-5 space-y-1 text-xs text-muted-foreground leading-relaxed">
@@ -1589,6 +1582,85 @@ function UploadTile({
         <div className="text-xs text-muted-foreground mt-0.5">
           Drag files here or click to select
         </div>
+      </div>
+      {decision === "rejected" && (
+        <RejectionNotes placeholder="Explain what the merchant needs to correct in this document" />
+      )}
+    </div>
+  );
+}
+
+function useEddDecision(itemKey: string) {
+  const { decisions, setDecision } = useContext(EddReviewContext);
+  return { decision: decisions[itemKey] ?? null, setDecision };
+}
+
+function DecisionIcons({ itemKey, label }: { itemKey: string; label: string }) {
+  const { decision, setDecision } = useEddDecision(itemKey);
+  return (
+    <div className="flex items-center gap-1.5 shrink-0">
+      <button
+        type="button"
+        aria-label={`Approve ${label}`}
+        title="Approve"
+        onClick={() => setDecision(itemKey, "approved")}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
+          decision === "approved"
+            ? "bg-success text-white"
+            : "bg-[#f5f5f5] text-muted-foreground hover:text-success hover:bg-success/10"
+        }`}
+      >
+        <Check className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        aria-label={`Reject ${label}`}
+        title="Reject"
+        onClick={() => setDecision(itemKey, "rejected")}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
+          decision === "rejected"
+            ? "bg-destructive text-white"
+            : "bg-[#f5f5f5] text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+        }`}
+      >
+        <X className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function RejectionNotes({ placeholder }: { placeholder: string }) {
+  const [notes, setNotes] = useState("");
+  const [saved, setSaved] = useState(false);
+  return (
+    <div className="mt-4 rounded-xl border-l-4 border-destructive/60 bg-destructive/5 p-4">
+      <label className="text-xs font-medium text-foreground">
+        Reviewer notes <span className="text-destructive">*</span>
+      </label>
+      <textarea
+        rows={2}
+        value={notes}
+        onChange={(e) => {
+          setNotes(e.target.value);
+          setSaved(false);
+        }}
+        placeholder={placeholder}
+        className="mt-1.5 w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
+      />
+      <div className="mt-2 flex items-center gap-3">
+        <button
+          type="button"
+          disabled={!notes.trim()}
+          onClick={() => setSaved(true)}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition"
+        >
+          <Save className="h-3.5 w-3.5" /> Save notes
+        </button>
+        {saved && (
+          <span className="text-xs text-success inline-flex items-center gap-1">
+            <Check className="h-3.5 w-3.5" /> Notes saved
+          </span>
+        )}
       </div>
     </div>
   );
@@ -1609,10 +1681,8 @@ function QuestionCard({
   hint?: React.ReactNode;
   children?: React.ReactNode;
 }) {
-  const { decisions, setDecision } = useContext(EddReviewContext);
-  const decision = decisions[n] ?? null;
-  const [notes, setNotes] = useState("");
-  const [saved, setSaved] = useState(false);
+  const itemKey = `Question ${n}`;
+  const { decision } = useEddDecision(itemKey);
   return (
     <div
       className={`rounded-2xl border bg-surface p-5 ${
@@ -1638,114 +1708,35 @@ function QuestionCard({
           )}
           {children ?? <YesNo name={`q${n}`} />}
           {decision === "rejected" && (
-            <div className="mt-4 rounded-xl border-l-4 border-destructive/60 bg-destructive/5 p-4">
-              <label className="text-xs font-medium text-foreground">
-                Reviewer notes <span className="text-destructive">*</span>
-              </label>
-              <textarea
-                rows={2}
-                value={notes}
-                onChange={(e) => {
-                  setNotes(e.target.value);
-                  setSaved(false);
-                }}
-                placeholder="Explain what the merchant needs to correct for this question"
-                className="mt-1.5 w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
-              />
-              <div className="mt-2 flex items-center gap-3">
-                <button
-                  type="button"
-                  disabled={!notes.trim()}
-                  onClick={() => setSaved(true)}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition"
-                >
-                  <Save className="h-3.5 w-3.5" /> Save notes
-                </button>
-                {saved && (
-                  <span className="text-xs text-success inline-flex items-center gap-1">
-                    <Check className="h-3.5 w-3.5" /> Notes saved
-                  </span>
-                )}
-              </div>
-            </div>
+            <RejectionNotes placeholder="Explain what the merchant needs to correct for this question" />
           )}
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <button
-            type="button"
-            aria-label={`Approve question ${n}`}
-            title="Approve"
-            onClick={() => setDecision(n, "approved")}
-            className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
-              decision === "approved"
-                ? "bg-success text-white"
-                : "bg-[#f5f5f5] text-muted-foreground hover:text-success hover:bg-success/10"
-            }`}
-          >
-            <Check className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label={`Reject question ${n}`}
-            title="Reject"
-            onClick={() => setDecision(n, "rejected")}
-            className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
-              decision === "rejected"
-                ? "bg-destructive text-white"
-                : "bg-[#f5f5f5] text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-            }`}
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+        <DecisionIcons itemKey={itemKey} label={`question ${n}`} />
       </div>
     </div>
   );
 }
 
-function SectionApproval({ section }: { section: string }) {
-  const [status, setStatus] = useState<"approved" | "rejected" | null>(null);
+
+function EddSendBack() {
+  const { rejectedItems } = useContext(EddReviewContext);
+  if (rejectedItems.length === 0) return null;
   return (
-    <div className="mt-4 rounded-2xl border border-border bg-surface p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="mt-8 rounded-2xl border border-destructive/50 bg-surface p-5">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <div className="text-xs font-semibold text-foreground">Reviewer decision</div>
-          <p className="text-xs text-muted-foreground mt-0.5">{section}</p>
+          <h3 className="font-semibold text-sm text-destructive">
+            Due Diligence items rejected
+          </h3>
+          <p className="mt-1 text-xs text-muted-foreground max-w-2xl">
+            {rejectedItems.join(", ")} {rejectedItems.length > 1 ? "were" : "was"} rejected. The
+            merchant must update these before the application can be approved.
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => setStatus(status === "approved" ? null : "approved")}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition ${
-              status === "approved"
-                ? "bg-primary text-primary-foreground"
-                : "bg-[#f5f5f5] text-muted-foreground hover:bg-muted"
-            }`}
-          >
-            <Check className="h-3.5 w-3.5" /> Approve
-          </button>
-          <button
-            type="button"
-            onClick={() => setStatus(status === "rejected" ? null : "rejected")}
-            className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition ${
-              status === "rejected"
-                ? "bg-destructive text-white"
-                : "bg-[#f5f5f5] text-muted-foreground hover:bg-muted"
-            }`}
-          >
-            <X className="h-3.5 w-3.5" /> Reject
-          </button>
-        </div>
+        <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-destructive px-4 py-3 text-sm font-semibold text-white hover:bg-destructive/90 transition">
+          <ArrowLeft className="h-4 w-4" /> Send back to merchant
+        </button>
       </div>
-      <textarea
-        rows={2}
-        placeholder={
-          status === "rejected"
-            ? "Explain what needs to be corrected (required)"
-            : "Reviewer notes (optional)"
-        }
-        className="mt-3 w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
-      />
     </div>
   );
 }
@@ -1869,7 +1860,6 @@ function EddStep() {
           <ContentTypeCheck label="Fan sites" />
           <ContentTypeCheck label="Other (please specify)" />
         </div>
-        <SectionApproval section="Content types" />
       </div>
 
       {/* Section 1: Policies & Procedures */}
@@ -1892,7 +1882,6 @@ function EddStep() {
             <UploadTile key={u.title} title={u.title} bullets={u.bullets} />
           ))}
         </div>
-        <SectionApproval section="Section 1 · Policies & Procedures" />
       </div>
 
       {/* Section 2: Questionnaire */}
@@ -2093,7 +2082,6 @@ function EddStep() {
             <CountryBreakdown />
           </QuestionCard>
         </div>
-        <SectionApproval section="Section 2 · Questionnaire" />
 
         {/* Declaration */}
         <div className="mt-10">
@@ -2117,9 +2105,10 @@ function EddStep() {
               </Field>
             </div>
           </Card>
-          <SectionApproval section="Declaration" />
         </div>
       </div>
+
+      <EddSendBack />
     </StepShell>
   );
 }
