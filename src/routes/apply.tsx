@@ -1367,8 +1367,6 @@ function BanksStep() {
 }
 
 function ReviewStep() {
-  const { rejected } = useContext(EddReviewContext);
-  const rejectedQuestions = Object.keys(rejected).map(Number).sort((a, b) => a - b);
   const initialItems: { name: string; status: "complete" | "pending"; placeholder: string }[] = [
     { name: "Company Information", status: "complete", placeholder: "Add any notes about the company details…" },
     { name: "Processing", status: "pending", placeholder: "Please complete this section" },
