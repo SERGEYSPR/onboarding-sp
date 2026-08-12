@@ -1596,6 +1596,82 @@ function UploadTile({
   );
 }
 
+function useEddDecision(itemKey: string) {
+  const { decisions, setDecision } = useContext(EddReviewContext);
+  return { decision: decisions[itemKey] ?? null, setDecision };
+}
+
+function DecisionIcons({ itemKey, label }: { itemKey: string; label: string }) {
+  const { decision, setDecision } = useEddDecision(itemKey);
+  return (
+    <div className="flex items-center gap-1.5 shrink-0">
+      <button
+        type="button"
+        aria-label={`Approve ${label}`}
+        title="Approve"
+        onClick={() => setDecision(itemKey, "approved")}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
+          decision === "approved"
+            ? "bg-success text-white"
+            : "bg-[#f5f5f5] text-muted-foreground hover:text-success hover:bg-success/10"
+        }`}
+      >
+        <Check className="h-4 w-4" />
+      </button>
+      <button
+        type="button"
+        aria-label={`Reject ${label}`}
+        title="Reject"
+        onClick={() => setDecision(itemKey, "rejected")}
+        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
+          decision === "rejected"
+            ? "bg-destructive text-white"
+            : "bg-[#f5f5f5] text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+        }`}
+      >
+        <X className="h-4 w-4" />
+      </button>
+    </div>
+  );
+}
+
+function RejectionNotes({ placeholder }: { placeholder: string }) {
+  const [notes, setNotes] = useState("");
+  const [saved, setSaved] = useState(false);
+  return (
+    <div className="mt-4 rounded-xl border-l-4 border-destructive/60 bg-destructive/5 p-4">
+      <label className="text-xs font-medium text-foreground">
+        Reviewer notes <span className="text-destructive">*</span>
+      </label>
+      <textarea
+        rows={2}
+        value={notes}
+        onChange={(e) => {
+          setNotes(e.target.value);
+          setSaved(false);
+        }}
+        placeholder={placeholder}
+        className="mt-1.5 w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
+      />
+      <div className="mt-2 flex items-center gap-3">
+        <button
+          type="button"
+          disabled={!notes.trim()}
+          onClick={() => setSaved(true)}
+          className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition"
+        >
+          <Save className="h-3.5 w-3.5" /> Save notes
+        </button>
+        {saved && (
+          <span className="text-xs text-success inline-flex items-center gap-1">
+            <Check className="h-3.5 w-3.5" /> Notes saved
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function QuestionCard({
   n,
   question,
@@ -1611,10 +1687,8 @@ function QuestionCard({
   hint?: React.ReactNode;
   children?: React.ReactNode;
 }) {
-  const { decisions, setDecision } = useContext(EddReviewContext);
-  const decision = decisions[n] ?? null;
-  const [notes, setNotes] = useState("");
-  const [saved, setSaved] = useState(false);
+  const itemKey = `Question ${n}`;
+  const { decision } = useEddDecision(itemKey);
   return (
     <div
       className={`rounded-2xl border bg-surface p-5 ${
@@ -1640,70 +1714,15 @@ function QuestionCard({
           )}
           {children ?? <YesNo name={`q${n}`} />}
           {decision === "rejected" && (
-            <div className="mt-4 rounded-xl border-l-4 border-destructive/60 bg-destructive/5 p-4">
-              <label className="text-xs font-medium text-foreground">
-                Reviewer notes <span className="text-destructive">*</span>
-              </label>
-              <textarea
-                rows={2}
-                value={notes}
-                onChange={(e) => {
-                  setNotes(e.target.value);
-                  setSaved(false);
-                }}
-                placeholder="Explain what the merchant needs to correct for this question"
-                className="mt-1.5 w-full rounded-lg border border-transparent bg-[#f5f5f5] px-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 transition"
-              />
-              <div className="mt-2 flex items-center gap-3">
-                <button
-                  type="button"
-                  disabled={!notes.trim()}
-                  onClick={() => setSaved(true)}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-40 disabled:cursor-not-allowed transition"
-                >
-                  <Save className="h-3.5 w-3.5" /> Save notes
-                </button>
-                {saved && (
-                  <span className="text-xs text-success inline-flex items-center gap-1">
-                    <Check className="h-3.5 w-3.5" /> Notes saved
-                  </span>
-                )}
-              </div>
-            </div>
+            <RejectionNotes placeholder="Explain what the merchant needs to correct for this question" />
           )}
         </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <button
-            type="button"
-            aria-label={`Approve question ${n}`}
-            title="Approve"
-            onClick={() => setDecision(n, "approved")}
-            className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
-              decision === "approved"
-                ? "bg-success text-white"
-                : "bg-[#f5f5f5] text-muted-foreground hover:text-success hover:bg-success/10"
-            }`}
-          >
-            <Check className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            aria-label={`Reject question ${n}`}
-            title="Reject"
-            onClick={() => setDecision(n, "rejected")}
-            className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
-              decision === "rejected"
-                ? "bg-destructive text-white"
-                : "bg-[#f5f5f5] text-muted-foreground hover:text-destructive hover:bg-destructive/10"
-            }`}
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
+        <DecisionIcons itemKey={itemKey} label={`question ${n}`} />
       </div>
     </div>
   );
 }
+
 
 function SectionApproval({ section }: { section: string }) {
   const [status, setStatus] = useState<"approved" | "rejected" | null>(null);
