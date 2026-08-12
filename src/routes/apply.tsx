@@ -1882,7 +1882,6 @@ function EddStep() {
           <ContentTypeCheck label="Fan sites" />
           <ContentTypeCheck label="Other (please specify)" />
         </div>
-        <SectionApproval section="Content types" />
       </div>
 
       {/* Section 1: Policies & Procedures */}
@@ -1905,7 +1904,6 @@ function EddStep() {
             <UploadTile key={u.title} title={u.title} bullets={u.bullets} />
           ))}
         </div>
-        <SectionApproval section="Section 1 · Policies & Procedures" />
       </div>
 
       {/* Section 2: Questionnaire */}
@@ -2106,7 +2104,6 @@ function EddStep() {
             <CountryBreakdown />
           </QuestionCard>
         </div>
-        <SectionApproval section="Section 2 · Questionnaire" />
 
         {/* Declaration */}
         <div className="mt-10">
@@ -2130,7 +2127,6 @@ function EddStep() {
               </Field>
             </div>
           </Card>
-          <SectionApproval section="Declaration" />
         </div>
       </div>
     </StepShell>
