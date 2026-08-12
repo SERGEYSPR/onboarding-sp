@@ -29,28 +29,30 @@ export const Route = createFileRoute("/apply")({
   component: OnboardingRoot,
 });
 
+type EddDecision = "approved" | "rejected" | null;
+
 type EddReviewState = {
-  rejected: Record<number, boolean>;
-  setDecision: (n: number, decision: "approved" | "rejected" | null) => void;
-  decisions: Record<number, "approved" | "rejected" | null>;
+  rejectedItems: string[];
+  setDecision: (key: string, decision: EddDecision) => void;
+  decisions: Record<string, EddDecision>;
 };
 
 const EddReviewContext = createContext<EddReviewState>({
-  rejected: {},
+  rejectedItems: [],
   decisions: {},
   setDecision: () => {},
 });
 
 function OnboardingRoot() {
-  const [decisions, setDecisions] = useState<Record<number, "approved" | "rejected" | null>>({});
+  const [decisions, setDecisions] = useState<Record<string, EddDecision>>({});
   const value = useMemo<EddReviewState>(
     () => ({
       decisions,
-      rejected: Object.fromEntries(
-        Object.entries(decisions).filter(([, v]) => v === "rejected").map(([k]) => [Number(k), true])
-      ),
-      setDecision: (n, decision) =>
-        setDecisions((prev) => ({ ...prev, [n]: prev[n] === decision ? null : decision })),
+      rejectedItems: Object.entries(decisions)
+        .filter(([, v]) => v === "rejected")
+        .map(([k]) => k),
+      setDecision: (key, decision) =>
+        setDecisions((prev) => ({ ...prev, [key]: prev[key] === decision ? null : decision })),
     }),
     [decisions]
   );
