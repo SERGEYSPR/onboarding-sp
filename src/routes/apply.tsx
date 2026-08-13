@@ -414,24 +414,21 @@ function OnboardingPage() {
                 </div>
               )}
 
-              {active !== "company" && active !== "websites" && active !== "processing" && (
-                <div className="rounded-2xl border border-border bg-accent/40 p-5">
-                  <div className="flex items-center gap-2 text-accent-foreground">
-                    <ShieldCheck className="h-4 w-4" />
-                    <span className="text-sm font-semibold">Need help?</span>
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                    Contact your sales representative or email{" "}
-                    <a
-                      href="mailto:sales.rep@segpay.com"
-                      className="text-primary font-medium hover:underline"
-                    >
-                      sales.rep@segpay.com
-                    </a>{" "}
-                    for assistance at any step.
-                  </p>
-                </div>
-              )}
+              {STEP_HELP[active] && <StepHelpPanel help={STEP_HELP[active]!} />}
+
+              <div className="rounded-2xl border border-border bg-surface p-5">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Questions? Contact your sales representative or email{" "}
+                  <a
+                    href="mailto:sales.rep@segpay.com"
+                    className="text-primary font-medium hover:underline"
+                  >
+                    sales.rep@segpay.com
+                  </a>{" "}
+                  for assistance at any step.
+                </p>
+              </div>
+
             </div>
           </aside>
         </div>
