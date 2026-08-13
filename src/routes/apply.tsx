@@ -95,6 +95,248 @@ const STEPS: Step[] = [
   { id: "review", label: "Review", icon: ShieldCheck, complete: true },
 ];
 
+type StepHelp = {
+  title: string;
+  intro: string[];
+  listLabel?: string;
+  bullets?: { strong?: string; text: string }[];
+  outro?: string[];
+};
+
+const STEP_HELP: Record<string, StepHelp> = {
+  begin: {
+    title: "Begin Application",
+    intro: [
+      "In this step, you will confirm the basic information needed to start your onboarding application.",
+    ],
+    listLabel: "Please be prepared to:",
+    bullets: [
+      { text: "Review the application details provided to you." },
+      {
+        text: "Confirm that you are authorized to complete the application on behalf of the company.",
+      },
+      { text: "Verify that the company and contact information shown is correct." },
+      { text: "Review any important instructions before continuing." },
+    ],
+    outro: [
+      "You can save your progress and return to the application later if needed.",
+      "Please make sure the information you provide throughout the application is accurate and complete, as it will be used during the onboarding and review process.",
+    ],
+  },
+  directors: {
+    title: "Directors & UBOs",
+    intro: [
+      "In this step, you will be asked to provide information about the individuals who own, control, or manage the company.",
+    ],
+    listLabel: "Please be prepared to provide:",
+    bullets: [
+      {
+        strong: "Directors and Officers",
+        text: "details of individuals responsible for managing or controlling the company.",
+      },
+      {
+        strong: "Ultimate Beneficial Owners (UBOs)",
+        text: "information about individuals who directly or indirectly own or control a significant portion of the company.",
+      },
+      {
+        strong: "Ownership Information",
+        text: "ownership percentages and the relationship of each individual to the company.",
+      },
+      {
+        strong: "Personal Information",
+        text: "legal name, date of birth, residential address, nationality, and other identification details, where required.",
+      },
+      {
+        strong: "Identification Documents",
+        text: "government-issued photo identification or supporting ownership documents, if requested.",
+      },
+    ],
+    outro: [
+      "Please ensure that all required directors, officers, and beneficial owners are included and that the information matches your official company records.",
+      "Additional information may be requested based on your company structure, ownership, jurisdiction, and applicable due diligence requirements.",
+    ],
+  },
+  edd: {
+    title: "Due Diligence",
+    intro: [
+      "In this step, you will be asked to provide additional information about your company, business activities, ownership, and operational practices.",
+      "The questions shown may vary depending on your company type, jurisdiction, business model, and risk profile.",
+    ],
+    listLabel: "Please be prepared to provide information about:",
+    bullets: [
+      {
+        strong: "Business Activities",
+        text: "how your company operates, the products or services you provide, and your target customers.",
+      },
+      {
+        strong: "Ownership and Control",
+        text: "additional information about company owners, directors, or related entities, where applicable.",
+      },
+      {
+        strong: "Business Operations",
+        text: "how transactions are generated, fulfilled, and managed.",
+      },
+      {
+        strong: "Compliance Practices",
+        text: "policies, procedures, licensing, or controls relevant to your business.",
+      },
+      {
+        strong: "Supporting Information",
+        text: "additional explanations or documentation when required.",
+      },
+    ],
+    outro: [
+      "Please answer all questions accurately and provide as much detail as possible.",
+      "Additional questions or supporting documents may be requested as part of the review process.",
+    ],
+  },
+  contacts: {
+    title: "Contact Information",
+    intro: [
+      "In this step, you will be asked to provide contact information for the individuals Segpay may need to communicate with during onboarding and ongoing account management.",
+    ],
+    listLabel: "Please be prepared to provide:",
+    bullets: [
+      {
+        strong: "Primary Contact",
+        text: "the main person responsible for communication regarding the application.",
+      },
+      {
+        strong: "Business Contact",
+        text: "the appropriate contact for general company or account-related questions.",
+      },
+      {
+        strong: "Technical Contact",
+        text: "the person responsible for technical integration or implementation, if applicable.",
+      },
+      {
+        strong: "Billing or Financial Contact",
+        text: "the person responsible for settlement, billing, or financial matters, if applicable.",
+      },
+      {
+        strong: "Additional Contacts",
+        text: "any other contacts required for your account or business relationship.",
+      },
+    ],
+    outro: [
+      "Some contact information may be prefilled based on information provided earlier in the application.",
+      "Please review all contact details carefully and make sure the names, email addresses, phone numbers, and responsibilities are accurate and up to date.",
+    ],
+  },
+  documents: {
+    title: "Upload Documentation",
+    intro: [
+      "In this step, you will be asked to upload documents required to support and verify the information provided in your application.",
+    ],
+    listLabel: "Please be prepared to upload, if applicable:",
+    bullets: [
+      { text: "Company formation and registration documents." },
+      { text: "Proof of registered business address." },
+      { text: "Ownership, shareholder, and director records." },
+      { text: "Government-issued identification for relevant individuals." },
+      { text: "Bank statements or financial documents." },
+      { text: "Tax, licensing, or regulatory documents." },
+      {
+        text: "Any additional supporting documents requested during the onboarding or due diligence process.",
+      },
+    ],
+    outro: [
+      "Please make sure uploaded documents are current, complete, readable, and clearly show the required information.",
+      "Additional documents may be requested based on your company type, ownership structure, jurisdiction, business activity, and review requirements.",
+    ],
+  },
+  banks: {
+    title: "Payment Banks",
+    intro: [
+      "In this step, you will be asked to provide the bank account information Segpay will use for payments and settlements.",
+    ],
+    listLabel: "Please be prepared to provide:",
+    bullets: [
+      { strong: "Bank Name", text: "the financial institution where the account is held." },
+      {
+        strong: "Account Holder Information",
+        text: "the legal name associated with the bank account.",
+      },
+      {
+        strong: "Account Details",
+        text: "account number, IBAN, routing information, SWIFT/BIC, or other banking details as applicable.",
+      },
+      {
+        strong: "Bank Location and Currency",
+        text: "the country and currency associated with the account.",
+      },
+      {
+        strong: "Supporting Bank Documentation",
+        text: "a bank statement, bank letter, or other proof of account ownership if required.",
+      },
+    ],
+    outro: [
+      "The bank account should belong to the applying company unless otherwise approved.",
+      "Please verify all banking information carefully before continuing. Incorrect account details may delay account approval or future settlements.",
+    ],
+  },
+  review: {
+    title: "Review & Submit",
+    intro: [
+      "In this step, you will review your completed onboarding application before submitting it to Segpay.",
+    ],
+    listLabel: "Please review:",
+    bullets: [
+      { text: "Company information." },
+      { text: "Directors and beneficial ownership information." },
+      { text: "Processing estimates." },
+      { text: "Contact information." },
+      { text: "Due diligence responses." },
+      { text: "Uploaded documents." },
+      { text: "Website information." },
+      { text: "Payment bank details." },
+    ],
+    outro: [
+      "Make sure all required sections are complete and that the information provided is accurate and up to date.",
+      "If you identify any incorrect or missing information, return to the appropriate section and make the necessary changes before submitting.",
+      "Once everything is complete, submit the application for review. Segpay may contact you if additional information, clarification, or supporting documentation is required.",
+    ],
+  },
+};
+
+function StepHelpPanel({ help }: { help: StepHelp }) {
+  return (
+    <div className="rounded-2xl border border-border bg-accent/40 p-5">
+      <div className="flex items-center gap-2 text-accent-foreground">
+        <ShieldCheck className="h-4 w-4" />
+        <span className="text-sm font-semibold">{help.title}</span>
+      </div>
+      {help.intro.map((p) => (
+        <p key={p} className="mt-3 text-xs text-muted-foreground leading-relaxed">
+          {p}
+        </p>
+      ))}
+      {help.listLabel && (
+        <p className="mt-3 text-xs font-medium text-foreground">{help.listLabel}</p>
+      )}
+      {help.bullets && (
+        <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+          {help.bullets.map((b) => (
+            <li key={b.text}>
+              {b.strong && (
+                <>
+                  <span className="font-medium text-foreground">{b.strong}</span> —{" "}
+                </>
+              )}
+              {b.text}
+            </li>
+          ))}
+        </ul>
+      )}
+      {help.outro?.map((p) => (
+        <p key={p} className="mt-3 text-xs text-muted-foreground leading-relaxed">
+          {p}
+        </p>
+      ))}
+    </div>
+  );
+}
+
 function RiskAssessmentPanel() {
   // Internal-only block, visible for Risk/Compliance roles
   const score = 72;
@@ -414,24 +656,21 @@ function OnboardingPage() {
                 </div>
               )}
 
-              {active !== "company" && active !== "websites" && active !== "processing" && (
-                <div className="rounded-2xl border border-border bg-accent/40 p-5">
-                  <div className="flex items-center gap-2 text-accent-foreground">
-                    <ShieldCheck className="h-4 w-4" />
-                    <span className="text-sm font-semibold">Need help?</span>
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-                    Contact your sales representative or email{" "}
-                    <a
-                      href="mailto:sales.rep@segpay.com"
-                      className="text-primary font-medium hover:underline"
-                    >
-                      sales.rep@segpay.com
-                    </a>{" "}
-                    for assistance at any step.
-                  </p>
-                </div>
-              )}
+              {STEP_HELP[active] && <StepHelpPanel help={STEP_HELP[active]!} />}
+
+              <div className="rounded-2xl border border-border bg-surface p-5">
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Questions? Contact your sales representative or email{" "}
+                  <a
+                    href="mailto:sales.rep@segpay.com"
+                    className="text-primary font-medium hover:underline"
+                  >
+                    sales.rep@segpay.com
+                  </a>{" "}
+                  for assistance at any step.
+                </p>
+              </div>
+
             </div>
           </aside>
         </div>
@@ -987,6 +1226,11 @@ function ProcessingStep() {
             value={paypal}
             onChange={setPaypal}
           />
+          <p className="mt-3 rounded-lg bg-[#f5f5f5] px-3 py-2.5 text-xs text-muted-foreground leading-relaxed">
+            Currently, PayPal enrollment is available only to merchants in select regions. If we’re
+            unable to enroll you at this time, we’ll make it available to you once your region
+            becomes eligible.
+          </p>
         </div>
         <div className="mt-6">
           <Field
