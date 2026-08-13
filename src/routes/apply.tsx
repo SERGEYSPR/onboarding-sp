@@ -1226,6 +1226,11 @@ function ProcessingStep() {
             value={paypal}
             onChange={setPaypal}
           />
+          <p className="mt-3 rounded-lg bg-[#f5f5f5] px-3 py-2.5 text-xs text-muted-foreground leading-relaxed">
+            Currently, PayPal enrollment is available only to merchants in select regions. If we’re
+            unable to enroll you at this time, we’ll make it available to you once your region
+            becomes eligible.
+          </p>
         </div>
         <div className="mt-6">
           <Field
