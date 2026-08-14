@@ -726,7 +726,13 @@ function OnboardingPage() {
           </aside>
         </div>
       </main>
+
+      {/* Mobile help popup */}
+      {isMobile && helpOpen && hasHelp(active) && (
+        <MobileHelpDialog active={active} onClose={dismissHelp} />
+      )}
     </div>
+
   );
 }
 
