@@ -730,10 +730,11 @@ function OnboardingPage() {
         </div>
       </main>
 
-      {/* Mobile help popup */}
-      {isMobile && helpOpen && hasHelp(active) && (
-        <MobileHelpDialog active={active} onClose={dismissHelp} />
+      {/* Step help popup */}
+      {helpOpen && hasHelp(active) && (
+        <StepHelpDialog active={active} onClose={dismissHelp} />
       )}
+
     </div>
 
   );
