@@ -537,9 +537,10 @@ function OnboardingPage() {
   }, []);
 
   useEffect(() => {
-    if (isMobile && !hideHelp && hasHelp(active)) setHelpOpen(true);
+    if (!hideHelp && hasHelp(active)) setHelpOpen(true);
     else setHelpOpen(false);
-  }, [active, isMobile, hideHelp]);
+  }, [active, hideHelp]);
+
 
   const dismissHelp = (dontShowAgain: boolean) => {
     if (dontShowAgain) {
