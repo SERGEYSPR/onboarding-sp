@@ -740,7 +740,7 @@ function OnboardingPage() {
   );
 }
 
-function MobileHelpDialog({
+function StepHelpDialog({
   active,
   onClose,
 }: {
@@ -750,9 +750,10 @@ function MobileHelpDialog({
   const [dontShow, setDontShow] = useState(false);
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
       <div className="absolute inset-0 bg-foreground/40" onClick={() => onClose(dontShow)} />
-      <div className="relative w-full sm:max-w-md max-h-[85vh] flex flex-col rounded-t-2xl sm:rounded-2xl border border-border bg-surface shadow-xl">
+      <div className="relative w-full sm:max-w-md max-h-[85vh] mt-4 flex flex-col rounded-2xl border border-border bg-surface shadow-xl">
+
         <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <HelpCircle className="h-4 w-4 text-primary" /> Help
