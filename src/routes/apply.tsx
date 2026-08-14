@@ -585,16 +585,8 @@ function OnboardingPage() {
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
             <span className="flex items-center gap-3">
               <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
-              {isMobile && !helpOpen && hasHelp(active) && (
-                <button
-                  type="button"
-                  onClick={() => setHelpOpen(true)}
-                  className="lg:hidden inline-flex items-center gap-1 text-primary font-medium hover:underline"
-                >
-                  <HelpCircle className="h-3.5 w-3.5" /> Help
-                </button>
-              )}
             </span>
+
             <span>{Math.round(progress)}% complete</span>
           </div>
 
