@@ -568,7 +568,17 @@ function OnboardingPage() {
               </h1>
             </div>
           </div>
+          {hasHelp(active) && (
+            <button
+              type="button"
+              onClick={() => setHelpOpen(true)}
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-primary hover:bg-muted transition"
+            >
+              <HelpCircle className="h-4 w-4" /> Help
+            </button>
+          )}
         </div>
+
 
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
