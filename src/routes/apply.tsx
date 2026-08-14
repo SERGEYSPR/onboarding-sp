@@ -736,7 +736,63 @@ function OnboardingPage() {
   );
 }
 
+function MobileHelpDialog({
+  active,
+  onClose,
+}: {
+  active: StepId;
+  onClose: (dontShowAgain: boolean) => void;
+}) {
+  const [dontShow, setDontShow] = useState(false);
+
+  return (
+    <div className="fixed inset-0 z-50 lg:hidden flex items-end sm:items-center justify-center">
+      <div className="absolute inset-0 bg-foreground/40" onClick={() => onClose(dontShow)} />
+      <div className="relative w-full sm:max-w-md max-h-[85vh] flex flex-col rounded-t-2xl sm:rounded-2xl border border-border bg-surface shadow-xl">
+        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+          <div className="flex items-center gap-2 text-sm font-semibold">
+            <HelpCircle className="h-4 w-4 text-primary" /> Help
+          </div>
+          <button
+            type="button"
+            onClick={() => onClose(dontShow)}
+            className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted transition"
+            aria-label="Close help"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+          <HelpBlocks active={active} />
+        </div>
+
+        <div className="border-t border-border px-5 py-4 space-y-3">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={dontShow}
+              onChange={(e) => setDontShow(e.target.checked)}
+              className="h-4 w-4 rounded border-border accent-[var(--color-primary,#01426c)]"
+            />
+            Don’t show again
+          </label>
+          <button
+            type="button"
+            onClick={() => onClose(dontShow)}
+            className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------- Step Content ------------------------- */
+
+
 
 function StepContent({ active }: { active: StepId }) {
   switch (active) {
