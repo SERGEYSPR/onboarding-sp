@@ -520,10 +520,32 @@ function RiskAssessmentPanel() {
   );
 }
 
+const HELP_OPT_OUT_KEY = "segpay-hide-step-help";
+
 function OnboardingPage() {
   const [active, setActive] = useState<StepId>("begin");
   const index = STEPS.findIndex((s) => s.id === active);
   const progress = useMemo(() => ((index + 1) / STEPS.length) * 100, [index]);
+  const isMobile = useIsMobile();
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [hideHelp, setHideHelp] = useState(false);
+
+  useEffect(() => {
+    setHideHelp(localStorage.getItem(HELP_OPT_OUT_KEY) === "1");
+  }, []);
+
+  useEffect(() => {
+    if (isMobile && !hideHelp && hasHelp(active)) setHelpOpen(true);
+    else setHelpOpen(false);
+  }, [active, isMobile, hideHelp]);
+
+  const dismissHelp = (dontShowAgain: boolean) => {
+    if (dontShowAgain) {
+      localStorage.setItem(HELP_OPT_OUT_KEY, "1");
+      setHideHelp(true);
+    }
+    setHelpOpen(false);
+  };
 
   const go = (dir: 1 | -1) => {
     const next = STEPS[Math.min(STEPS.length - 1, Math.max(0, index + dir))];
@@ -548,9 +570,21 @@ function OnboardingPage() {
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
+            <span className="flex items-center gap-3">
+              <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
+              {isMobile && !helpOpen && hasHelp(active) && (
+                <button
+                  type="button"
+                  onClick={() => setHelpOpen(true)}
+                  className="lg:hidden inline-flex items-center gap-1 text-primary font-medium hover:underline"
+                >
+                  <HelpCircle className="h-3.5 w-3.5" /> Help
+                </button>
+              )}
+            </span>
             <span>{Math.round(progress)}% complete</span>
           </div>
+
           <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
             <div
               className="h-full bg-primary transition-[width] duration-500 ease-out"
