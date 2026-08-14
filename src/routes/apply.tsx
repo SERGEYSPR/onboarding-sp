@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   ArrowLeft,
@@ -528,7 +527,6 @@ function OnboardingPage() {
   const [active, setActive] = useState<StepId>("begin");
   const index = STEPS.findIndex((s) => s.id === active);
   const progress = useMemo(() => ((index + 1) / STEPS.length) * 100, [index]);
-  const isMobile = useIsMobile();
   const [helpOpen, setHelpOpen] = useState(false);
   const [hideHelp, setHideHelp] = useState(false);
 
@@ -537,9 +535,10 @@ function OnboardingPage() {
   }, []);
 
   useEffect(() => {
-    if (isMobile && !hideHelp && hasHelp(active)) setHelpOpen(true);
+    if (!hideHelp && hasHelp(active)) setHelpOpen(true);
     else setHelpOpen(false);
-  }, [active, isMobile, hideHelp]);
+  }, [active, hideHelp]);
+
 
   const dismissHelp = (dontShowAgain: boolean) => {
     if (dontShowAgain) {
@@ -567,23 +566,25 @@ function OnboardingPage() {
               </h1>
             </div>
           </div>
+          {hasHelp(active) && (
+            <button
+              type="button"
+              onClick={() => setHelpOpen(true)}
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-2 text-sm font-medium text-primary hover:bg-muted transition"
+            >
+              <HelpCircle className="h-4 w-4" /> Help
+            </button>
+          )}
         </div>
+
 
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
             <span className="flex items-center gap-3">
               <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
-              {isMobile && !helpOpen && hasHelp(active) && (
-                <button
-                  type="button"
-                  onClick={() => setHelpOpen(true)}
-                  className="lg:hidden inline-flex items-center gap-1 text-primary font-medium hover:underline"
-                >
-                  <HelpCircle className="h-3.5 w-3.5" /> Help
-                </button>
-              )}
             </span>
+
             <span>{Math.round(progress)}% complete</span>
           </div>
 
@@ -727,16 +728,17 @@ function OnboardingPage() {
         </div>
       </main>
 
-      {/* Mobile help popup */}
-      {isMobile && helpOpen && hasHelp(active) && (
-        <MobileHelpDialog active={active} onClose={dismissHelp} />
+      {/* Step help popup */}
+      {helpOpen && hasHelp(active) && (
+        <StepHelpDialog active={active} onClose={dismissHelp} />
       )}
+
     </div>
 
   );
 }
 
-function MobileHelpDialog({
+function StepHelpDialog({
   active,
   onClose,
 }: {
@@ -746,9 +748,10 @@ function MobileHelpDialog({
   const [dontShow, setDontShow] = useState(false);
 
   return (
-    <div className="fixed inset-0 z-50 lg:hidden flex items-end sm:items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-6 overflow-y-auto">
       <div className="absolute inset-0 bg-foreground/40" onClick={() => onClose(dontShow)} />
-      <div className="relative w-full sm:max-w-md max-h-[85vh] flex flex-col rounded-t-2xl sm:rounded-2xl border border-border bg-surface shadow-xl">
+      <div className="relative w-full sm:max-w-md max-h-[85vh] mt-4 flex flex-col rounded-2xl border border-border bg-surface shadow-xl">
+
         <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
           <div className="flex items-center gap-2 text-sm font-semibold">
             <HelpCircle className="h-4 w-4 text-primary" /> Help
