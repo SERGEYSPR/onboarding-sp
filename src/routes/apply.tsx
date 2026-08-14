@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 import {
   ArrowLeft,
   ArrowRight,
@@ -337,6 +339,144 @@ function StepHelpPanel({ help }: { help: StepHelp }) {
   );
 }
 
+function hasHelp(active: StepId) {
+  return (
+    Boolean(STEP_HELP[active]) ||
+    active === "company" ||
+    active === "websites" ||
+    active === "processing"
+  );
+}
+
+function HelpBlocks({ active }: { active: StepId }) {
+  return (
+    <>
+      {active === "company" && (
+        <div className="rounded-2xl border border-border bg-accent/40 p-5">
+          <div className="flex items-center gap-2 text-accent-foreground">
+            <ShieldCheck className="h-4 w-4" />
+            <span className="text-sm font-semibold">Prepare Your Company Documents</span>
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            In this step, you will be asked to upload company documents. Please prepare the
+            following, if applicable:
+          </p>
+          <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+            <li>
+              Company formation documents, such as a Certificate of Incorporation, Articles of
+              Association, and a recent Certificate of Good Standing.
+            </li>
+            <li>Proof of registered business address and tax registration documents.</li>
+            <li>Shareholder, director, and beneficial ownership records.</li>
+            <li>
+              Government-issued photo identification for directors, authorized signatories, and
+              ultimate beneficial owners.
+            </li>
+            <li>
+              Recent bank statements, financial records, or authorization documents if additional
+              due diligence is required.
+            </li>
+          </ul>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            Additional documents may be requested based on your company type, ownership structure,
+            jurisdiction, and business activity.
+          </p>
+        </div>
+      )}
+
+      {active === "websites" && (
+        <div className="rounded-2xl border border-border bg-accent/40 p-5">
+          <div className="flex items-center gap-2 text-accent-foreground">
+            <ShieldCheck className="h-4 w-4" />
+            <span className="text-sm font-semibold">Website Requirements</span>
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            For successful integration with Segpay payment processing, ensure all your websites
+            comply with the following:
+          </p>
+          <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+            <li>
+              All domains used for processing with Segpay, including those hosting content
+              accessible via your website, must be registered.
+            </li>
+            <li>
+              The provided Username/Password should grant full access to content and must not
+              expire.
+            </li>
+          </ul>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            Your website must prominently display:
+          </p>
+          <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+            <li>
+              Billing Support, including a visible cancellation link leading to{" "}
+              <a
+                href="https://cs.segpay.com"
+                target="_blank"
+                rel="noreferrer"
+                className="text-primary font-medium hover:underline"
+              >
+                https://cs.segpay.com
+              </a>
+            </li>
+            <li>Terms and Conditions (with Refund Policy)</li>
+            <li>Privacy Policy</li>
+            <li>Merchant’s Registered Name and Address</li>
+          </ul>
+        </div>
+      )}
+
+      {active === "processing" && (
+        <div className="rounded-2xl border border-border bg-accent/40 p-5">
+          <div className="flex items-center gap-2 text-accent-foreground">
+            <ShieldCheck className="h-4 w-4" />
+            <span className="text-sm font-semibold">Processing Information</span>
+          </div>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            On this step, you will be asked to provide information about your expected payment
+            processing activity. Please enter your best estimates based on your current or
+            projected business volumes.
+          </p>
+          <p className="mt-3 text-xs font-medium text-foreground">Please be prepared to provide:</p>
+          <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
+            <li>
+              <span className="font-medium text-foreground">Billing Descriptor</span> — the name or
+              description customers will see on their card or bank statements.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Previous Processing Information</span> —
+              indicate whether your business has processed payments before and whether the business,
+              its owners, or principals have ever had processing services terminated.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">Credit Card Processing Estimates</span> —
+              processing currency, estimated number of transactions, average transaction value, and
+              minimum and maximum transaction values.
+            </li>
+            <li>
+              <span className="font-medium text-foreground">PayPal Processing Estimates</span> — if
+              applicable, provide the same estimated transaction information for PayPal payments.
+            </li>
+          </ul>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            Some values, such as Estimated Monthly Sales, may be calculated automatically based on
+            the information you provide.
+          </p>
+          <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+            Please use realistic estimates that represent your expected processing activity. This
+            information helps us understand your transaction profile and determine the appropriate
+            processing setup for your business.
+          </p>
+        </div>
+      )}
+
+      {STEP_HELP[active] && <StepHelpPanel help={STEP_HELP[active]!} />}
+    </>
+  );
+}
+
+
+
 function RiskAssessmentPanel() {
   // Internal-only block, visible for Risk/Compliance roles
   const score = 72;
@@ -382,10 +522,32 @@ function RiskAssessmentPanel() {
   );
 }
 
+const HELP_OPT_OUT_KEY = "segpay-hide-step-help";
+
 function OnboardingPage() {
   const [active, setActive] = useState<StepId>("begin");
   const index = STEPS.findIndex((s) => s.id === active);
   const progress = useMemo(() => ((index + 1) / STEPS.length) * 100, [index]);
+  const isMobile = useIsMobile();
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [hideHelp, setHideHelp] = useState(false);
+
+  useEffect(() => {
+    setHideHelp(localStorage.getItem(HELP_OPT_OUT_KEY) === "1");
+  }, []);
+
+  useEffect(() => {
+    if (isMobile && !hideHelp && hasHelp(active)) setHelpOpen(true);
+    else setHelpOpen(false);
+  }, [active, isMobile, hideHelp]);
+
+  const dismissHelp = (dontShowAgain: boolean) => {
+    if (dontShowAgain) {
+      localStorage.setItem(HELP_OPT_OUT_KEY, "1");
+      setHideHelp(true);
+    }
+    setHelpOpen(false);
+  };
 
   const go = (dir: 1 | -1) => {
     const next = STEPS[Math.min(STEPS.length - 1, Math.max(0, index + dir))];
@@ -410,9 +572,21 @@ function OnboardingPage() {
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
+            <span className="flex items-center gap-3">
+              <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
+              {isMobile && !helpOpen && hasHelp(active) && (
+                <button
+                  type="button"
+                  onClick={() => setHelpOpen(true)}
+                  className="lg:hidden inline-flex items-center gap-1 text-primary font-medium hover:underline"
+                >
+                  <HelpCircle className="h-3.5 w-3.5" /> Help
+                </button>
+              )}
+            </span>
             <span>{Math.round(progress)}% complete</span>
           </div>
+
           <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
             <div
               className="h-full bg-primary transition-[width] duration-500 ease-out"
@@ -532,131 +706,8 @@ function OnboardingPage() {
 
               {active === "company" && <RiskAssessmentPanel />}
 
-              {active === "company" && (
-                <div className="rounded-2xl border border-border bg-accent/40 p-5">
-                  <div className="flex items-center gap-2 text-accent-foreground">
-                    <ShieldCheck className="h-4 w-4" />
-                    <span className="text-sm font-semibold">Prepare Your Company Documents</span>
-                  </div>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    In this step, you will be asked to upload company documents. Please prepare the following, if applicable:
-                  </p>
-                  <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
-                    <li>
-                      Company formation documents, such as a Certificate of Incorporation, Articles of Association, and a recent Certificate of Good Standing.
-                    </li>
-                    <li>Proof of registered business address and tax registration documents.</li>
-                    <li>Shareholder, director, and beneficial ownership records.</li>
-                    <li>
-                      Government-issued photo identification for directors, authorized signatories, and ultimate beneficial owners.
-                    </li>
-                    <li>
-                      Recent bank statements, financial records, or authorization documents if additional due diligence is required.
-                    </li>
-                  </ul>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    Additional documents may be requested based on your company type, ownership structure, jurisdiction, and business activity.
-                  </p>
-                </div>
-              )}
+              <HelpBlocks active={active} />
 
-              {active === "websites" && (
-                <div className="rounded-2xl border border-border bg-accent/40 p-5">
-                  <div className="flex items-center gap-2 text-accent-foreground">
-                    <ShieldCheck className="h-4 w-4" />
-                    <span className="text-sm font-semibold">Website Requirements</span>
-                  </div>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    For successful integration with Segpay payment processing, ensure all your
-                    websites comply with the following:
-                  </p>
-                  <ul className="mt-3 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
-                    <li>
-                      All domains used for processing with Segpay, including those hosting content
-                      accessible via your website, must be registered.
-                    </li>
-                    <li>
-                      The provided Username/Password should grant full access to content and must
-                      not expire.
-                    </li>
-                  </ul>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    Your website must prominently display:
-                  </p>
-                  <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
-                    <li>
-                      Billing Support, including a visible cancellation link leading to{" "}
-                      <a
-                        href="https://cs.segpay.com"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary font-medium hover:underline"
-                      >
-                        https://cs.segpay.com
-                      </a>
-                    </li>
-                    <li>Terms and Conditions (with Refund Policy)</li>
-                    <li>Privacy Policy</li>
-                    <li>Merchant’s Registered Name and Address</li>
-                  </ul>
-                </div>
-              )}
-
-              {active === "processing" && (
-                <div className="rounded-2xl border border-border bg-accent/40 p-5">
-                  <div className="flex items-center gap-2 text-accent-foreground">
-                    <ShieldCheck className="h-4 w-4" />
-                    <span className="text-sm font-semibold">Processing Information</span>
-                  </div>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    On this step, you will be asked to provide information about your expected
-                    payment processing activity. Please enter your best estimates based on your
-                    current or projected business volumes.
-                  </p>
-                  <p className="mt-3 text-xs font-medium text-foreground">
-                    Please be prepared to provide:
-                  </p>
-                  <ul className="mt-2 space-y-2 text-xs text-muted-foreground leading-relaxed list-disc pl-4">
-                    <li>
-                      <span className="font-medium text-foreground">Billing Descriptor</span> — the
-                      name or description customers will see on their card or bank statements.
-                    </li>
-                    <li>
-                      <span className="font-medium text-foreground">
-                        Previous Processing Information
-                      </span>{" "}
-                      — indicate whether your business has processed payments before and whether
-                      the business, its owners, or principals have ever had processing services
-                      terminated.
-                    </li>
-                    <li>
-                      <span className="font-medium text-foreground">
-                        Credit Card Processing Estimates
-                      </span>{" "}
-                      — processing currency, estimated number of transactions, average transaction
-                      value, and minimum and maximum transaction values.
-                    </li>
-                    <li>
-                      <span className="font-medium text-foreground">
-                        PayPal Processing Estimates
-                      </span>{" "}
-                      — if applicable, provide the same estimated transaction information for
-                      PayPal payments.
-                    </li>
-                  </ul>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    Some values, such as Estimated Monthly Sales, may be calculated automatically
-                    based on the information you provide.
-                  </p>
-                  <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-                    Please use realistic estimates that represent your expected processing
-                    activity. This information helps us understand your transaction profile and
-                    determine the appropriate processing setup for your business.
-                  </p>
-                </div>
-              )}
-
-              {STEP_HELP[active] && <StepHelpPanel help={STEP_HELP[active]!} />}
 
               <div className="rounded-2xl border border-border bg-surface p-5">
                 <p className="text-xs text-muted-foreground leading-relaxed">
@@ -675,11 +726,73 @@ function OnboardingPage() {
           </aside>
         </div>
       </main>
+
+      {/* Mobile help popup */}
+      {isMobile && helpOpen && hasHelp(active) && (
+        <MobileHelpDialog active={active} onClose={dismissHelp} />
+      )}
+    </div>
+
+  );
+}
+
+function MobileHelpDialog({
+  active,
+  onClose,
+}: {
+  active: StepId;
+  onClose: (dontShowAgain: boolean) => void;
+}) {
+  const [dontShow, setDontShow] = useState(false);
+
+  return (
+    <div className="fixed inset-0 z-50 lg:hidden flex items-end sm:items-center justify-center">
+      <div className="absolute inset-0 bg-foreground/40" onClick={() => onClose(dontShow)} />
+      <div className="relative w-full sm:max-w-md max-h-[85vh] flex flex-col rounded-t-2xl sm:rounded-2xl border border-border bg-surface shadow-xl">
+        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+          <div className="flex items-center gap-2 text-sm font-semibold">
+            <HelpCircle className="h-4 w-4 text-primary" /> Help
+          </div>
+          <button
+            type="button"
+            onClick={() => onClose(dontShow)}
+            className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted transition"
+            aria-label="Close help"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+          <HelpBlocks active={active} />
+        </div>
+
+        <div className="border-t border-border px-5 py-4 space-y-3">
+          <label className="flex items-center gap-2 text-xs text-muted-foreground">
+            <input
+              type="checkbox"
+              checked={dontShow}
+              onChange={(e) => setDontShow(e.target.checked)}
+              className="h-4 w-4 rounded border-border accent-[var(--color-primary,#01426c)]"
+            />
+            Don’t show again
+          </label>
+          <button
+            type="button"
+            onClick={() => onClose(dontShow)}
+            className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+          >
+            Close
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
 /* ------------------------- Step Content ------------------------- */
+
+
 
 function StepContent({ active }: { active: StepId }) {
   switch (active) {
