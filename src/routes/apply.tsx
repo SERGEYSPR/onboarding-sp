@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 import {
   ArrowLeft,
@@ -528,7 +527,6 @@ function OnboardingPage() {
   const [active, setActive] = useState<StepId>("begin");
   const index = STEPS.findIndex((s) => s.id === active);
   const progress = useMemo(() => ((index + 1) / STEPS.length) * 100, [index]);
-  const isMobile = useIsMobile();
   const [helpOpen, setHelpOpen] = useState(false);
   const [hideHelp, setHideHelp] = useState(false);
 
