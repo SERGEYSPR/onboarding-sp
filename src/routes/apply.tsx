@@ -1961,22 +1961,11 @@ function DecisionIcons({ itemKey, label }: { itemKey: string; label: string }) {
     <div className="flex items-center gap-1.5 shrink-0">
       <button
         type="button"
-        aria-label={`Approve ${label}`}
-        title="Approve"
-        onClick={() => setDecision(itemKey, "approved")}
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
-          decision === "approved"
-            ? "bg-success text-white"
-            : "bg-[#f5f5f5] text-muted-foreground hover:text-success hover:bg-success/10"
-        }`}
-      >
-        <Check className="h-4 w-4" />
-      </button>
-      <button
-        type="button"
         aria-label={`Reject ${label}`}
-        title="Reject"
-        onClick={() => setDecision(itemKey, "rejected")}
+        title={decision === "rejected" ? "Undo rejection" : "Reject"}
+        onClick={() =>
+          setDecision(itemKey, decision === "rejected" ? "approved" : "rejected")
+        }
         className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
           decision === "rejected"
             ? "bg-destructive text-white"
@@ -1986,6 +1975,7 @@ function DecisionIcons({ itemKey, label }: { itemKey: string; label: string }) {
         <X className="h-4 w-4" />
       </button>
     </div>
+
   );
 }
 
