@@ -1734,6 +1734,7 @@ function ReviewStep() {
     { name: "Upload Documentation", status: "pending", placeholder: "Please complete the adult content checklist and upload the required written policies" },
     { name: "Websites", status: "pending", placeholder: "Please add the website details" },
     { name: "Directors & UBOs", status: "complete", placeholder: "Add any notes about directors and UBOs…" },
+    { name: "Adult Content Due Diligence", status: "pending", placeholder: "Please complete the adult content due diligence questionnaire and uploads" },
     { name: "Payment Banks", status: "complete", placeholder: "Add any notes about payment banks…" },
   ];
   const [checked, setChecked] = useState<Record<string, boolean>>(
