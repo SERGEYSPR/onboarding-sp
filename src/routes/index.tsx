@@ -42,7 +42,7 @@ function WelcomePage() {
             </span>
             <Link
               to="/login"
-              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-6 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
               <LogIn className="h-4 w-4" />
               Sign in
@@ -73,14 +73,14 @@ function WelcomePage() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
                 to="/signup"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
               >
                 Start new application
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-surface px-6 py-2 text-sm font-semibold text-foreground hover:bg-muted transition-colors"
               >
                 <LogIn className="h-4 w-4" />
                 Returning user — sign in
