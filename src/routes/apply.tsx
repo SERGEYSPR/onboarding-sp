@@ -658,7 +658,7 @@ function OnboardingPage() {
                 <ArrowLeft className="h-4 w-4" /> Back
               </button>
               <div className="flex items-center gap-2">
-                <button className="s-btn-outline hidden sm:inline-flex px-4 py-2.5">
+                <button className="s-btn-outline hidden sm:inline-flex px-3.5 py-2">
                   <Save className="h-4 w-4" /> Save draft
                 </button>
                 <button
