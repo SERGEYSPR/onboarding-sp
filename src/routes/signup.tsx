@@ -137,6 +137,30 @@ export function AuthShell({
             <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               {children}
             </div>
+
+            <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+              <div className="text-sm font-semibold text-foreground mb-3">
+                Helpful Links
+              </div>
+              <ul className="space-y-2 text-sm">
+                {[
+                  "Merchant FAQ",
+                  "Support Center",
+                  "Documentation Portal",
+                ].map((l) => (
+                  <li key={l}>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+                    >
+                      <LinkIcon className="h-3.5 w-3.5" />
+                      {l}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
           </div>
 
           <div className="relative">
