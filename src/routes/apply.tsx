@@ -646,7 +646,11 @@ function OnboardingPage() {
       {/* Content */}
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
-          <section className="min-w-0">
+          <section
+            className="min-w-0"
+            onInput={() => setDirty(true)}
+            onChange={() => setDirty(true)}
+          >
             <StepContent active={active} />
 
             {/* Footer navigation */}
@@ -654,18 +658,21 @@ function OnboardingPage() {
               <button
                 onClick={() => go(-1)}
                 disabled={index === 0}
-                className="s-btn-outline px-3.5 py-2"
+                className="s-btn-outline px-5 py-2"
               >
                 <ArrowLeft className="h-4 w-4" /> Back
               </button>
               <div className="flex items-center gap-2">
-                <button className="s-btn-outline hidden sm:inline-flex px-3.5 py-2">
+                <button
+                  disabled={!dirty}
+                  className="s-btn-outline hidden sm:inline-flex px-5 py-2"
+                >
                   <Save className="h-4 w-4" /> Save draft
                 </button>
                 <button
                   onClick={() => go(1)}
                   disabled={index === STEPS.length - 1}
-                  className="s-btn-disabled inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+                  className="s-btn-disabled inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
                 >
                   Continue <ArrowRight className="h-4 w-4" />
                 </button>
