@@ -95,24 +95,8 @@ function WelcomePage() {
               .
             </p>
 
-            <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-border">
-              <Feature
-                icon={Clock}
-                title="~20 minutes"
-                desc="Save and resume anytime"
-              />
-              <Feature
-                icon={ShieldCheck}
-                title="Bank-grade security"
-                desc="Your data is encrypted"
-              />
-              <Feature
-                icon={FileCheck}
-                title="10 clear steps"
-                desc="Guided from start to finish"
-              />
-            </div>
           </div>
+
 
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-transparent rounded-3xl blur-2xl" />
