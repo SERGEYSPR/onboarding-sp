@@ -653,18 +653,18 @@ function OnboardingPage() {
               <button
                 onClick={() => go(-1)}
                 disabled={index === 0}
-                className="s-btn-outline px-4 py-2.5"
+                className="s-btn-outline px-3.5 py-2"
               >
                 <ArrowLeft className="h-4 w-4" /> Back
               </button>
               <div className="flex items-center gap-2">
-                <button className="s-btn-outline hidden sm:inline-flex px-4 py-2.5">
+                <button className="s-btn-outline hidden sm:inline-flex px-3.5 py-2">
                   <Save className="h-4 w-4" /> Save draft
                 </button>
                 <button
                   onClick={() => go(1)}
                   disabled={index === STEPS.length - 1}
-                  className="s-btn-disabled inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition"
+                  className="s-btn-disabled inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
                 >
                   Continue <ArrowRight className="h-4 w-4" />
                 </button>
@@ -784,7 +784,7 @@ function StepHelpDialog({
           <button
             type="button"
             onClick={() => onClose(dontShow)}
-            className="w-full rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+            className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
           >
             Close
           </button>
@@ -1099,7 +1099,7 @@ function DirectorsStep() {
         <button
           type="button"
           onClick={() => setShowModal(true)}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm font-semibold text-primary hover:bg-primary/10 transition"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/10 transition"
         >
           <Plus className="h-4 w-4" /> Add Owner (Director / UBO)
         </button>
@@ -1249,14 +1249,14 @@ function OwnerModal({ onClose }: { onClose: () => void }) {
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
           >
             <Save className="h-4 w-4" /> Save
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 rounded-lg border border-destructive/60 px-5 py-2.5 text-sm font-semibold text-destructive hover:bg-destructive/10 transition"
+            className="inline-flex items-center gap-2 rounded-lg border border-destructive/60 px-4 py-2 text-sm font-semibold text-destructive hover:bg-destructive/10 transition"
           >
             <X className="h-4 w-4" /> Cancel
           </button>
@@ -1798,10 +1798,10 @@ function ReviewStep() {
           })}
         </ul>
         <div className="mt-6 grid sm:grid-cols-2 gap-3">
-          <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-destructive px-4 py-3 text-sm font-semibold text-destructive hover:bg-destructive/5 transition">
+          <button className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-destructive px-4 py-2 text-sm font-semibold text-destructive hover:bg-destructive/5 transition">
             Force Review
           </button>
-          <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
+          <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition">
             <ShieldCheck className="h-4 w-4" /> Accept and create MID
           </button>
         </div>
@@ -2085,7 +2085,7 @@ function EddSendBack() {
             merchant must update these before the application can be approved.
           </p>
         </div>
-        <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-destructive px-4 py-3 text-sm font-semibold text-white hover:bg-destructive/90 transition">
+        <button className="inline-flex items-center justify-center gap-2 rounded-lg bg-destructive px-4 py-2 text-sm font-semibold text-white hover:bg-destructive/90 transition">
           <ArrowLeft className="h-4 w-4" /> Send back to merchant
         </button>
       </div>
