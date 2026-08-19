@@ -528,6 +528,7 @@ function OnboardingPage() {
   const index = STEPS.findIndex((s) => s.id === active);
   const progress = useMemo(() => ((index + 1) / STEPS.length) * 100, [index]);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [dirty, setDirty] = useState(false);
   const [hideHelp, setHideHelp] = useState(false);
 
   useEffect(() => {
