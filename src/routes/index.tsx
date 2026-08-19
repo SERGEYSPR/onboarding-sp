@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, LogIn, ShieldCheck, Clock, FileCheck } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
 import heroImage from "@/assets/welcome-hero.jpg";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
