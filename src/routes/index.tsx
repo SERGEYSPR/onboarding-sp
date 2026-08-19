@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, LogIn, ShieldCheck, Clock, FileCheck } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
 import heroImage from "@/assets/welcome-hero.jpg";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
@@ -95,24 +95,8 @@ function WelcomePage() {
               .
             </p>
 
-            <div className="grid sm:grid-cols-3 gap-4 pt-6 border-t border-border">
-              <Feature
-                icon={Clock}
-                title="~20 minutes"
-                desc="Save and resume anytime"
-              />
-              <Feature
-                icon={ShieldCheck}
-                title="Bank-grade security"
-                desc="Your data is encrypted"
-              />
-              <Feature
-                icon={FileCheck}
-                title="10 clear steps"
-                desc="Guided from start to finish"
-              />
-            </div>
           </div>
+
 
           <div className="relative">
             <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-transparent rounded-3xl blur-2xl" />
@@ -135,26 +119,6 @@ function WelcomePage() {
           <span>Need help? support@segpay.com</span>
         </div>
       </footer>
-    </div>
-  );
-}
-
-function Feature({
-  icon: Icon,
-  title,
-  desc,
-}: {
-  icon: React.ComponentType<{ className?: string }>;
-  title: string;
-  desc: string;
-}) {
-  return (
-    <div className="space-y-1">
-      <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4 text-primary" />
-        <div className="text-sm font-semibold text-foreground">{title}</div>
-      </div>
-      <div className="text-xs text-muted-foreground">{desc}</div>
     </div>
   );
 }

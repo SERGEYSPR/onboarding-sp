@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { Mail, Lock, ArrowRight, ArrowLeft } from "lucide-react";
+import { Mail, Lock, ArrowRight, ArrowLeft, Link as LinkIcon } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 import heroImage from "@/assets/welcome-hero.jpg";
 
@@ -33,8 +33,8 @@ function SignupPage() {
   return (
     <AuthShell
       eyebrow="Create account"
-      title="Start your Segpay application"
-      subtitle="Create an account so your progress is saved securely between sessions."
+      title="Welcome to the Merchant Portal!"
+      subtitle="From here you can start the process of integrating with SegPay. But first, we need to verify your identity. After creating a password and clicking Register, we will send an email with a link to verify your email address."
     >
       <form onSubmit={submit} className="space-y-4">
         <AuthField label="Email" icon={Mail}>
@@ -137,6 +137,30 @@ export function AuthShell({
             <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
               {children}
             </div>
+
+            <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+              <div className="text-sm font-semibold text-foreground mb-3">
+                Helpful Links
+              </div>
+              <ul className="space-y-2 text-sm">
+                {[
+                  "Merchant FAQ",
+                  "Support Center",
+                  "Documentation Portal",
+                ].map((l) => (
+                  <li key={l}>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+                    >
+                      <LinkIcon className="h-3.5 w-3.5" />
+                      {l}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
           </div>
 
           <div className="relative">
