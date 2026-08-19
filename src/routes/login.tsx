@@ -68,7 +68,7 @@ function LoginPage() {
 
         <button
           type="submit"
-          className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-md bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
         >
           Sign in & continue <ArrowRight className="h-4 w-4" />
         </button>
