@@ -658,24 +658,31 @@ function OnboardingPage() {
               <button
                 onClick={() => go(-1)}
                 disabled={index === 0}
-                className="s-btn-outline px-5 py-2"
+                className="s-btn-outline px-5"
               >
-                <ArrowLeft className="h-4 w-4" /> Back
+                <span className="s-btn-content">
+                  <ArrowLeft className="h-4 w-4" /> Back
+                </span>
               </button>
               <div className="flex items-center gap-2">
                 <button
                   disabled={!dirty}
-                  className="s-btn-outline hidden sm:inline-flex px-5 py-2"
+                  className="s-btn-outline hidden sm:inline-flex px-5"
                 >
-                  <Save className="h-4 w-4" /> Save draft
+                  <span className="s-btn-content">
+                    <Save className="h-4 w-4" /> Save draft
+                  </span>
                 </button>
                 <button
                   onClick={() => go(1)}
                   disabled={index === STEPS.length - 1}
-                  className="s-btn-disabled inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
+                  className="s-btn-disabled inline-flex items-center justify-center rounded-lg bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition"
                 >
-                  Continue <ArrowRight className="h-4 w-4" />
+                  <span className="s-btn-content">
+                    Continue <ArrowRight className="h-4 w-4" />
+                  </span>
                 </button>
+
 
               </div>
             </div>
