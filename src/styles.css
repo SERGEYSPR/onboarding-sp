@@ -263,6 +263,7 @@
   justify-content: center;
   gap: 4px;
   width: 100%;
+  height: 100%;
   padding: 0.35em 0.1em;
   font-size: 14px;
   line-height: 1.5;
@@ -280,9 +281,5 @@
   .s-btn-submit {
     height: 32px;
   }
-}
-
-@utility s-btn-content {
-  height: 100%;
 }
 
