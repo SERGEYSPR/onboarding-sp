@@ -228,6 +228,7 @@
   font-weight: 600;
   font-size: 14px;
   line-height: 1.5;
+  height: 32px;
   padding: 0.35em 0.1em;
   overflow: hidden;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
@@ -262,6 +263,7 @@
   justify-content: center;
   gap: 4px;
   width: 100%;
+  height: 100%;
   padding: 0.35em 0.1em;
   font-size: 14px;
   line-height: 1.5;
@@ -271,6 +273,13 @@
   button {
     font-size: 14px;
     line-height: 1.5;
+  }
+  button:not([data-slot="switch"]):not(.s-btn-auto-height),
+  a.s-btn,
+  .s-btn-outline,
+  .s-btn-primary,
+  .s-btn-submit {
+    height: 32px;
   }
 }
 
