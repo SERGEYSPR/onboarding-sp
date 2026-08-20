@@ -219,13 +219,16 @@
 @utility s-btn-outline {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
   border-radius: 0.5em;
   border: 1px solid var(--primary);
   background: transparent;
   color: var(--primary);
   font-weight: 600;
-  font-size: var(--layout-fs-sm);
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0.35em 0.1em;
   overflow: hidden;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 
@@ -251,3 +254,23 @@
     opacity: 1;
   }
 }
+
+/* Inner text/icon wrapper inside buttons */
+@utility s-btn-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 0.35em 0.1em;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@layer base {
+  button {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
