@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Landmark,
   Mail,
+  MessageSquarePlus,
   Phone,
   Save,
   Plus,
