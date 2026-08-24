@@ -14,6 +14,7 @@ import {
   HelpCircle,
   Landmark,
   Mail,
+  MessageSquarePlus,
   Phone,
   Save,
   Plus,
@@ -1978,19 +1979,20 @@ function DecisionIcons({ itemKey, label }: { itemKey: string; label: string }) {
     <div className="flex items-center gap-1.5 shrink-0">
       <button
         type="button"
-        aria-label={`Reject ${label}`}
-        title={decision === "rejected" ? "Undo rejection" : "Reject"}
+        aria-label={`Add note for ${label}`}
+        title={decision === "rejected" ? "Remove note" : "Add note"}
         onClick={() =>
           setDecision(itemKey, decision === "rejected" ? "approved" : "rejected")
         }
         className={`inline-flex h-8 w-8 items-center justify-center rounded-lg transition ${
           decision === "rejected"
-            ? "bg-destructive text-white"
-            : "bg-[#f5f5f5] text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            ? "bg-primary text-primary-foreground"
+            : "bg-[#f5f5f5] text-muted-foreground hover:text-primary hover:bg-primary/10"
         }`}
       >
-        <X className="h-4 w-4" />
+        <MessageSquarePlus className="h-4 w-4" />
       </button>
+
     </div>
 
   );
