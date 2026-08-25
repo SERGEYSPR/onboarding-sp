@@ -664,14 +664,55 @@ function OnboardingPage() {
       <main className="mx-auto max-w-7xl px-6 py-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
           <section
+            ref={formRef as React.RefObject<HTMLElement>}
             className="min-w-0"
             onInput={() => setDirty(true)}
             onChange={() => setDirty(true)}
           >
             <StepContent active={active} />
 
+            {errors.length > 0 && (
+              <div
+                role="alert"
+                className="mt-8 rounded-2xl border border-destructive/30 bg-destructive/5 p-5 animate-in fade-in slide-in-from-bottom-2"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-destructive/10">
+                    <AlertCircle className="h-4 w-4 text-destructive" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold text-destructive">
+                      {errors.length} {errors.length === 1 ? "field needs" : "fields need"} your
+                      attention before continuing
+                    </div>
+                    <ul className="mt-2 space-y-1">
+                      {errors.slice(0, 6).map((e, i) => (
+                        <li key={`${e.label}-${i}`} className="text-xs text-destructive/90">
+                          <span className="font-medium">{e.label}</span> — {e.message}
+                        </li>
+                      ))}
+                      {errors.length > 6 && (
+                        <li className="text-xs text-destructive/70">
+                          +{errors.length - 6} more highlighted below
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setErrors([])}
+                    aria-label="Dismiss errors"
+                    className="text-destructive/60 hover:text-destructive transition"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* Footer navigation */}
             <div className="mt-8 flex items-center justify-between border-t border-border pt-6">
+
               <button
                 onClick={() => go(-1)}
                 disabled={index === 0}
