@@ -25,6 +25,7 @@ import {
   Users,
   X,
   AlertCircle,
+  Info,
   AlertTriangle,
 } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
@@ -1050,7 +1051,6 @@ function Field({
       <div className="text-xs font-medium text-foreground mb-1.5 flex items-center gap-1">
         <span data-field-label-text>{label}</span>
         {required && <span className="text-destructive">*</span>}
-        <AlertTriangle className="hidden h-3.5 w-3.5 text-destructive [.is-invalid_&]:block" />
         {info && <InfoTip text={info} />}
       </div>
       {content}
@@ -1058,8 +1058,7 @@ function Field({
         data-error
         className="hidden mt-1.5 items-center gap-1.5 text-xs font-medium text-destructive"
       >
-        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
-
+        <Info className="h-3.5 w-3.5 shrink-0" />
         <span data-error-text />
       </p>
       {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
