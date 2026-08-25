@@ -551,10 +551,25 @@ function OnboardingPage() {
     setHelpOpen(false);
   };
 
+  const formRef = useRef<HTMLElement>(null);
+  const [errors, setErrors] = useState<{ label: string; message: string }[]>([]);
+
   const go = (dir: 1 | -1) => {
+    if (dir === 1 && formRef.current) {
+      const found = validateScope(formRef.current);
+      if (found.length) {
+        setErrors(found.map((e) => ({ label: e.label, message: e.message })));
+        found[0]?.el.scrollIntoView({ behavior: "smooth", block: "center" });
+        found[0]?.el.focus({ preventScroll: true });
+        return;
+      }
+    }
+    setErrors([]);
     const next = STEPS[Math.min(STEPS.length - 1, Math.max(0, index + dir))];
     setActive(next.id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
 
   return (
     <div className="min-h-screen bg-background">
