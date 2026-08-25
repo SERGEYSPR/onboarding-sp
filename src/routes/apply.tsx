@@ -981,9 +981,15 @@ function messageFor(el: Control): string | null {
 
 function paintError(el: Control, message: string | null) {
   const field = el.closest<HTMLElement>("[data-field]");
+  const wrap = el.closest<HTMLElement>(".s-input-wrap");
   const slot = field?.querySelector<HTMLElement>("[data-error]");
-  if (message) {
-    el.classList.add(...ERROR_CLASSES);
+  const invalid = Boolean(message);
+
+  wrap?.classList.toggle("is-invalid", invalid);
+  field?.classList.toggle("is-invalid", invalid);
+  if (!wrap) el.classList.toggle("!bg-[#fdeceb]", invalid);
+
+  if (invalid) {
     el.setAttribute("aria-invalid", "true");
     if (slot) {
       slot.classList.remove("hidden");
@@ -992,7 +998,6 @@ function paintError(el: Control, message: string | null) {
       if (text) text.textContent = message;
     }
   } else {
-    el.classList.remove(...ERROR_CLASSES);
     el.removeAttribute("aria-invalid");
     if (slot) {
       slot.classList.add("hidden");
@@ -1000,6 +1005,7 @@ function paintError(el: Control, message: string | null) {
     }
   }
 }
+
 
 function validateScope(scope: HTMLElement) {
   const controls = Array.from(
