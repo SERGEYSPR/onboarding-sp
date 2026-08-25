@@ -966,12 +966,15 @@ function messageFor(el: Control): string | null {
     if (el.type === "date" && Number.isNaN(new Date(value).getTime()))
       return "Enter a valid date.";
   }
-  if (el.maxLength > 0 && value.length > el.maxLength)
-    return `Use ${el.maxLength} characters or fewer.`;
-  if (el.minLength > 0 && value.length < el.minLength)
-    return `Use at least ${el.minLength} characters.`;
-  if ("pattern" in el && el.pattern && !new RegExp(`^(?:${el.pattern})$`).test(value))
+  if (!(el instanceof HTMLSelectElement)) {
+    if (el.maxLength > 0 && value.length > el.maxLength)
+      return `Use ${el.maxLength} characters or fewer.`;
+    if (el.minLength > 0 && value.length < el.minLength)
+      return `Use at least ${el.minLength} characters.`;
+  }
+  if (el instanceof HTMLInputElement && el.pattern && !new RegExp(`^(?:${el.pattern})$`).test(value))
     return "Please match the requested format.";
+
   return null;
 }
 
