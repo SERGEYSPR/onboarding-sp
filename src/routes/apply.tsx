@@ -25,6 +25,7 @@ import {
   Users,
   X,
   AlertCircle,
+  AlertTriangle,
 } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
@@ -933,7 +934,7 @@ function StepShell({
 type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-const ERROR_CLASSES = ["!bg-destructive/5", "!border-destructive", "ring-2", "ring-destructive/20"];
+
 
 function labelOf(el: Control) {
   const field = el.closest<HTMLElement>("[data-field]");
@@ -980,9 +981,15 @@ function messageFor(el: Control): string | null {
 
 function paintError(el: Control, message: string | null) {
   const field = el.closest<HTMLElement>("[data-field]");
+  const wrap = el.closest<HTMLElement>(".s-input-wrap");
   const slot = field?.querySelector<HTMLElement>("[data-error]");
-  if (message) {
-    el.classList.add(...ERROR_CLASSES);
+  const invalid = Boolean(message);
+
+  wrap?.classList.toggle("is-invalid", invalid);
+  field?.classList.toggle("is-invalid", invalid);
+  if (!wrap) el.classList.toggle("!bg-[#fdeceb]", invalid);
+
+  if (invalid) {
     el.setAttribute("aria-invalid", "true");
     if (slot) {
       slot.classList.remove("hidden");
@@ -991,7 +998,6 @@ function paintError(el: Control, message: string | null) {
       if (text) text.textContent = message;
     }
   } else {
-    el.classList.remove(...ERROR_CLASSES);
     el.removeAttribute("aria-invalid");
     if (slot) {
       slot.classList.add("hidden");
@@ -999,6 +1005,7 @@ function paintError(el: Control, message: string | null) {
     }
   }
 }
+
 
 function validateScope(scope: HTMLElement) {
   const controls = Array.from(
@@ -1041,8 +1048,9 @@ function Field({
   return (
     <label className="block" data-field data-field-label={label}>
       <div className="text-xs font-medium text-foreground mb-1.5 flex items-center gap-1">
-        {label}
+        <span data-field-label-text>{label}</span>
         {required && <span className="text-destructive">*</span>}
+        <AlertTriangle className="hidden h-3.5 w-3.5 text-destructive [.is-invalid_&]:block" />
         {info && <InfoTip text={info} />}
       </div>
       {content}
@@ -1051,6 +1059,7 @@ function Field({
         className="hidden mt-1.5 items-center gap-1.5 text-xs font-medium text-destructive"
       >
         <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+
         <span data-error-text />
       </p>
       {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
@@ -1078,9 +1087,9 @@ function Input({
 }) {
   const v = useFieldValidation<HTMLInputElement>();
   return (
-    <div className="relative">
+    <div className="s-input-wrap">
       {Icon && (
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary z-10" />
       )}
       <input
         {...props}
@@ -1094,7 +1103,7 @@ function Input({
         }}
         className={`w-full rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
-        } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
+        } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none transition-colors`}
       />
     </div>
   );
@@ -1111,9 +1120,9 @@ function Select({
 }) {
   const v = useFieldValidation<HTMLSelectElement>();
   return (
-    <div className="relative">
+    <div className="s-input-wrap">
       {Icon && (
-        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
+        <Icon className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary z-10" />
       )}
       <select
         {...props}
@@ -1127,13 +1136,14 @@ function Select({
         }}
         className={`w-full appearance-none rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
-        } pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
+        } pr-9 py-2.5 text-sm focus:outline-none transition-colors`}
       >
         {children}
       </select>
       <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
     </div>
   );
+
 }
 
 
