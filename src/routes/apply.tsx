@@ -867,6 +867,89 @@ function StepShell({
   );
 }
 
+/* -------- validation engine -------- */
+
+type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+const ERROR_CLASSES = ["!bg-destructive/5", "!border-destructive", "ring-2", "ring-destructive/20"];
+
+function labelOf(el: Control) {
+  const field = el.closest<HTMLElement>("[data-field]");
+  return field?.dataset.fieldLabel || "This field";
+}
+
+function messageFor(el: Control): string | null {
+  const value = "value" in el ? String(el.value ?? "").trim() : "";
+  const isCheckbox = el instanceof HTMLInputElement && el.type === "checkbox";
+
+  if (el.hasAttribute("required")) {
+    if (isCheckbox && !el.checked) return "Please confirm this to continue.";
+    if (!isCheckbox && value === "") return `${labelOf(el)} is required.`;
+  }
+  if (!value) return null;
+
+  if (el instanceof HTMLInputElement) {
+    if (el.type === "email" && !EMAIL_RE.test(value))
+      return "Enter a valid email address, e.g. name@company.com.";
+    if (el.type === "url" && !/^https?:\/\/[^\s.]+\.[^\s]{2,}$/i.test(value))
+      return "Enter a full URL starting with https://";
+    if (el.type === "tel" && !/^[+\d][\d\s()\-.]{6,}$/.test(value))
+      return "Enter a valid phone number (digits, spaces, + and - only).";
+    if (el.type === "number") {
+      const n = Number(value);
+      if (Number.isNaN(n)) return "Enter a number.";
+      if (el.min !== "" && n < Number(el.min)) return `Enter a value of at least ${el.min}.`;
+      if (el.max !== "" && n > Number(el.max)) return `Enter a value no greater than ${el.max}.`;
+    }
+    if (el.type === "date" && Number.isNaN(new Date(value).getTime()))
+      return "Enter a valid date.";
+  }
+  if (el.maxLength > 0 && value.length > el.maxLength)
+    return `Use ${el.maxLength} characters or fewer.`;
+  if (el.minLength > 0 && value.length < el.minLength)
+    return `Use at least ${el.minLength} characters.`;
+  if ("pattern" in el && el.pattern && !new RegExp(`^(?:${el.pattern})$`).test(value))
+    return "Please match the requested format.";
+  return null;
+}
+
+function paintError(el: Control, message: string | null) {
+  const field = el.closest<HTMLElement>("[data-field]");
+  const slot = field?.querySelector<HTMLElement>("[data-error]");
+  if (message) {
+    el.classList.add(...ERROR_CLASSES);
+    el.setAttribute("aria-invalid", "true");
+    if (slot) {
+      slot.classList.remove("hidden");
+      slot.classList.add("flex");
+      const text = slot.querySelector("[data-error-text]");
+      if (text) text.textContent = message;
+    }
+  } else {
+    el.classList.remove(...ERROR_CLASSES);
+    el.removeAttribute("aria-invalid");
+    if (slot) {
+      slot.classList.add("hidden");
+      slot.classList.remove("flex");
+    }
+  }
+}
+
+function validateScope(scope: HTMLElement) {
+  const controls = Array.from(
+    scope.querySelectorAll<Control>("input, select, textarea"),
+  ).filter((el) => !el.disabled && el.type !== "hidden" && el.offsetParent !== null);
+
+  const errors: { el: Control; message: string; label: string }[] = [];
+  controls.forEach((el) => {
+    const message = messageFor(el);
+    paintError(el, message);
+    if (message) errors.push({ el, message, label: labelOf(el) });
+  });
+  return errors;
+}
+
 function Field({
   label,
   required,
@@ -880,25 +963,56 @@ function Field({
   info?: string;
   children: React.ReactNode;
 }) {
+  const content = required
+    ? React.Children.map(children, (child) =>
+        React.isValidElement(child) &&
+        (child.props as Record<string, unknown>).required === undefined
+          ? React.cloneElement(child as React.ReactElement<Record<string, unknown>>, {
+              required: true,
+            })
+          : child,
+      )
+    : children;
+
   return (
-    <label className="block">
+    <label className="block" data-field data-field-label={label}>
       <div className="text-xs font-medium text-foreground mb-1.5 flex items-center gap-1">
         {label}
         {required && <span className="text-destructive">*</span>}
         {info && <InfoTip text={info} />}
       </div>
-      {children}
+      {content}
+      <p
+        data-error
+        className="hidden mt-1.5 items-center gap-1.5 text-xs font-medium text-destructive"
+      >
+        <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+        <span data-error-text />
+      </p>
       {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
     </label>
   );
 }
 
+function useFieldValidation<T extends Control>() {
+  return {
+    onBlur: (e: React.FocusEvent<T>) => paintError(e.currentTarget, messageFor(e.currentTarget)),
+    onInput: (e: React.FormEvent<T>) => {
+      const el = e.currentTarget;
+      if (el.getAttribute("aria-invalid") === "true") paintError(el, messageFor(el));
+    },
+  };
+}
+
 function Input({
   icon: Icon,
+  onBlur,
+  onInput,
   ...props
 }: React.InputHTMLAttributes<HTMLInputElement> & {
   icon?: React.ComponentType<{ className?: string }>;
 }) {
+  const v = useFieldValidation<HTMLInputElement>();
   return (
     <div className="relative">
       {Icon && (
@@ -906,6 +1020,14 @@ function Input({
       )}
       <input
         {...props}
+        onBlur={(e) => {
+          v.onBlur(e);
+          onBlur?.(e);
+        }}
+        onInput={(e) => {
+          v.onInput(e);
+          onInput?.(e);
+        }}
         className={`w-full rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
         } pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
@@ -917,10 +1039,13 @@ function Input({
 function Select({
   icon: Icon,
   children,
+  onBlur,
+  onChange,
   ...props
 }: React.SelectHTMLAttributes<HTMLSelectElement> & {
   icon?: React.ComponentType<{ className?: string }>;
 }) {
+  const v = useFieldValidation<HTMLSelectElement>();
   return (
     <div className="relative">
       {Icon && (
@@ -928,6 +1053,14 @@ function Select({
       )}
       <select
         {...props}
+        onBlur={(e) => {
+          v.onBlur(e);
+          onBlur?.(e);
+        }}
+        onChange={(e) => {
+          paintError(e.currentTarget, messageFor(e.currentTarget));
+          onChange?.(e);
+        }}
         className={`w-full appearance-none rounded-lg border border-transparent bg-[#f5f5f5] ${
           Icon ? "pl-9" : "pl-3"
         } pr-9 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-ring transition`}
@@ -938,6 +1071,7 @@ function Select({
     </div>
   );
 }
+
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
