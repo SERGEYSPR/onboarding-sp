@@ -554,6 +554,11 @@ function OnboardingPage() {
   const formRef = useRef<HTMLElement>(null);
   const [errors, setErrors] = useState<{ label: string; message: string }[]>([]);
 
+  useEffect(() => {
+    setErrors([]);
+  }, [active]);
+
+
   const go = (dir: 1 | -1) => {
     if (dir === 1 && formRef.current) {
       const found = validateScope(formRef.current);
