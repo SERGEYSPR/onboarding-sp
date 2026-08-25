@@ -26,6 +26,7 @@ import {
   X,
   AlertCircle,
   AlertTriangle,
+  AlertTriangle,
 } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
