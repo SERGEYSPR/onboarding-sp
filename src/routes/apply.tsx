@@ -934,7 +934,7 @@ function StepShell({
 type Control = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
-const ERROR_CLASSES = ["!bg-destructive/5", "!border-destructive", "ring-2", "ring-destructive/20"];
+
 
 function labelOf(el: Control) {
   const field = el.closest<HTMLElement>("[data-field]");
