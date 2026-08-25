@@ -24,6 +24,7 @@ import {
   User,
   Users,
   X,
+  AlertCircle,
 } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
