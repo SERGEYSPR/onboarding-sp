@@ -283,3 +283,53 @@
 
 }
 
+
+/* ---------- Field states (focus / valid / error) ---------- */
+
+/* Wrapper around an input/select/textarea; draws the animated underline */
+@utility s-input-wrap {
+  position: relative;
+  border-radius: 0.5em;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease;
+    pointer-events: none;
+  }
+
+  &:focus-within::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Error state: pink fill + persistent red underline */
+.s-input-wrap.is-invalid::after {
+  background: var(--destructive);
+  transform: scaleX(1);
+}
+
+.s-input-wrap.is-invalid input,
+.s-input-wrap.is-invalid select,
+.s-input-wrap.is-invalid textarea {
+  background: #fdeceb !important;
+  color: #000;
+}
+
+.s-input-wrap.is-invalid input::placeholder,
+.s-input-wrap.is-invalid textarea::placeholder {
+  color: color-mix(in oklab, var(--destructive) 65%, #767676);
+}
+
+/* Label turns red when the field is invalid */
+[data-field].is-invalid [data-field-label-text] {
+  color: var(--destructive);
+}
