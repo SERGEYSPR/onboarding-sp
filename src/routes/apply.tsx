@@ -1079,9 +1079,9 @@ function Field({
         data-error
         className="hidden mt-1.5 items-center gap-1.5 text-xs font-medium text-destructive"
       >
-        <Info className="h-3.5 w-3.5 shrink-0" />
         <span data-error-text />
       </p>
+
       {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
     </label>
   );
