@@ -2353,9 +2353,19 @@ function QuestionCard({
 }) {
   const itemKey = `Question ${n}`;
   const { decision } = useEddDecision(itemKey);
+  const [answer, setAnswer] = useState<"yes" | "no" | null>(null);
+  const usesYesNo = !children;
   return (
     <div
-      className={`rounded-2xl border bg-surface p-5 ${
+      {...(usesYesNo
+        ? {
+            "data-required-group": "",
+            "data-filled": answer ? "true" : "false",
+            "data-group-label": `Question ${n}`,
+            "data-group-message": "Select Yes or No to answer this question.",
+          }
+        : {})}
+      className={`s-question-group rounded-2xl border bg-surface p-5 ${
         decision === "rejected"
           ? "border-destructive/50"
           : decision === "approved"
@@ -2376,7 +2386,19 @@ function QuestionCard({
           {hint && (
             <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{hint}</p>
           )}
-          {children ?? <YesNo name={`q${n}`} />}
+          {children ?? (
+            <YesNo
+              name={`q${n}`}
+              value={answer}
+              onChange={(v, el) => {
+                setAnswer(v);
+                const group = el.closest<HTMLElement>("[data-required-group]");
+                group?.classList.remove("is-group-invalid");
+                group?.querySelector<HTMLElement>("[data-group-error]")?.classList.add("hidden");
+              }}
+            />
+          )}
+          {usesYesNo && <GroupError />}
           {decision === "rejected" && (
             <RejectionNotes placeholder="Explain what the merchant needs to correct for this question" />
           )}
@@ -2385,6 +2407,7 @@ function QuestionCard({
       </div>
     </div>
   );
+
 }
 
 
