@@ -2157,8 +2157,21 @@ function Tag({
   );
 }
 
-function YesNo({ name }: { name: string }) {
-  const [value, setValue] = useState<"yes" | "no" | null>(null);
+function YesNo({
+  name,
+  value: controlled,
+  onChange,
+}: {
+  name: string;
+  value?: "yes" | "no" | null;
+  onChange?: (v: "yes" | "no", el: HTMLElement) => void;
+}) {
+  const [internal, setInternal] = useState<"yes" | "no" | null>(null);
+  const value = controlled !== undefined ? controlled : internal;
+  const pick = (v: "yes" | "no", el: HTMLElement) => {
+    setInternal(v);
+    onChange?.(v, el);
+  };
   return (
     <div className="mt-3">
       <div
@@ -2170,7 +2183,7 @@ function YesNo({ name }: { name: string }) {
           type="button"
           role="radio"
           aria-checked={value === "yes"}
-          onClick={() => setValue("yes")}
+          onClick={(e) => pick("yes", e.currentTarget)}
           className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
             value === "yes"
               ? "bg-primary text-primary-foreground shadow"
@@ -2183,7 +2196,7 @@ function YesNo({ name }: { name: string }) {
           type="button"
           role="radio"
           aria-checked={value === "no"}
-          onClick={() => setValue("no")}
+          onClick={(e) => pick("no", e.currentTarget)}
           className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
             value === "no"
               ? "bg-gray-400 text-white shadow"
@@ -2196,6 +2209,7 @@ function YesNo({ name }: { name: string }) {
     </div>
   );
 }
+
 
 function UploadTile({
   title,
