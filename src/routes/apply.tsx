@@ -2206,9 +2206,15 @@ function UploadTile({
 }) {
   const itemKey = title;
   const { decision } = useEddDecision(itemKey);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <div
-      className={`rounded-2xl border bg-surface p-5 ${
+      data-required-group
+      data-filled={fileName ? "true" : "false"}
+      data-group-label={title}
+      data-group-message={`Upload «${title}» to continue.`}
+      className={`s-upload-group rounded-2xl border bg-surface p-5 ${
         decision === "rejected"
           ? "border-destructive/50"
           : decision === "approved"
@@ -2229,18 +2235,38 @@ function UploadTile({
           <li key={b}>{b}</li>
         ))}
       </ul>
-      <div className="mt-4 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer">
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="s-dropzone mt-4 w-full rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer"
+      >
         <Upload className="h-5 w-5 mx-auto text-primary" />
         <div className="mt-2 text-sm font-medium">Add «{title}»</div>
         <div className="text-xs text-muted-foreground mt-0.5">
-          Drag files here or click to select
+          {fileName ?? "Drag files here or click to select"}
         </div>
-      </div>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        className="hidden"
+        onChange={(e) => {
+          const name = e.target.files?.[0]?.name ?? null;
+          setFileName(name);
+          if (name) {
+            const group = e.target.closest<HTMLElement>("[data-required-group]");
+            group?.classList.remove("is-group-invalid");
+            group?.querySelector<HTMLElement>("[data-group-error]")?.classList.add("hidden");
+          }
+        }}
+      />
+      <GroupError />
       {decision === "rejected" && (
         <RejectionNotes placeholder="Explain what the merchant needs to correct in this document" />
       )}
     </div>
   );
+
 }
 
 function useEddDecision(itemKey: string) {
