@@ -1802,7 +1802,68 @@ function ContactsStep() {
   );
 }
 
+function GroupError() {
+  return (
+    <p
+      data-group-error
+      className="hidden mt-2 text-xs font-medium text-destructive"
+    />
+  );
+}
+
+function DocRequirement({ title }: { title: string }) {
+  const [fileName, setFileName] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const clearError = (el: HTMLElement | null) => {
+    const group = el?.closest<HTMLElement>("[data-required-group]");
+    group?.classList.remove("is-group-invalid");
+    const slot = group?.querySelector<HTMLElement>("[data-group-error]");
+    slot?.classList.add("hidden");
+  };
+
+  return (
+    <div
+      data-required-group
+      data-filled={fileName ? "true" : "false"}
+      data-group-label={title}
+      data-group-message={`Upload «${title}» to continue.`}
+      className="s-upload-group rounded-2xl"
+    >
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="s-dropzone group w-full text-left rounded-2xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
+      >
+        <div className="flex items-start gap-3">
+          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center transition">
+            <Upload className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <div className="text-sm font-semibold">{title}</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {fileName ?? "Drop files here or click to browse"}
+            </div>
+          </div>
+        </div>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        className="hidden"
+        onChange={(e) => {
+          const name = e.target.files?.[0]?.name ?? null;
+          setFileName(name);
+          if (name) clearError(e.target);
+        }}
+      />
+      <GroupError />
+    </div>
+  );
+}
+
 function DocumentsStep() {
+
   const docs = [
     "Tax Document (SS4 or W9 form)",
     "Proof of Address (Utility Bill)",
