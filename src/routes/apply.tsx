@@ -2102,7 +2102,52 @@ function ReviewStep() {
 
 /* -------------------- EDD (Adult Content Due Diligence) -------------------- */
 
+function RadioGroupField({
+  name,
+  options,
+}: {
+  name: string;
+  options: string[];
+}) {
+  const [value, setValue] = useState<string | null>(null);
+  return (
+    <div className="mt-3 grid gap-3" role="radiogroup">
+      {options.map((opt) => {
+        const on = value === opt;
+        return (
+          <label
+            key={opt}
+            className={`w-full flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm cursor-pointer transition ${
+              on
+                ? "border-primary bg-accent/40 text-foreground"
+                : "border-border bg-surface hover:bg-muted"
+            }`}
+          >
+            <input
+              type="radio"
+              name={name}
+              value={opt}
+              checked={on}
+              onChange={() => setValue(opt)}
+              className="sr-only"
+            />
+            <span
+              className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition ${
+                on ? "border-primary" : "border-border"
+              }`}
+            >
+              {on && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
+            </span>
+            <span>{opt}</span>
+          </label>
+        );
+      })}
+    </div>
+  );
+}
+
 function ContentTypeCheck({
+
   label,
   defaultChecked = false,
 }: {
