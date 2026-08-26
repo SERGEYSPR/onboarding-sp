@@ -1013,14 +1013,35 @@ function validateScope(scope: HTMLElement) {
     scope.querySelectorAll<Control>("input, select, textarea"),
   ).filter((el) => !el.disabled && el.type !== "hidden" && el.offsetParent !== null);
 
-  const errors: { el: Control; message: string; label: string }[] = [];
+  const errors: { el: HTMLElement; message: string; label: string }[] = [];
   controls.forEach((el) => {
     const message = messageFor(el);
     paintError(el, message);
     if (message) errors.push({ el, message, label: labelOf(el) });
   });
+
+  Array.from(scope.querySelectorAll<HTMLElement>("[data-required-group]"))
+    .filter((el) => el.offsetParent !== null)
+    .forEach((el) => {
+      const ok = el.getAttribute("data-filled") === "true";
+      const message = el.getAttribute("data-group-message") || "This field is required.";
+      el.classList.toggle("is-group-invalid", !ok);
+      const slot = el.querySelector<HTMLElement>("[data-group-error]");
+      if (slot) {
+        slot.classList.toggle("hidden", ok);
+        slot.textContent = ok ? "" : message;
+      }
+      if (!ok)
+        errors.push({
+          el,
+          message,
+          label: el.getAttribute("data-group-label") || "Required item",
+        });
+    });
+
   return errors;
 }
+
 
 function Field({
   label,
