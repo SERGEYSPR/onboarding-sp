@@ -25,8 +25,6 @@ import {
   Users,
   X,
   AlertCircle,
-  Info,
-  AlertTriangle,
 } from "lucide-react";
 import segpayLogo from "@/assets/logo_blue.png.asset.json";
 
@@ -1013,14 +1011,35 @@ function validateScope(scope: HTMLElement) {
     scope.querySelectorAll<Control>("input, select, textarea"),
   ).filter((el) => !el.disabled && el.type !== "hidden" && el.offsetParent !== null);
 
-  const errors: { el: Control; message: string; label: string }[] = [];
+  const errors: { el: HTMLElement; message: string; label: string }[] = [];
   controls.forEach((el) => {
     const message = messageFor(el);
     paintError(el, message);
     if (message) errors.push({ el, message, label: labelOf(el) });
   });
+
+  Array.from(scope.querySelectorAll<HTMLElement>("[data-required-group]"))
+    .filter((el) => el.offsetParent !== null)
+    .forEach((el) => {
+      const ok = el.getAttribute("data-filled") === "true";
+      const message = el.getAttribute("data-group-message") || "This field is required.";
+      el.classList.toggle("is-group-invalid", !ok);
+      const slot = el.querySelector<HTMLElement>("[data-group-error]");
+      if (slot) {
+        slot.classList.toggle("hidden", ok);
+        slot.textContent = ok ? "" : message;
+      }
+      if (!ok)
+        errors.push({
+          el,
+          message,
+          label: el.getAttribute("data-group-label") || "Required item",
+        });
+    });
+
   return errors;
 }
+
 
 function Field({
   label,
@@ -1058,9 +1077,9 @@ function Field({
         data-error
         className="hidden mt-1.5 items-center gap-1.5 text-xs font-medium text-destructive"
       >
-        <Info className="h-3.5 w-3.5 shrink-0" />
         <span data-error-text />
       </p>
+
       {hint && <div className="mt-1.5 text-xs text-muted-foreground">{hint}</div>}
     </label>
   );
@@ -1782,7 +1801,68 @@ function ContactsStep() {
   );
 }
 
+function GroupError() {
+  return (
+    <p
+      data-group-error
+      className="hidden mt-2 text-xs font-medium text-destructive"
+    />
+  );
+}
+
+function DocRequirement({ title }: { title: string }) {
+  const [fileName, setFileName] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const clearError = (el: HTMLElement | null) => {
+    const group = el?.closest<HTMLElement>("[data-required-group]");
+    group?.classList.remove("is-group-invalid");
+    const slot = group?.querySelector<HTMLElement>("[data-group-error]");
+    slot?.classList.add("hidden");
+  };
+
+  return (
+    <div
+      data-required-group
+      data-filled={fileName ? "true" : "false"}
+      data-group-label={title}
+      data-group-message={`Upload «${title}» to continue.`}
+      className="s-upload-group rounded-2xl"
+    >
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="s-dropzone group w-full text-left rounded-2xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
+      >
+        <div className="flex items-start gap-3">
+          <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center transition">
+            <Upload className="h-5 w-5 text-primary" />
+          </div>
+          <div className="flex-1">
+            <div className="text-sm font-semibold">{title}</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              {fileName ?? "Drop files here or click to browse"}
+            </div>
+          </div>
+        </div>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        className="hidden"
+        onChange={(e) => {
+          const name = e.target.files?.[0]?.name ?? null;
+          setFileName(name);
+          if (name) clearError(e.target);
+        }}
+      />
+      <GroupError />
+    </div>
+  );
+}
+
 function DocumentsStep() {
+
   const docs = [
     "Tax Document (SS4 or W9 form)",
     "Proof of Address (Utility Bill)",
@@ -1799,24 +1879,10 @@ function DocumentsStep() {
     >
       <div className="grid md:grid-cols-2 gap-4">
         {docs.map((d) => (
-          <div
-            key={d}
-            className="group rounded-2xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
-          >
-            <div className="flex items-start gap-3">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center transition">
-                <Upload className="h-5 w-5 text-primary" />
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-semibold">{d}</div>
-                <div className="text-xs text-muted-foreground mt-1">
-                  Drop files here or click to browse
-                </div>
-              </div>
-            </div>
-          </div>
+          <DocRequirement key={d} title={d} />
         ))}
       </div>
+
 
       <div className="mt-6">
       <Card>
@@ -2090,8 +2156,21 @@ function Tag({
   );
 }
 
-function YesNo({ name }: { name: string }) {
-  const [value, setValue] = useState<"yes" | "no" | null>(null);
+function YesNo({
+  name,
+  value: controlled,
+  onChange,
+}: {
+  name: string;
+  value?: "yes" | "no" | null;
+  onChange?: (v: "yes" | "no", el: HTMLElement) => void;
+}) {
+  const [internal, setInternal] = useState<"yes" | "no" | null>(null);
+  const value = controlled !== undefined ? controlled : internal;
+  const pick = (v: "yes" | "no", el: HTMLElement) => {
+    setInternal(v);
+    onChange?.(v, el);
+  };
   return (
     <div className="mt-3">
       <div
@@ -2103,7 +2182,7 @@ function YesNo({ name }: { name: string }) {
           type="button"
           role="radio"
           aria-checked={value === "yes"}
-          onClick={() => setValue("yes")}
+          onClick={(e) => pick("yes", e.currentTarget)}
           className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
             value === "yes"
               ? "bg-primary text-primary-foreground shadow"
@@ -2116,7 +2195,7 @@ function YesNo({ name }: { name: string }) {
           type="button"
           role="radio"
           aria-checked={value === "no"}
-          onClick={() => setValue("no")}
+          onClick={(e) => pick("no", e.currentTarget)}
           className={`flex-1 rounded-full text-[11px] font-semibold uppercase tracking-wide transition ${
             value === "no"
               ? "bg-gray-400 text-white shadow"
@@ -2130,6 +2209,7 @@ function YesNo({ name }: { name: string }) {
   );
 }
 
+
 function UploadTile({
   title,
   bullets,
@@ -2139,9 +2219,15 @@ function UploadTile({
 }) {
   const itemKey = title;
   const { decision } = useEddDecision(itemKey);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   return (
     <div
-      className={`rounded-2xl border bg-surface p-5 ${
+      data-required-group
+      data-filled={fileName ? "true" : "false"}
+      data-group-label={title}
+      data-group-message={`Upload «${title}» to continue.`}
+      className={`s-upload-group rounded-2xl border bg-surface p-5 ${
         decision === "rejected"
           ? "border-destructive/50"
           : decision === "approved"
@@ -2162,18 +2248,38 @@ function UploadTile({
           <li key={b}>{b}</li>
         ))}
       </ul>
-      <div className="mt-4 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer">
+      <button
+        type="button"
+        onClick={() => inputRef.current?.click()}
+        className="s-dropzone mt-4 w-full rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center hover:border-primary hover:bg-accent/30 transition cursor-pointer"
+      >
         <Upload className="h-5 w-5 mx-auto text-primary" />
         <div className="mt-2 text-sm font-medium">Add «{title}»</div>
         <div className="text-xs text-muted-foreground mt-0.5">
-          Drag files here or click to select
+          {fileName ?? "Drag files here or click to select"}
         </div>
-      </div>
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        className="hidden"
+        onChange={(e) => {
+          const name = e.target.files?.[0]?.name ?? null;
+          setFileName(name);
+          if (name) {
+            const group = e.target.closest<HTMLElement>("[data-required-group]");
+            group?.classList.remove("is-group-invalid");
+            group?.querySelector<HTMLElement>("[data-group-error]")?.classList.add("hidden");
+          }
+        }}
+      />
+      <GroupError />
       {decision === "rejected" && (
         <RejectionNotes placeholder="Explain what the merchant needs to correct in this document" />
       )}
     </div>
   );
+
 }
 
 function useEddDecision(itemKey: string) {
@@ -2260,9 +2366,19 @@ function QuestionCard({
 }) {
   const itemKey = `Question ${n}`;
   const { decision } = useEddDecision(itemKey);
+  const [answer, setAnswer] = useState<"yes" | "no" | null>(null);
+  const usesYesNo = !children;
   return (
     <div
-      className={`rounded-2xl border bg-surface p-5 ${
+      {...(usesYesNo
+        ? {
+            "data-required-group": "",
+            "data-filled": answer ? "true" : "false",
+            "data-group-label": `Question ${n}`,
+            "data-group-message": "Select Yes or No to answer this question.",
+          }
+        : {})}
+      className={`s-question-group rounded-2xl border bg-surface p-5 ${
         decision === "rejected"
           ? "border-destructive/50"
           : decision === "approved"
@@ -2283,7 +2399,19 @@ function QuestionCard({
           {hint && (
             <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">{hint}</p>
           )}
-          {children ?? <YesNo name={`q${n}`} />}
+          {children ?? (
+            <YesNo
+              name={`q${n}`}
+              value={answer}
+              onChange={(v, el) => {
+                setAnswer(v);
+                const group = el.closest<HTMLElement>("[data-required-group]");
+                group?.classList.remove("is-group-invalid");
+                group?.querySelector<HTMLElement>("[data-group-error]")?.classList.add("hidden");
+              }}
+            />
+          )}
+          {usesYesNo && <GroupError />}
           {decision === "rejected" && (
             <RejectionNotes placeholder="Explain what the merchant needs to correct for this question" />
           )}
@@ -2292,6 +2420,7 @@ function QuestionCard({
       </div>
     </div>
   );
+
 }
 
 

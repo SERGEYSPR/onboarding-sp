@@ -333,3 +333,20 @@
 [data-field].is-invalid [data-field-label-text] {
   color: var(--destructive);
 }
+
+/* ---------- Required group states (uploads / questions) ---------- */
+
+.is-group-invalid.s-question-group,
+.is-group-invalid.s-upload-group {
+  border-color: var(--destructive) !important;
+}
+
+.is-group-invalid .s-dropzone {
+  border-color: var(--destructive) !important;
+  background: #fdeceb !important;
+}
+
+.is-group-invalid.s-upload-group > .s-dropzone {
+  border-color: var(--destructive) !important;
+  background: #fdeceb !important;
+}
