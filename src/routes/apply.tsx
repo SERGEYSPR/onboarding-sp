@@ -2760,12 +2760,16 @@ function EddStep() {
             tone="info"
             question="How often is age verification conducted on content creators?"
           >
-            <div className="mt-3 grid gap-3">
-              <ContentTypeCheck label="Once only (at onboarding)" />
-              <ContentTypeCheck label="Before every session" />
-              <ContentTypeCheck label="Before each session AND periodically during a live stream" />
-              <ContentTypeCheck label="Other — please specify" />
-            </div>
+            <RadioGroupField
+              name="q20-age-verification-frequency"
+              options={[
+                "Once only (at onboarding)",
+                "Before every session",
+                "Before each session AND periodically during a live stream",
+                "Other — please specify",
+              ]}
+            />
+
           </QuestionCard>
           <QuestionCard
             n={21}
