@@ -1819,24 +1819,10 @@ function DocumentsStep() {
     >
       <div className="grid md:grid-cols-2 gap-4">
         {docs.map((d) => (
-          <div
-            key={d}
-            className="group rounded-2xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 hover:border-primary hover:bg-accent/30 transition cursor-pointer"
-          >
-            <div className="flex items-start gap-3">
-              <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center transition">
-                <Upload className="h-5 w-5 text-primary" />
-              </div>
-              <div className="flex-1">
-                <div className="text-sm font-semibold">{d}</div>
-                <div className="text-xs text-muted-foreground mt-1">
-                  Drop files here or click to browse
-                </div>
-              </div>
-            </div>
-          </div>
+          <DocRequirement key={d} title={d} />
         ))}
       </div>
+
 
       <div className="mt-6">
       <Card>
