@@ -1525,10 +1525,47 @@ function ProcessingStep() {
         <Field label="Billing Descriptor" required hint="Appears on the cardholder statement.">
           <Input icon={CreditCard} placeholder="SEGPAY*YOURBRAND" />
         </Field>
+        <div className="mt-4 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed space-y-3">
+          <p>
+            A billing descriptor is the business name that appears on a customer's card or bank
+            statement. Using a clear and recognizable descriptor helps customers identify their
+            purchases and can significantly reduce disputes and chargebacks.
+          </p>
+          <p>
+            Your billing descriptor will appear in the following format:{" "}
+            <span className="font-medium text-foreground">Segpay.com&#123;descriptor&#125;</span>
+          </p>
+          <p>
+            The descriptor portion may contain a maximum of 22 characters, including letters,
+            numbers, and spaces.
+          </p>
+          <p>
+            When selecting a descriptor, ensure it is easily recognizable to your customers so they
+            can readily identify the transaction when reviewing their card or bank statement.
+          </p>
+        </div>
       </Card>
 
       <Card className="mt-5">
         <h3 className="font-semibold text-sm">Previous processing</h3>
+        <div className="mt-3 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed">
+          <p className="font-medium text-foreground">Required for all merchants with previous card processing activity.</p>
+          <p className="mt-2">
+            Please provide official processing history for the most recent 6 months, broken down by
+            month and including total transaction volume and count, chargebacks, fraud transactions,
+            refunds, and a breakdown by card scheme where available.
+          </p>
+          <p className="mt-2">
+            Official reports issued by the merchant's payment processor are preferred. If official
+            reports are not available, the merchant must provide screenshots from the processor's
+            reporting platform that clearly display the required information.
+          </p>
+          <p className="mt-2">
+            Merchants with limited or no processing history may not be eligible for pricing
+            exceptions, cross-selling programs, or other special features until sufficient processing
+            history has been established with Segpay.
+          </p>
+        </div>
 
         <div className="mt-4">
           <ChoiceRow
@@ -1599,6 +1636,21 @@ function ProcessingStep() {
           >
             <Input placeholder="List any alternative payment methods you need" />
           </Field>
+        </div>
+      </Card>
+
+      <Card className="mt-5">
+        <h3 className="font-semibold text-sm">Estimated Processing Volumes</h3>
+        <div className="mt-3 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed space-y-2">
+          <p>
+            Please provide the estimated processing volumes to be processed through Segpay for the
+            next 12 months, including the estimated monthly sales volume, transaction count, average
+            transaction value (ATV), and the lowest and highest expected transaction values.
+          </p>
+          <p>
+            The estimates should accurately reflect the anticipated processing activity and business
+            performance over the coming 12-month period.
+          </p>
         </div>
       </Card>
 
