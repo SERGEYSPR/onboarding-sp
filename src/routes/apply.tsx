@@ -607,10 +607,6 @@ function OnboardingPage() {
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span className="flex items-center gap-3">
-              <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
-            </span>
-
             <span>{Math.round(progress)}% complete</span>
           </div>
 
@@ -905,12 +901,10 @@ function StepContent({ active }: { active: StepId }) {
 }
 
 function StepShell({
-  eyebrow,
   title,
   intro,
   children,
 }: {
-  eyebrow: string;
   title: string;
   intro: React.ReactNode;
   children: React.ReactNode;
@@ -918,10 +912,7 @@ function StepShell({
   return (
     <div>
       <div className="max-w-2xl">
-        <div className="text-xs uppercase tracking-[0.14em] text-primary font-medium">
-          {eyebrow}
-        </div>
-        <h2 className="font-display text-4xl md:text-5xl mt-2 leading-[1.05]">
+        <h2 className="font-display text-4xl md:text-5xl leading-[1.05]">
           {title}
         </h2>
         <p className="mt-4 text-muted-foreground leading-relaxed">{intro}</p>
@@ -1205,7 +1196,6 @@ function Toggle({ label, defaultOn = false }: { label: string; defaultOn?: boole
 function BeginStep() {
   return (
     <StepShell
-      eyebrow="Begin Application"
       title="Welcome to Segpay."
       intro="We're excited to help you grow your business. This short application collects everything we need to activate your merchant account. Progress saves automatically at every step."
     >
@@ -1238,7 +1228,6 @@ function BeginStep() {
 function CompanyStep() {
   return (
     <StepShell
-      eyebrow="Company Information"
       title="Company Information"
       intro={
         <>
@@ -1323,7 +1312,6 @@ function DirectorsStep() {
 
   return (
     <StepShell
-      eyebrow="Directors & UBOs"
       title="Company Ownership"
       intro={
         <>
@@ -1515,7 +1503,6 @@ function ProcessingStep() {
 
   return (
     <StepShell
-      eyebrow="Processing"
       title="Processing details"
       intro="Provide details on the volumes you expect to process via Segpay"
     >
@@ -1807,7 +1794,6 @@ function RegionalVolume() {
 function ContactsStep() {
   return (
     <StepShell
-      eyebrow="Contacts"
       title="Contacts"
       intro="Add the people we should reach for day-to-day operations, contracts, and technical questions."
     >
@@ -1923,7 +1909,6 @@ function DocumentsStep() {
   ];
   return (
     <StepShell
-      eyebrow="Documents"
       title="Upload documentation"
       intro="Upload the following required documents for Bumble Bee and Co. Drag and drop or click any tile to browse."
     >
@@ -1976,7 +1961,6 @@ function DocumentsStep() {
 function WebsitesStep() {
   return (
     <StepShell
-      eyebrow="Websites"
       title="Websites"
       intro="Register every domain used with Segpay. Credentials must not expire, and your site must display Billing Support, T&Cs, Privacy Policy, and your Registered Name."
     >
@@ -2022,7 +2006,6 @@ function BanksStep() {
   const [types, setTypes] = useState<Record<string, boolean>>({ ACH: true, Wire: false });
   return (
     <StepShell
-      eyebrow="Payment Banks"
       title="Payment banks"
       intro="Configure at least one bank type. A checkmark next to the type means its configuration is complete. Empty configurations are not accepted."
     >
@@ -2211,7 +2194,6 @@ function ReviewStep() {
   );
   return (
     <StepShell
-      eyebrow="Sales Review"
       title="Review & submit"
       intro="Please review each section listed below. If you find any section incomplete or with invalid information, uncheck that section, provide a detailed note, and click Return to send the request back to the user."
     >
@@ -2735,7 +2717,6 @@ function EddStep() {
 
   return (
     <StepShell
-      eyebrow="Due Diligence"
       title="Adult Content Due Diligence"
       intro="All fields marked with an asterisk (*) are required. Complete all questions and uploads based on your content types — this form adapts to your selections."
     >
