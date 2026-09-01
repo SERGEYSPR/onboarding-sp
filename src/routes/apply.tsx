@@ -2175,7 +2175,7 @@ function ReviewStep() {
     { name: "Websites", status: "pending", placeholder: "Please add the website details" },
     { name: "Directors & UBOs", status: "complete", placeholder: "Add any notes about directors and UBOs…" },
     { name: "Adult Content Due Diligence", status: "pending", placeholder: "Please complete the adult content due diligence questionnaire and uploads" },
-    { name: "Payment Banks", status: "complete", placeholder: "Add any notes about payment banks…" },
+    { name: "Settlement Banks", status: "complete", placeholder: "Add any notes about settlement banks…" },
   ];
   const [checked, setChecked] = useState<Record<string, boolean>>(
     () => Object.fromEntries(initialItems.map((i) => [i.name, i.status === "complete"]))
