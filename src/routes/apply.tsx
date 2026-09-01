@@ -1639,6 +1639,21 @@ function ProcessingStep() {
         </div>
       </Card>
 
+      <Card className="mt-5">
+        <h3 className="font-semibold text-sm">Estimated Processing Volumes</h3>
+        <div className="mt-3 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed space-y-2">
+          <p>
+            Please provide the estimated processing volumes to be processed through Segpay for the
+            next 12 months, including the estimated monthly sales volume, transaction count, average
+            transaction value (ATV), and the lowest and highest expected transaction values.
+          </p>
+          <p>
+            The estimates should accurately reflect the anticipated processing activity and business
+            performance over the coming 12-month period.
+          </p>
+        </div>
+      </Card>
+
       {[
         { title: "Expected Monthly Credit Card Volume", key: "cc", show: true },
         { title: "Expected Monthly PayPal Volume", key: "pp", show: paypal === "yes" },
