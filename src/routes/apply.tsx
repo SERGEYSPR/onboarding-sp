@@ -1243,11 +1243,6 @@ function CompanyStep() {
       intro={
         <>
           Tell us about your registered entity and the people who own or control it.
-          Reach out to{" "}
-          <a href="mailto:tech@segpay.com" className="text-primary hover:underline">
-            tech@segpay.com
-          </a>{" "}
-          if any of this needs clarification.
         </>
       }
     >
