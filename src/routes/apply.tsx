@@ -1909,7 +1909,6 @@ function DocumentsStep() {
   ];
   return (
     <StepShell
-      eyebrow="Documents"
       title="Upload documentation"
       intro="Upload the following required documents for Bumble Bee and Co. Drag and drop or click any tile to browse."
     >
@@ -1962,7 +1961,6 @@ function DocumentsStep() {
 function WebsitesStep() {
   return (
     <StepShell
-      eyebrow="Websites"
       title="Websites"
       intro="Register every domain used with Segpay. Credentials must not expire, and your site must display Billing Support, T&Cs, Privacy Policy, and your Registered Name."
     >
@@ -2008,7 +2006,6 @@ function BanksStep() {
   const [types, setTypes] = useState<Record<string, boolean>>({ ACH: true, Wire: false });
   return (
     <StepShell
-      eyebrow="Payment Banks"
       title="Payment banks"
       intro="Configure at least one bank type. A checkmark next to the type means its configuration is complete. Empty configurations are not accepted."
     >
@@ -2197,7 +2194,6 @@ function ReviewStep() {
   );
   return (
     <StepShell
-      eyebrow="Sales Review"
       title="Review & submit"
       intro="Please review each section listed below. If you find any section incomplete or with invalid information, uncheck that section, provide a detailed note, and click Return to send the request back to the user."
     >
@@ -2721,7 +2717,6 @@ function EddStep() {
 
   return (
     <StepShell
-      eyebrow="Due Diligence"
       title="Adult Content Due Diligence"
       intro="All fields marked with an asterisk (*) are required. Complete all questions and uploads based on your content types — this form adapts to your selections."
     >
