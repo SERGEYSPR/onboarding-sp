@@ -901,12 +901,10 @@ function StepContent({ active }: { active: StepId }) {
 }
 
 function StepShell({
-  eyebrow,
   title,
   intro,
   children,
 }: {
-  eyebrow: string;
   title: string;
   intro: React.ReactNode;
   children: React.ReactNode;
@@ -914,10 +912,7 @@ function StepShell({
   return (
     <div>
       <div className="max-w-2xl">
-        <div className="text-xs uppercase tracking-[0.14em] text-primary font-medium">
-          {eyebrow}
-        </div>
-        <h2 className="font-display text-4xl md:text-5xl mt-2 leading-[1.05]">
+        <h2 className="font-display text-4xl md:text-5xl leading-[1.05]">
           {title}
         </h2>
         <p className="mt-4 text-muted-foreground leading-relaxed">{intro}</p>
