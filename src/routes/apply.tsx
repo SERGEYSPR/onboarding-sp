@@ -97,7 +97,7 @@ const STEPS: Step[] = [
   { id: "contacts", label: "Contacts", icon: User },
   { id: "documents", label: "Documents", icon: FileText, complete: true },
   { id: "websites", label: "Websites", icon: Globe },
-  { id: "banks", label: "Payment Banks", icon: Landmark, complete: true },
+  { id: "banks", label: "Settlement Banks", icon: Landmark, complete: true },
   { id: "review", label: "Review", icon: ShieldCheck, complete: true },
 ];
 
@@ -252,33 +252,11 @@ const STEP_HELP: Record<string, StepHelp> = {
     ],
   },
   banks: {
-    title: "Payment Banks",
+    title: "Settlement Banks",
     intro: [
-      "In this step, you will be asked to provide the bank account information Segpay will use for payments and settlements.",
-    ],
-    listLabel: "Please be prepared to provide:",
-    bullets: [
-      { strong: "Bank Name", text: "the financial institution where the account is held." },
-      {
-        strong: "Account Holder Information",
-        text: "the legal name associated with the bank account.",
-      },
-      {
-        strong: "Account Details",
-        text: "account number, IBAN, routing information, SWIFT/BIC, or other banking details as applicable.",
-      },
-      {
-        strong: "Bank Location and Currency",
-        text: "the country and currency associated with the account.",
-      },
-      {
-        strong: "Supporting Bank Documentation",
-        text: "a bank statement, bank letter, or other proof of account ownership if required.",
-      },
-    ],
-    outro: [
-      "The bank account should belong to the applying company unless otherwise approved.",
-      "Please verify all banking information carefully before continuing. Incorrect account details may delay account approval or future settlements.",
+      "Please provide your Settlement Bank information below. This is where your payment(s) will be sent.",
+      "Below is a list of available payment methods. You must enter at least one settlement bank by selecting a payment method (e.g. Wire, ACH, etc.), then providing the information requested and attaching supporting documentation.",
+      "Please make sure that you have provided the required documents for this payment configuration and all added payment banks. A check mark next to the type name means that the configuration is complete.",
     ],
   },
   review: {
@@ -2006,8 +1984,18 @@ function BanksStep() {
   const [types, setTypes] = useState<Record<string, boolean>>({ ACH: true, Wire: false });
   return (
     <StepShell
-      title="Payment banks"
-      intro="Configure at least one bank type. A checkmark next to the type means its configuration is complete. Empty configurations are not accepted."
+      title="Settlement banks"
+      intro={
+        <>
+          <p>Please provide your Settlement Bank information below. This is where your payment(s) will be sent.</p>
+          <p className="mt-3">
+            Below is a list of available payment methods. You must enter at least one settlement bank by selecting a payment method (e.g. Wire, ACH, etc.), then providing the information requested and attaching supporting documentation.
+          </p>
+          <p className="mt-3">
+            Please make sure that you have provided the required documents for this payment configuration and all added payment banks. A check mark next to the type name means that the configuration is complete.
+          </p>
+        </>
+      }
     >
       <div className="grid md:grid-cols-3 gap-4">
         {["ACH", "Wire"].map((label) => {
@@ -2187,7 +2175,7 @@ function ReviewStep() {
     { name: "Websites", status: "pending", placeholder: "Please add the website details" },
     { name: "Directors & UBOs", status: "complete", placeholder: "Add any notes about directors and UBOs…" },
     { name: "Adult Content Due Diligence", status: "pending", placeholder: "Please complete the adult content due diligence questionnaire and uploads" },
-    { name: "Payment Banks", status: "complete", placeholder: "Add any notes about payment banks…" },
+    { name: "Settlement Banks", status: "complete", placeholder: "Add any notes about settlement banks…" },
   ];
   const [checked, setChecked] = useState<Record<string, boolean>>(
     () => Object.fromEntries(initialItems.map((i) => [i.name, i.status === "complete"]))
