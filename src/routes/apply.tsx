@@ -2121,6 +2121,71 @@ function BanksStep() {
         </Card>
       )}
 
+      {types.Wire && (
+        <Card className="mt-6">
+          <div className="flex items-start justify-between gap-3 mb-4">
+            <div>
+              <h3 className="font-semibold text-sm">Bank Wire Configuration</h3>
+              <div className="text-xs text-muted-foreground mt-0.5">Settlement destination</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setTypes((p) => ({ ...p, Wire: false }))}
+              className="inline-flex items-center gap-1 text-xs font-medium text-destructive"
+            >
+              <Trash2 className="h-3.5 w-3.5" /> Remove
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-x-5 gap-y-4">
+            <Field label="Beneficiary Name" required>
+              <Input defaultValue="Test for Fees" readOnly icon={Lock} />
+            </Field>
+            <Field label="Beneficiary Country" required>
+              <Select icon={Flag} defaultValue="">
+                <option value="" disabled>Country</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="GB">United Kingdom</option>
+              </Select>
+            </Field>
+            <Field label="Bank Name" required>
+              <Input />
+            </Field>
+            <Field label="Bank Currency" required>
+              <Select icon={CreditCard} defaultValue="">
+                <option value="" disabled>Currency</option>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+                <option value="GBP">GBP</option>
+              </Select>
+            </Field>
+            <Field label="Bank Country" required>
+              <Select icon={Flag} defaultValue="">
+                <option value="" disabled>Country</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="GB">United Kingdom</option>
+              </Select>
+            </Field>
+            <Field label="IBAN" required>
+              <Input />
+            </Field>
+            <Field label="SWIFT" required>
+              <Input />
+            </Field>
+          </div>
+
+          <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center">
+            <Upload className="h-5 w-5 mx-auto text-primary" />
+            <div className="text-sm font-semibold mt-2">Bank Statement</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Drop files here or click to browse
+            </div>
+          </div>
+        </Card>
+      )}
+
       <Card className="mt-6">
         <h3 className="font-semibold text-sm mb-4">Payment Configuration</h3>
         <Field label="Payment Frequency">
