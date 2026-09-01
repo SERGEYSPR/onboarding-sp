@@ -1525,6 +1525,25 @@ function ProcessingStep() {
         <Field label="Billing Descriptor" required hint="Appears on the cardholder statement.">
           <Input icon={CreditCard} placeholder="SEGPAY*YOURBRAND" />
         </Field>
+        <div className="mt-4 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed space-y-3">
+          <p>
+            A billing descriptor is the business name that appears on a customer's card or bank
+            statement. Using a clear and recognizable descriptor helps customers identify their
+            purchases and can significantly reduce disputes and chargebacks.
+          </p>
+          <p>
+            Your billing descriptor will appear in the following format:{" "}
+            <span className="font-medium text-foreground">Segpay.com&#123;descriptor&#125;</span>
+          </p>
+          <p>
+            The descriptor portion may contain a maximum of 22 characters, including letters,
+            numbers, and spaces.
+          </p>
+          <p>
+            When selecting a descriptor, ensure it is easily recognizable to your customers so they
+            can readily identify the transaction when reviewing their card or bank statement.
+          </p>
+        </div>
       </Card>
 
       <Card className="mt-5">
