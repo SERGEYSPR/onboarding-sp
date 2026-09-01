@@ -1548,6 +1548,24 @@ function ProcessingStep() {
 
       <Card className="mt-5">
         <h3 className="font-semibold text-sm">Previous processing</h3>
+        <div className="mt-3 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed">
+          <p className="font-medium text-foreground">Required for all merchants with previous card processing activity.</p>
+          <p className="mt-2">
+            Please provide official processing history for the most recent 6 months, broken down by
+            month and including total transaction volume and count, chargebacks, fraud transactions,
+            refunds, and a breakdown by card scheme where available.
+          </p>
+          <p className="mt-2">
+            Official reports issued by the merchant's payment processor are preferred. If official
+            reports are not available, the merchant must provide screenshots from the processor's
+            reporting platform that clearly display the required information.
+          </p>
+          <p className="mt-2">
+            Merchants with limited or no processing history may not be eligible for pricing
+            exceptions, cross-selling programs, or other special features until sufficient processing
+            history has been established with Segpay.
+          </p>
+        </div>
 
         <div className="mt-4">
           <ChoiceRow
