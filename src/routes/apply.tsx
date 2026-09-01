@@ -1196,7 +1196,6 @@ function Toggle({ label, defaultOn = false }: { label: string; defaultOn?: boole
 function BeginStep() {
   return (
     <StepShell
-      eyebrow="Begin Application"
       title="Welcome to Segpay."
       intro="We're excited to help you grow your business. This short application collects everything we need to activate your merchant account. Progress saves automatically at every step."
     >
@@ -1229,7 +1228,6 @@ function BeginStep() {
 function CompanyStep() {
   return (
     <StepShell
-      eyebrow="Company Information"
       title="Company Information"
       intro={
         <>
@@ -1314,7 +1312,6 @@ function DirectorsStep() {
 
   return (
     <StepShell
-      eyebrow="Directors & UBOs"
       title="Company Ownership"
       intro={
         <>
@@ -1506,7 +1503,6 @@ function ProcessingStep() {
 
   return (
     <StepShell
-      eyebrow="Processing"
       title="Processing details"
       intro="Provide details on the volumes you expect to process via Segpay"
     >
@@ -1798,7 +1794,6 @@ function RegionalVolume() {
 function ContactsStep() {
   return (
     <StepShell
-      eyebrow="Contacts"
       title="Contacts"
       intro="Add the people we should reach for day-to-day operations, contracts, and technical questions."
     >
