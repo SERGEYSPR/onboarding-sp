@@ -607,10 +607,6 @@ function OnboardingPage() {
         {/* Progress + Tabs */}
         <div className="mx-auto max-w-7xl px-6 pb-3">
           <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-            <span className="flex items-center gap-3">
-              <span className="text-foreground font-medium">{STEPS[index]?.label}</span>
-            </span>
-
             <span>{Math.round(progress)}% complete</span>
           </div>
 
