@@ -1136,6 +1136,91 @@ function Select({
 
 }
 
+const DIAL_CODES: { code: string; dial: string; label: string }[] = [
+  { code: "US", dial: "+1", label: "United States" },
+  { code: "CA", dial: "+1", label: "Canada" },
+  { code: "GB", dial: "+44", label: "United Kingdom" },
+  { code: "IE", dial: "+353", label: "Ireland" },
+  { code: "DE", dial: "+49", label: "Germany" },
+  { code: "FR", dial: "+33", label: "France" },
+  { code: "ES", dial: "+34", label: "Spain" },
+  { code: "IT", dial: "+39", label: "Italy" },
+  { code: "NL", dial: "+31", label: "Netherlands" },
+  { code: "BE", dial: "+32", label: "Belgium" },
+  { code: "CH", dial: "+41", label: "Switzerland" },
+  { code: "AT", dial: "+43", label: "Austria" },
+  { code: "SE", dial: "+46", label: "Sweden" },
+  { code: "NO", dial: "+47", label: "Norway" },
+  { code: "DK", dial: "+45", label: "Denmark" },
+  { code: "PL", dial: "+48", label: "Poland" },
+  { code: "PT", dial: "+351", label: "Portugal" },
+  { code: "CZ", dial: "+420", label: "Czechia" },
+  { code: "CY", dial: "+357", label: "Cyprus" },
+  { code: "MT", dial: "+356", label: "Malta" },
+  { code: "AE", dial: "+971", label: "United Arab Emirates" },
+  { code: "IL", dial: "+972", label: "Israel" },
+  { code: "ZA", dial: "+27", label: "South Africa" },
+  { code: "AU", dial: "+61", label: "Australia" },
+  { code: "NZ", dial: "+64", label: "New Zealand" },
+  { code: "SG", dial: "+65", label: "Singapore" },
+  { code: "JP", dial: "+81", label: "Japan" },
+  { code: "BR", dial: "+55", label: "Brazil" },
+  { code: "MX", dial: "+52", label: "Mexico" },
+];
+
+function PhoneInput({
+  defaultCountry = "US",
+  placeholder = "555 000 0000",
+  required,
+  onInput,
+}: {
+  defaultCountry?: string;
+  placeholder?: string;
+  required?: boolean;
+  onInput?: React.FormEventHandler<HTMLInputElement>;
+}) {
+  const [country, setCountry] = React.useState(defaultCountry);
+  const v = useFieldValidation<HTMLInputElement>();
+  const dial = DIAL_CODES.find((c) => c.code === country)?.dial ?? "+1";
+
+  return (
+    <div className="flex items-stretch gap-2">
+      <div className="s-input-wrap w-[124px] shrink-0">
+        <select
+          aria-label="Country code"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          className="w-full appearance-none rounded-lg border border-transparent bg-[#f5f5f5] pl-3 pr-8 py-2.5 text-sm focus:outline-none transition-colors"
+        >
+          {DIAL_CODES.map((c) => (
+            <option key={c.code} value={c.code}>
+              {c.code} {c.dial}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
+      </div>
+      <div className="s-input-wrap flex-1">
+        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground z-10">
+          {dial}
+        </span>
+        <input
+          type="tel"
+          required={required}
+          placeholder={placeholder}
+          style={{ paddingLeft: `${dial.length * 8 + 20}px` }}
+          onBlur={v.onBlur}
+          onInput={(e) => {
+            v.onInput(e);
+            onInput?.(e);
+          }}
+          className="w-full rounded-lg border border-transparent bg-[#f5f5f5] pr-3 py-2.5 text-sm placeholder:text-muted-foreground focus:outline-none transition-colors"
+        />
+      </div>
+    </div>
+  );
+}
+
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
