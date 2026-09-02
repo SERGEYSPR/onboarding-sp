@@ -18,7 +18,6 @@ import {
   Trash2,
   Mail,
   MessageSquarePlus,
-  Phone,
   Save,
   Plus,
   ShieldCheck,
