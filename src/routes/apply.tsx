@@ -1329,7 +1329,7 @@ function CompanyStep() {
                 </Select>
               </Field>
               <Field label="Phone Number" required>
-                <Input icon={Phone} placeholder="+1 555 000 0000" />
+                <PhoneInput />
               </Field>
               <Field label="Tax ID">
                 <Input placeholder="EIN / VAT" />
@@ -1528,7 +1528,7 @@ function OwnerModal({ onClose }: { onClose: () => void }) {
                 <Input icon={Mail} placeholder="name@company.com" />
               </Field>
               <Field label="Phone Number" required>
-                <Input icon={Phone} placeholder="+1 555 000 0000" />
+                <PhoneInput />
               </Field>
               <Field label="Residential Address" required>
                 <Input placeholder="Street, city, postal code, country" />
@@ -1876,7 +1876,7 @@ function ContactsStep() {
             <Input icon={Mail} type="email" />
           </Field>
           <Field label="Phone Number" required>
-            <Input icon={Phone} />
+            <PhoneInput />
           </Field>
           <Field label="Messenger / Social">
             <Select defaultValue="teams">
