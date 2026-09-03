@@ -2027,6 +2027,8 @@ function DocumentsStep() {
             Drop the document here or click to browse
           </div>
         </div>
+        <FileFormatHint className="mt-3" />
+
       </Card>
       </div>
     </StepShell>
