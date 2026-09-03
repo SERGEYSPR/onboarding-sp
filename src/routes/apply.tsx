@@ -1985,7 +1985,8 @@ function DocumentsStep() {
       title="Upload documentation"
       intro="Upload the following required documents for Bumble Bee and Co. Drag and drop or click any tile to browse."
     >
-      <div className="grid md:grid-cols-2 gap-4">
+      <FileFormatHint className="mt-3" />
+      <div className="grid md:grid-cols-2 gap-4 mt-4">
         {docs.map((d) => (
           <DocRequirement key={d} title={d} />
         ))}
@@ -1993,6 +1994,7 @@ function DocumentsStep() {
 
 
       <div className="mt-6">
+
       <Card>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
