@@ -1680,7 +1680,6 @@ function ProcessingStep() {
 
       {[
         { title: "Expected Monthly Credit Card Volume", key: "cc", show: true },
-        { title: "Expected Monthly PayPal Volume", key: "pp", show: paypal === "yes" },
       ]
         .filter((s) => s.show)
         .map((section) => (
