@@ -1908,6 +1908,17 @@ function GroupError() {
   );
 }
 
+function FileFormatHint({ className }: { className?: string }) {
+  return (
+    <p className={`text-xs text-muted-foreground ${className ?? ""}`}>
+      We support files in *.PDF, *.PNG, *.JPG, *.JPEG. If you wish to merge multiple PDFs,{" "}
+      <a href="#" className="text-primary hover:underline">click here</a>. If you wish to convert files to PDFs,{" "}
+      <a href="#" className="text-primary hover:underline">click here</a>.
+    </p>
+  );
+}
+
+
 function DocRequirement({ title }: { title: string }) {
   const [fileName, setFileName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
