@@ -1629,6 +1629,7 @@ function ProcessingStep() {
                 <div className="text-xs font-medium text-foreground mb-1.5">
                   Official processing history <span className="text-destructive">*</span>
                 </div>
+                <FileFormatHint className="mb-3" />
                 <div className="rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center cursor-pointer hover:bg-muted/60 transition">
                   <Upload className="h-7 w-7 mx-auto text-primary" />
                   <div className="mt-2 text-sm font-medium">Upload processing history</div>
@@ -1637,6 +1638,7 @@ function ProcessingStep() {
                     transactions, chargebacks, fraud and refunds, ideally by card scheme.
                   </p>
                 </div>
+
               </div>
             </div>
           )}
@@ -1908,6 +1910,17 @@ function GroupError() {
   );
 }
 
+function FileFormatHint({ className }: { className?: string }) {
+  return (
+    <p className={`text-xs text-muted-foreground ${className ?? ""}`}>
+      We support files in *.PDF, *.PNG, *.JPG, *.JPEG. If you wish to merge multiple PDFs,{" "}
+      <a href="#" className="text-primary hover:underline">click here</a>. If you wish to convert files to PDFs,{" "}
+      <a href="#" className="text-primary hover:underline">click here</a>.
+    </p>
+  );
+}
+
+
 function DocRequirement({ title }: { title: string }) {
   const [fileName, setFileName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -1974,7 +1987,8 @@ function DocumentsStep() {
       title="Upload documentation"
       intro="Upload the following required documents for Bumble Bee and Co. Drag and drop or click any tile to browse."
     >
-      <div className="grid md:grid-cols-2 gap-4">
+      <FileFormatHint className="mt-3" />
+      <div className="grid md:grid-cols-2 gap-4 mt-4">
         {docs.map((d) => (
           <DocRequirement key={d} title={d} />
         ))}
@@ -1982,6 +1996,7 @@ function DocumentsStep() {
 
 
       <div className="mt-6">
+
       <Card>
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -2014,6 +2029,8 @@ function DocumentsStep() {
             Drop the document here or click to browse
           </div>
         </div>
+        <FileFormatHint className="mt-3" />
+
       </Card>
       </div>
     </StepShell>
@@ -2052,13 +2069,15 @@ function WebsitesStep() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center">
+        <FileFormatHint className="mt-5" />
+        <div className="mt-3 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center">
           <Upload className="h-5 w-5 mx-auto text-primary" />
           <div className="text-sm font-medium mt-2">Website Ownership Proof</div>
           <div className="text-xs text-muted-foreground mt-1">
             Drop the document here or click to select
           </div>
         </div>
+
       </Card>
     </StepShell>
   );
@@ -2161,13 +2180,15 @@ function BanksStep() {
             </Field>
           </div>
 
-          <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center">
+          <FileFormatHint className="mt-5" />
+          <div className="mt-3 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center">
             <Upload className="h-5 w-5 mx-auto text-primary" />
             <div className="text-sm font-semibold mt-2">Bank Statement or Voided Check</div>
             <div className="text-xs text-muted-foreground mt-1">
               Drop files here or click to browse
             </div>
           </div>
+
         </Card>
       )}
 
@@ -2226,13 +2247,15 @@ function BanksStep() {
             </Field>
           </div>
 
-          <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center">
+          <FileFormatHint className="mt-5" />
+          <div className="mt-3 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center">
             <Upload className="h-5 w-5 mx-auto text-primary" />
             <div className="text-sm font-semibold mt-2">Bank Statement</div>
             <div className="text-xs text-muted-foreground mt-1">
               Drop files here or click to browse
             </div>
           </div>
+
         </Card>
       )}
 
@@ -2853,12 +2876,8 @@ function EddStep() {
           must be detailed and cover all listed points; where third-party providers are used, name
           them. Screenshots of system functionality are highly desirable.
         </p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          If you wish to merge multiple PDFs,{" "}
-          <a className="text-primary hover:underline" href="#">click here</a>. If you wish to
-          convert files to PDFs,{" "}
-          <a className="text-primary hover:underline" href="#">click here</a>.
-        </p>
+        <FileFormatHint className="mt-2" />
+
         <div className="mt-5 grid md:grid-cols-2 gap-4">
           {uploads.map((u) => (
             <UploadTile key={u.title} title={u.title} bullets={u.bullets} />
