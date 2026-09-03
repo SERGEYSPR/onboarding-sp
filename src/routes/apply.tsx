@@ -2067,13 +2067,15 @@ function WebsitesStep() {
           </div>
         </div>
 
-        <div className="mt-5 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center">
+        <FileFormatHint className="mt-5" />
+        <div className="mt-3 rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-5 text-center">
           <Upload className="h-5 w-5 mx-auto text-primary" />
           <div className="text-sm font-medium mt-2">Website Ownership Proof</div>
           <div className="text-xs text-muted-foreground mt-1">
             Drop the document here or click to select
           </div>
         </div>
+
       </Card>
     </StepShell>
   );
