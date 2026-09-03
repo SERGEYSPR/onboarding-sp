@@ -434,10 +434,6 @@ function HelpBlocks({ active }: { active: StepId }) {
               processing currency, estimated number of transactions, average transaction value, and
               minimum and maximum transaction values.
             </li>
-            <li>
-              <span className="font-medium text-foreground">PayPal Processing Estimates</span> — if
-              applicable, provide the same estimated transaction information for PayPal payments.
-            </li>
           </ul>
           <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
             Some values, such as Estimated Monthly Sales, may be calculated automatically based on
