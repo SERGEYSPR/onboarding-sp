@@ -1629,6 +1629,7 @@ function ProcessingStep() {
                 <div className="text-xs font-medium text-foreground mb-1.5">
                   Official processing history <span className="text-destructive">*</span>
                 </div>
+                <FileFormatHint className="mb-3" />
                 <div className="rounded-xl border-2 border-dashed border-gray-300 bg-[#f5f5f5] p-6 text-center cursor-pointer hover:bg-muted/60 transition">
                   <Upload className="h-7 w-7 mx-auto text-primary" />
                   <div className="mt-2 text-sm font-medium">Upload processing history</div>
@@ -1637,6 +1638,7 @@ function ProcessingStep() {
                     transactions, chargebacks, fraud and refunds, ideally by card scheme.
                   </p>
                 </div>
+
               </div>
             </div>
           )}
