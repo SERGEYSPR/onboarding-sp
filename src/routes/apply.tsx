@@ -2151,12 +2151,14 @@ function BanksStep() {
                 <option value="GB">United Kingdom</option>
               </Select>
             </Field>
-            <Field label="Bank Account" required>
-              <Input />
-            </Field>
-            <Field label="Bank Routing" required>
-              <Input />
-            </Field>
+            <div className="grid md:grid-cols-2 gap-x-5 gap-y-4 md:col-span-2">
+              <Field label="Account Number" required>
+                <Input />
+              </Field>
+              <Field label="Routing Number" required>
+                <Input />
+              </Field>
+            </div>
           </div>
 
           <FileFormatHint className="mt-5" />
@@ -2218,12 +2220,14 @@ function BanksStep() {
                 <option value="GB">United Kingdom</option>
               </Select>
             </Field>
-            <Field label="IBAN" required>
-              <Input />
-            </Field>
-            <Field label="SWIFT" required>
-              <Input />
-            </Field>
+            <div className="grid md:grid-cols-2 gap-x-5 gap-y-4 md:col-span-2">
+              <Field label="IBAN" required>
+                <Input />
+              </Field>
+              <Field label="SWIFT" required>
+                <Input />
+              </Field>
+            </div>
           </div>
 
           <FileFormatHint className="mt-5" />
