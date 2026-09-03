@@ -1561,7 +1561,6 @@ function OwnerModal({ onClose }: { onClose: () => void }) {
 function ProcessingStep() {
   const [processedBefore, setProcessedBefore] = useState<"yes" | "no" | null>(null);
   const [terminated, setTerminated] = useState<"yes" | "no" | null>(null);
-  const [paypal, setPaypal] = useState<"yes" | "no" | null>(null);
 
   return (
     <StepShell
