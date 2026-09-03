@@ -1728,6 +1728,15 @@ function ProcessingStep() {
         ))}
 
       <Card className="mt-5">
+        <Field
+          label="Do you require other alternative payment options?"
+          hint="For example: SEPA, iDEAL, Apple Pay, Google Pay, crypto."
+        >
+          <Input placeholder="List any alternative payment methods you need" />
+        </Field>
+      </Card>
+
+      <Card className="mt-5">
         <div className="flex items-center gap-1.5">
           <h3 className="font-semibold text-sm">Regional volume percentages</h3>
           <InfoTip text="Share of your expected processing volume by region. The total must equal exactly 100%." />
