@@ -434,10 +434,6 @@ function HelpBlocks({ active }: { active: StepId }) {
               processing currency, estimated number of transactions, average transaction value, and
               minimum and maximum transaction values.
             </li>
-            <li>
-              <span className="font-medium text-foreground">PayPal Processing Estimates</span> — if
-              applicable, provide the same estimated transaction information for PayPal payments.
-            </li>
           </ul>
           <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
             Some values, such as Estimated Monthly Sales, may be calculated automatically based on
@@ -1561,7 +1557,6 @@ function OwnerModal({ onClose }: { onClose: () => void }) {
 function ProcessingStep() {
   const [processedBefore, setProcessedBefore] = useState<"yes" | "no" | null>(null);
   const [terminated, setTerminated] = useState<"yes" | "no" | null>(null);
-  const [paypal, setPaypal] = useState<"yes" | "no" | null>(null);
 
   return (
     <StepShell
@@ -1665,30 +1660,6 @@ function ProcessingStep() {
       </Card>
 
       <Card className="mt-5">
-        <h3 className="font-semibold text-sm">Payment options</h3>
-        <div className="mt-4">
-          <ChoiceRow
-            label="Do you require PayPal processing?"
-            value={paypal}
-            onChange={setPaypal}
-          />
-          <p className="mt-3 rounded-lg bg-[#f5f5f5] px-3 py-2.5 text-xs text-muted-foreground leading-relaxed">
-            Currently, PayPal enrollment is available only to merchants in select regions. If we’re
-            unable to enroll you at this time, we’ll make it available to you once your region
-            becomes eligible.
-          </p>
-        </div>
-        <div className="mt-6">
-          <Field
-            label="Do you require other alternative payment options?"
-            hint="For example: SEPA, iDEAL, Apple Pay, Google Pay, crypto."
-          >
-            <Input placeholder="List any alternative payment methods you need" />
-          </Field>
-        </div>
-      </Card>
-
-      <Card className="mt-5">
         <h3 className="font-semibold text-sm">Estimated Processing Volumes</h3>
         <div className="mt-3 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed space-y-2">
           <p>
@@ -1705,7 +1676,6 @@ function ProcessingStep() {
 
       {[
         { title: "Expected Monthly Credit Card Volume", key: "cc", show: true },
-        { title: "Expected Monthly PayPal Volume", key: "pp", show: paypal === "yes" },
       ]
         .filter((s) => s.show)
         .map((section) => (
