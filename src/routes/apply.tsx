@@ -1664,30 +1664,6 @@ function ProcessingStep() {
       </Card>
 
       <Card className="mt-5">
-        <h3 className="font-semibold text-sm">Payment options</h3>
-        <div className="mt-4">
-          <ChoiceRow
-            label="Do you require PayPal processing?"
-            value={paypal}
-            onChange={setPaypal}
-          />
-          <p className="mt-3 rounded-lg bg-[#f5f5f5] px-3 py-2.5 text-xs text-muted-foreground leading-relaxed">
-            Currently, PayPal enrollment is available only to merchants in select regions. If we’re
-            unable to enroll you at this time, we’ll make it available to you once your region
-            becomes eligible.
-          </p>
-        </div>
-        <div className="mt-6">
-          <Field
-            label="Do you require other alternative payment options?"
-            hint="For example: SEPA, iDEAL, Apple Pay, Google Pay, crypto."
-          >
-            <Input placeholder="List any alternative payment methods you need" />
-          </Field>
-        </div>
-      </Card>
-
-      <Card className="mt-5">
         <h3 className="font-semibold text-sm">Estimated Processing Volumes</h3>
         <div className="mt-3 rounded-xl bg-[#f5f5f5] p-4 text-xs text-muted-foreground leading-relaxed space-y-2">
           <p>
