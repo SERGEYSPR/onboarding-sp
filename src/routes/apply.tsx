@@ -2876,12 +2876,8 @@ function EddStep() {
           must be detailed and cover all listed points; where third-party providers are used, name
           them. Screenshots of system functionality are highly desirable.
         </p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          If you wish to merge multiple PDFs,{" "}
-          <a className="text-primary hover:underline" href="#">click here</a>. If you wish to
-          convert files to PDFs,{" "}
-          <a className="text-primary hover:underline" href="#">click here</a>.
-        </p>
+        <FileFormatHint className="mt-2" />
+
         <div className="mt-5 grid md:grid-cols-2 gap-4">
           {uploads.map((u) => (
             <UploadTile key={u.title} title={u.title} bullets={u.bullets} />
