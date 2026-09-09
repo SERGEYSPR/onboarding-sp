@@ -1972,6 +1972,7 @@ function DocumentsStep() {
           <DocRequirement key={d} title={d} />
         ))}
       </div>
+      <FileFormatHint className="mt-4" />
 
 
       <div className="mt-6">
