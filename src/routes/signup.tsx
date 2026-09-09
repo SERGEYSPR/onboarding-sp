@@ -33,7 +33,7 @@ function SignupPage() {
   return (
     <AuthShell
       eyebrow="Create account"
-      title="Welcome to the Merchant Portal!"
+      title="Start your application"
       subtitle="From here you can start the process of integrating with SegPay. But first, we need to verify your identity. After creating a password and clicking Register, we will send an email with a link to verify your email address."
     >
       <form onSubmit={submit} className="space-y-4">
@@ -143,6 +143,15 @@ export function AuthShell({
                 Helpful Links
               </div>
               <ul className="space-y-2 text-sm">
+                <li>
+                  <Link
+                    to="/"
+                    className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
+                  >
+                    <LinkIcon className="h-3.5 w-3.5" />
+                    Home
+                  </Link>
+                </li>
                 {[
                   "Merchant FAQ",
                   "Support Center",
