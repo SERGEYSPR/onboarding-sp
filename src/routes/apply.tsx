@@ -1284,6 +1284,8 @@ function BeginStep() {
 }
 
 function CompanyStep() {
+  const [addrCountry, setAddrCountry] = useState("US");
+  const showState = addrCountry === "US" || addrCountry === "AU";
   return (
     <StepShell
       title="Company Information"
