@@ -1284,6 +1284,8 @@ function BeginStep() {
 }
 
 function CompanyStep() {
+  const [addrCountry, setAddrCountry] = useState("US");
+  const showState = addrCountry === "US" || addrCountry === "AU";
   return (
     <StepShell
       title="Company Information"
@@ -1334,15 +1336,38 @@ function CompanyStep() {
             <div className="mt-8 border-t border-border pt-6">
               <h3 className="font-semibold text-sm mb-4">Registered Address</h3>
               <div className="grid md:grid-cols-2 gap-5">
+                <Field label="Country" required>
+                  <Select
+                    value={addrCountry}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                      setAddrCountry(e.target.value)
+                    }
+                  >
+                    <option value="US">United States</option>
+                    <option value="AU">Australia</option>
+                    <option value="GB">United Kingdom</option>
+                    <option value="CA">Canada</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="ES">Spain</option>
+                    <option value="NL">Netherlands</option>
+                    <option value="CY">Cyprus</option>
+                    <option value="BZ">Belize</option>
+                    <option value="MT">Malta</option>
+                    <option value="OTHER">Other</option>
+                  </Select>
+                </Field>
                 <Field label="Street Address" required>
                   <Input placeholder="123 Market Street" />
                 </Field>
                 <Field label="City" required>
                   <Input placeholder="City" />
                 </Field>
-                <Field label="State / Province" required>
-                  <Input placeholder="State" />
-                </Field>
+                {showState && (
+                  <Field label="State" required>
+                    <Input placeholder="State" />
+                  </Field>
+                )}
                 <Field label="ZIP / Postal Code" required>
                   <Input placeholder="00000" />
                 </Field>
